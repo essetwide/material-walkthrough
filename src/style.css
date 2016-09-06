@@ -1,3 +1,8 @@
+@font-face{
+	font-family: 'Roboto', sans-serif;
+	src: url(https://fonts.googleapis.com/css?family=Roboto);
+}
+
 .walk-wrapper {
     /* JS VAI SETAR A PARTIR DO ELEMENTO 
     height: 80px; 
@@ -12,7 +17,8 @@
     position: fixed;
     border-radius: 50%;
     z-index: 40;
-    box-shadow: inset 0px 0px 16px rgba(0,0,0,0.3);
+    box-shadow: inset 0px 0px 16px rgba(0,0,0,0.5);
+	border-color: #2196F3;
 
 }
 
@@ -29,9 +35,10 @@
     margin-top: -300vw;
     margin-left: -300vw;
     opacity: .9;
+	box-sizing: content-box !important;
 
     /* JS SETA A PARTIR DO PROGRAMADOR */
-    border-color: rgba(0, 146, 190, 0.58); /* COR DO FUNDO */
+    border-color: inherit /* HERDADO DO PAI */
 }
 
 .walk-wrapper:after {
@@ -52,13 +59,36 @@
     left: 100%; /* PARA CONTEUDO A ESQUERDA: -400%. PARA A DIREITA: 100% */
     top: 100%;
     color: white;
+
+	font-family: 'Roboto', sans-serif;
 }
 
 .walk-button {
-    margin-top: 16px;
+	background: transparent;
+	display: inline-block;
+	vertical-align: middle;
+	height: 36px;
+	padding: 0 2rem;
+	margin-left: -2rem;
+	border:0;
+    border-radius: 2px;
+    outline: 0;
+	line-height: 36px;
+	letter-spacing: .5px;
+    text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+
+
+.walk-button:hover{
+	background-color: rgba(255, 255, 255, 0.32);
 }
 
 .walk-text {
     min-width: 350px;
+	margin-bottom: 16px;
     font-size: 24px;
 }
+
