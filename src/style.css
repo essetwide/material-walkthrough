@@ -1,32 +1,12 @@
-* {
-    font-family: sans-serif;
-    font-weight: bold;
-    
-}
-body {
-    margin: 0px;
-}
-
-.wrapper-button {
-    padding: 8px;
-    background: transparent;
-    border: none;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-
-
-.wrapper {
-    /* JS VAI SETAR A PARTIR DO ELEMENTO */
+.walk-wrapper {
+    /* JS VAI SETAR A PARTIR DO ELEMENTO 
     height: 80px; 
     width: 80px; 
-    margin-left: -40px; /* CALCULADO PELO JS. METADE PRA DEIXAR CENTRALIZADO */
-    margin-top: -40px; /* CALCULADO PELO JS. METADE PRA DEIXAR CENTRALIZADO */
-    /* POSIÇÃO A PARTIR DO ELEMENTO */
-    left: 500px; /* POSIÇÃO DO CIRCULO */
-    top: 500px; /* POSIÇÃO DO CIRCULO */
+    margin-left: -40px; /* CALCULADO PELO JS. METADE PRA DEIXAR CENTRALIZADO
+    margin-top: -40px; /* CALCULADO PELO JS. METADE PRA DEIXAR CENTRALIZADO
+    /* POSIÇÃO A PARTIR DO ELEMENTO
+    left: 500px; /* POSIÇÃO DO CIRCULO 
+    top: 500px; /* POSIÇÃO DO CIRCULO  */
     
     /* FIXO DO ESTILO */
     position: fixed;
@@ -36,7 +16,7 @@ body {
 
 }
 
-.wrapper:before {
+.walk-wrapper:before {
     /* FIXO DO ESTILO */
     content: '';
     display: block;
@@ -54,7 +34,7 @@ body {
     border-color: rgba(0, 146, 190, 0.58); /* COR DO FUNDO */
 }
 
-.wrapper:after {
+.walk-wrapper:after {
     content: '';
     display: block;
     position: absolute;
@@ -66,7 +46,7 @@ body {
     border: solid 1px white; /* COR DA BORDINHA */
 }
 
-.wrapper-content {
+.walk-content {
     /* TEXTO E BOTÃO */
     position: absolute;
     left: 100%; /* PARA CONTEUDO A ESQUERDA: -400%. PARA A DIREITA: 100% */
@@ -74,11 +54,11 @@ body {
     color: white;
 }
 
-.wrapper-button {
+.walk-button {
     margin-top: 16px;
 }
 
-.wrapper-text {
+.walk-text {
     min-width: 350px;
     font-size: 24px;
 }
