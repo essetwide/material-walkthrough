@@ -1,0 +1,84 @@
+* {
+    font-family: sans-serif;
+    font-weight: bold;
+    
+}
+body {
+    margin: 0px;
+}
+
+.wrapper-button {
+    padding: 8px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+
+.wrapper {
+    /* JS VAI SETAR A PARTIR DO ELEMENTO */
+    height: 80px; 
+    width: 80px; 
+    margin-left: -40px; /* CALCULADO PELO JS. METADE PRA DEIXAR CENTRALIZADO */
+    margin-top: -40px; /* CALCULADO PELO JS. METADE PRA DEIXAR CENTRALIZADO */
+    /* POSIÇÃO A PARTIR DO ELEMENTO */
+    left: 500px; /* POSIÇÃO DO CIRCULO */
+    top: 500px; /* POSIÇÃO DO CIRCULO */
+    
+    /* FIXO DO ESTILO */
+    position: fixed;
+    border-radius: 50%;
+    z-index: 40;
+    box-shadow: inset 0px 0px 16px rgba(0,0,0,0.3);
+
+}
+
+.wrapper:before {
+    /* FIXO DO ESTILO */
+    content: '';
+    display: block;
+    position: absolute;
+    background: transparent;
+    border: solid 300vw #fff;
+    border-radius: 50%;
+    width: inherit;
+    height: inherit;
+    margin-top: -300vw;
+    margin-left: -300vw;
+    opacity: .9;
+
+    /* JS SETA A PARTIR DO PROGRAMADOR */
+    border-color: rgba(0, 146, 190, 0.58); /* COR DO FUNDO */
+}
+
+.wrapper:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    border-radius: 50%;
+    border: solid 1px white; /* COR DA BORDINHA */
+}
+
+.wrapper-content {
+    /* TEXTO E BOTÃO */
+    position: absolute;
+    left: 100%; /* PARA CONTEUDO A ESQUERDA: -400%. PARA A DIREITA: 100% */
+    top: 100%;
+    color: white;
+}
+
+.wrapper-button {
+    margin-top: 16px;
+}
+
+.wrapper-text {
+    min-width: 350px;
+    font-size: 24px;
+}
