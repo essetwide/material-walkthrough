@@ -66,6 +66,7 @@
 	};
 
 	$.fn.walk = function (contentText, color) {
+		if(!this.width()) return; //Tentei .isEmptyObject() mas ele sempre retornava falso
 		var element = this;
 		if ($('#walk-wrapper').length == 0) {
 			$('body').append(`
