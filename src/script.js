@@ -22,6 +22,31 @@
 	};
 
 	function calculateTextPosition (element) {
+		var size = element.outerHeight() > element.outerWidth() ? element.outerHeight() : element.outerWidth();
+		var position = element.offset();
+		//console.log("Local: "+(position.left + size + 10)); //ESSE MAIS 10 EU NÃO SEI QUEM ESTÁ FORNCENDO(MARGIN, PADDING) MAS SEI QUE ELE EXISTE
+ 		//console.log($('.walk-text').offset());
+ 		//console.log("Windows width: "+$(window).width());
+ 		var espacoLivreDireita = $(window).width() - (position.left + size + 10);
+ 		var espacoLivreEsquerda = position.left - 10;
+ 		//console.log("Espaço livre: "+ espacoLivre);
+ 		var minWidth = parseInt($('.walk-text').css('min-width'));
+ 		//console.log("Min width: "+minWidth);
+ 		if(espacoLivreDireita>minWidth){
+ 			$('.walk-content').css('left','100%');
+ 			$('.walk-content').css('top','100%');
+ 			$('.walk-content').css('text-align','left');
+ 		}else if(espacoLivreEsquerda>minWidth){
+ 			console.log("Espaco Esquerda: "+espacoLivreEsquerda+" minWidth: "+minWidth);
+ 			$('.walk-content').css('left','-300%');
+ 			$('.walk-content').css('top','100%');
+ 			$('.walk-content').css('text-align','right');
+ 		}else{
+ 			$('.walk-content').css('left','-50%');
+ 			$('.walk-content').css('top','-180%');
+ 			$('.walk-content').css('text-align','left');
+ 		}
+
 	};
 
 	function setupHandlers(element) {
