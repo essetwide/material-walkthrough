@@ -1,7 +1,7 @@
 (function ($) {
 
 	function calculatePosition(element) {
-		var walker = $('.walk-wrapper');
+		var walker = $('#walk-wrapper');
 
 		var size = element.outerHeight() > element.outerWidth() ? element.outerHeight() : element.outerWidth();
 		console.log('walk size:' + size);
@@ -24,7 +24,7 @@
 		function calculateTextPosition(element) {
 		var size = element.outerHeight() > element.outerWidth() ? element.outerHeight() : element.outerWidth();
 		var position = element.offset();
-		var content = $('.walk-content');
+		var content = $('#walk-content');
 
 		var canRenderInRight = position.left + size + 20 + content.outerWidth() < $(window).width();
 		var canRenderInLeft = size + 20 + content.outerWidth() < $(window).width() / 2;
@@ -39,14 +39,14 @@
 		console.log('canRenderInTop: ' + canRenderInTop);
 
 		if (canRenderInRight || canRenderInLeft) {
-			$('.walk-content').css({
+			$('#walk-content').css({
 				'left': canRenderInRight ? '100%' : '-300%',
 				'top': canRenderInBottom ? '100%' : '-180%',
 				'text-align': canRenderInRight ? 'left' : 'right'
 			});
 		} else {
 			// FICA NO CENTRO HORIZONTAL
-			$('.walk-content').css({
+			$('#walk-content').css({
 				'left': '-200%',
 				'top': canRenderInBottom ? '100%' : '-180%',
 				'text-align': 'left'
@@ -60,31 +60,31 @@
 			calculateTextPosition (element);
 		});
 
-		$('.walk-button').on('click',function(){
-			$('.walk-wrapper').hide();
+		$('#walk-button').on('click',function(){
+			$('#walk-wrapper').hide();
 		});
 	};
 
 	$.fn.walk = function (contentText, color) {
 		var element = this;
-		if ($('.walk-wrapper').length == 0) {
+		if ($('#walk-wrapper').length == 0) {
 			$('body').append(`
-	<div class="walk-wrapper">
-        <div class="walk-content">
-            <div class="walk-text">
+	<div id="walk-wrapper">
+        <div id="walk-content">
+            <div id="walk-text">
             </div>
-            <button class="walk-button">ENTENDI</button>
+            <button id="walk-button">ENTENDI</button>
         </div>
     </div>
 	`);
 		}
-		var walker = $('.walk-wrapper');
+		var walker = $('#walk-wrapper');
 		walker.show();
 		walker.css({
 			'border-color': (!!color) ? color : '#2196F3'
 		});
         
-        var walker_text = $('.walk-text');
+        var walker_text = $('#walk-text');
         walker_text.html(contentText);
                 
 		calculatePosition(element);

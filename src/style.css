@@ -3,7 +3,7 @@
     src: url(https://fonts.googleapis.com/css?family=Roboto);
 }
 
-.walk-wrapper {
+#walk-wrapper {
     /* JS VAI SETAR A PARTIR DO ELEMENTO 
     height: 80px; 
     width: 80px; 
@@ -20,7 +20,7 @@
     box-shadow: inset 0px 0px 16px rgba(0,0,0,0.5);
 }
 
-.walk-wrapper:before {
+#walk-wrapper:before {
     /* FIXO DO ESTILO */
     content: '';
     display: block;
@@ -39,7 +39,7 @@
     border-color: inherit /* HERDADO DO PAI */
 }
 
-.walk-wrapper:after {
+#walk-wrapper:after {
     content: '';
     display: block;
     position: absolute;
@@ -51,7 +51,7 @@
     border: solid 1px white; /* COR DA BORDINHA */
 }
 
-.walk-content {
+#walk-content {
     /* TEXTO E BOTÃO */
     position: absolute;
     left: 100%; /* PARA CONTEUDO A ESQUERDA: -400%. PARA A DIREITA: 100% */
@@ -60,7 +60,7 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.walk-button {
+#walk-button {
     background: transparent;
     display: inline-block;
     vertical-align: middle;
@@ -80,11 +80,11 @@
 
 
 
-.walk-button:hover{
+#walk-button:hover{
     background-color: rgba(255, 255, 255, 0.25);
 }
 
-.walk-text {
+#walk-text {
     min-width: 350px;
     margin-bottom: 16px;
     font-size: 24px;
