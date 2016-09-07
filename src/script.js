@@ -38,7 +38,7 @@
 			$('body').append(`
 	<div class="walk-wrapper">
         <div class="walk-content">
-            <div class="walk-text">` + contentText + `
+            <div class="walk-text">
             </div>
             <button class="walk-button">ENTENDI</button>
         </div>
@@ -50,9 +50,11 @@
 		walker.css({
 			'border-color': (color != '' || !!color) ? color : 'inherit'
 		});
+                var walker_text = $('.walk-text');
+                walker_text.html(contentText);
+                
 		calculatePosition(element);
 		calculateTextPosition(element);
-
 		setupHandlers(element);
 	};
 })(jQuery);

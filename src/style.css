@@ -1,6 +1,6 @@
 @font-face{
-	font-family: 'Roboto', sans-serif;
-	src: url(https://fonts.googleapis.com/css?family=Roboto);
+    font-family: 'Roboto', sans-serif;
+    src: url(https://fonts.googleapis.com/css?family=Roboto);
 }
 
 .walk-wrapper {
@@ -12,13 +12,13 @@
     /* POSIÇÃO A PARTIR DO ELEMENTO
     left: 500px; /* POSIÇÃO DO CIRCULO 
     top: 500px; /* POSIÇÃO DO CIRCULO  */
-    
+
     /* FIXO DO ESTILO */
     position: fixed;
     border-radius: 50%;
     z-index: 40;
     box-shadow: inset 0px 0px 16px rgba(0,0,0,0.5);
-	border-color: #2196F3;
+    border-color: #2196F3;
 
 }
 
@@ -35,7 +35,7 @@
     margin-top: -300vw;
     margin-left: -300vw;
     opacity: .9;
-	box-sizing: content-box !important;
+    box-sizing: content-box !important;
 
     /* JS SETA A PARTIR DO PROGRAMADOR */
     border-color: inherit /* HERDADO DO PAI */
@@ -59,36 +59,36 @@
     left: 100%; /* PARA CONTEUDO A ESQUERDA: -400%. PARA A DIREITA: 100% */
     top: 100%;
     color: white;
-
-	font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .walk-button {
-	background: transparent;
-	display: inline-block;
-	vertical-align: middle;
-	height: 36px;
-	padding: 0 2rem;
-	margin-left: -2rem;
-	border:0;
+    background: transparent;
+    display: inline-block;
+    vertical-align: middle;
+    height: 36px;
+    padding: 0 2rem;
+    margin-left: -2rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    border:0;
     border-radius: 2px;
     outline: 0;
-	line-height: 36px;
-	letter-spacing: .5px;
+    line-height: 36px;
+    letter-spacing: .5px;
     text-align: center;
-	font-size: 15px;
-	font-weight: bold;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 
 
 .walk-button:hover{
-	background-color: rgba(255, 255, 255, 0.32);
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
 .walk-text {
     min-width: 350px;
-	margin-bottom: 16px;
+    margin-bottom: 16px;
     font-size: 24px;
 }
 
