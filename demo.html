@@ -32,9 +32,9 @@
             <div class="header clearfix">
                 <nav>
                     <ul class="nav nav-pills pull-right">
-                        <li role="presentation" class="active"><a  id="home" href="#">Inicio</a></li>
-                        <li role="presentation"><a href="#">Sobre</a></li>
-                        <li role="presentation"><a href="#">Contato</a></li>
+                        <li id="home" role="presentation" class="active"><a  href="#">Inicio</a></li>
+                        <li id="sobre" role="presentation"><a href="#">Sobre</a></li>
+                        <li id="contato" role="presentation"><a href="#">Contato</a></li>
                     </ul>
                 </nav>
                 <h3 class="text-muted">Walkthrough Material</h3>
@@ -43,7 +43,7 @@
             <div class="jumbotron">
                 <h1>Walkthrough Material</h1>
                 <p class="lead">Após uma busca frustrante por um Plugin JQuery de Website Tour que possuísse um Material Design e fosse passível de customização, dois amigos inquietos resolvem criar seu próprio Plugin. Com os conhecimentos adquiridos ao longo do curso técnico <strike>e de pesquisas no Google</strike> surge o Walkthrough Material JQuery Plugin.</p>
-                <p><a id="signup" class="btn btn-lg btn-success" href="#" role="button">Testar Agora!</a></p>
+                <p><a id="inicio" class="btn btn-lg btn-success" href="#" role="button">Testar Agora!</a></p>
             </div>
 
             <div class="row marketing">
@@ -51,7 +51,7 @@
                     <h4 id="material" style="max-width: 126px;">Material Design</h4>
                     <p>Possui um visual Material baseado no tour apresentado pelo Inbox do Google.</p>
 
-                    <h4>Customizável</h4>
+                    <h4 id="custom"  style="max-width: 115px;">Customizável</h4>
                     <p>Mude os textos e as cores facilmente. Recomendamos o uso de <a href="https://www.materialui.co/flatuicolors" target="blank">Flat Colors</a></p>
                         
                     <h4>Responsivo</h4>
@@ -65,7 +65,7 @@
                     <h4>Compatível</h4>
                     <p>Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0; <strike>IE (?) Ao persistirem os sintomas, o developer deverá ser consultado</strike></p>
                         
-                    <h4>Feito com Amor &#128150;</h4>
+                    <h4 id="amor"  style="max-width: 126px;">Feito com Amor &#128150;</h4>
                     <p>Muito amor e algumas noites sem estudar para provas para desenvolver este plugin com muito &#128150;.</p>
                 </div>
             </div>
@@ -78,9 +78,11 @@
         <script src="src/script.js"></script>
         <script type="text/javascript">
             $( document ).ready(function() {
-                $('#signup').on('click', function(){
-                    $('#signup').walk("Que bom que você está interessado. Vamos começar nosso <b>Tour</b>!",'#8e44ad');
-                });
+                    $('#inicio').walk("Olá, aqui você poderá começar <b>Tour</b>! Aproveite",'#8e44ad');
+                    $('#inicio').on('click',function(){
+                        //TOUR
+                      $('#home').walk("Encontre aqui uma visão geral do Plugin",'#d35400');  
+                    });
             });
         </script>>
     </body>
