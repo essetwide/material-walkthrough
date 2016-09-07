@@ -81,10 +81,11 @@
 		var walker = $('.walk-wrapper');
 		walker.show();
 		walker.css({
-			'border-color': (color != '' || !!color) ? color : 'inherit'
+			'border-color': (!!color) ? color : '#2196F3'
 		});
-                var walker_text = $('.walk-text');
-                walker_text.html(contentText);
+        
+        var walker_text = $('.walk-text');
+        walker_text.html(contentText);
                 
 		calculatePosition(element);
 		calculateTextPosition(element);
