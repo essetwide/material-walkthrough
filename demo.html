@@ -48,11 +48,11 @@
 
             <div class="row marketing">
                 <div class="col-lg-6">
-                    <h4>Material Design</h4>
+                    <h4 id="material" style="max-width: 126px;">Material Design</h4>
                     <p>Possui um visual Material baseado no tour apresentado pelo Inbox do Google.</p>
 
                     <h4>Customizável</h4>
-                    <p>Mude os textos e as cores facilmente.</p>
+                    <p>Mude os textos e as cores facilmente. Recomendamos o uso de <a href="https://www.materialui.co/flatuicolors" target="blank">Flat Colors</a></p>
                         
                     <h4>Responsivo</h4>
                     <p>Redimensione a tela e continue usufruindo do seu Walkthrough.</p>
@@ -71,11 +71,18 @@
             </div>
 
             <footer class="footer">
-                <p>&copy; 2016 Company, Inc.</p>
+                <p>&copy; 2016 Guilherme Prezzi e Filipe Oliveira</p>
             </footer>
 
         </div> <!-- /container -->
         <script src="src/script.js"></script>
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                $('#signup').on('click', function(){
+                    $('#signup').walk("Que bom que você está interessado. Vamos começar nosso <b>Tour</b>!");
+                });
+            });
+        </script>>
     </body>
 </html>
 
