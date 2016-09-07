@@ -57,8 +57,11 @@
 	function setupHandlers(element) {
 		$(window).on('resize', function () {
 			calculatePosition(element);
-			calculateTextPosition (element)
-			console.log('yahoo');
+			calculateTextPosition (element);
+		});
+
+		$('.walk-button').on('click',function(){
+			$('.walk-wrapper').hide();
 		});
 	};
 
