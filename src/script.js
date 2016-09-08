@@ -62,11 +62,13 @@
 
 		$('#walk-button').on('click',function(){
 			$('#walk-wrapper').hide();
+            $('html').css({'overflow': 'auto'});
 		});
 	};
 
 	$.fn.walk = function (contentText, color) {
 		if(!this.width()) return; //Tentei .isEmptyObject() mas ele sempre retornava falso
+        $('html').css({'overflow': 'hidden'});
 		var element = this;
 		if ($('#walk-wrapper').length == 0) {
 			$('body').append(`
