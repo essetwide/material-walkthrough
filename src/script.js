@@ -36,30 +36,30 @@
         var position = element.offset();
         var content = $('#walk-content');
 
-        var canRenderInRight = position.left + size + 20 + content.outerWidth() < $(window).width();
-        var canRenderInLeft = size + 20 + content.outerWidth() < $(window).width() / 2;
+        var canRenderInRight = position.left > content.width();
+        var canRenderInLeft = ($(window).width() - position.left) > content.width();
 
-        var canRenderInBottom = position.top + size + 20 + content.outerHeight() < $(window).height();
-        var canRenderInTop = size + 20 + content.outerHeight() < $(window).height() / 2;
+        console.log('content.width: ' + content.width());
+        console.log('position.left: ' + position.left);
+        console.log('position.right: ' + ($(window).width() - position.left));
 
-        console.log('canRenderInRight: ' + canRenderInRight);
-        console.log('canRenderInLeft: ' + canRenderInLeft);
-
-        console.log('canRenderInBottom: ' + canRenderInBottom);
-        console.log('canRenderInTop: ' + canRenderInTop);
+        /*
+        -170%    -75%    100%
+        -100%   -100%   -100%
+        
+        -170%    -75%    100%
+        -100%    100%    100%
+         */
 
         if (canRenderInRight || canRenderInLeft) {
             $('#walk-content').css({
-                'left': canRenderInRight ? '100%' : '-300%',
-                'top': canRenderInBottom ? '100%' : '-180%',
+                'left': canRenderInRight ? '100%' : '-170%',
                 'text-align': canRenderInRight ? 'left' : 'right'
             });
-        } else {
-            // FICA NO CENTRO HORIZONTAL
+        } else { //centralizado
             $('#walk-content').css({
-                'left': '-200%',
-                'top': canRenderInBottom ? '100%' : '-180%',
-                'text-align': 'left'
+                'left': '-75%',
+                'text-align': 'center'
             });
         }
     }
