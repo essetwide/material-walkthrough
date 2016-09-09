@@ -20,14 +20,9 @@
             'top': (position.top + (element.outerHeight() / 2)) + 'px',
         });
 
-        //window.scrollTo(0, element.scrollTop());
-
         $('html, body').animate({
             scrollTop: element.scrollTop()
-        }, 750);
-        setTimeout(function(){
-            walker.show();
-        }, 750);
+        }, 500);
     
     };
 
@@ -66,16 +61,18 @@
     }
 
     function setupHandlers(element) {
-        $(window).on('resize', function () {
+        var handlers = function () {
             calculatePosition(element);
             calculateTextPosition(element);
-        });
+        };
+        $(window).on('resize', handlers);
 
         $('#walk-button').on('click', function () {
             $('#walk-wrapper').hide();
             $('html').css({
                 'overflow': 'auto'
             });
+            $(window).off('resize', handlers);
         });
     };
 
@@ -103,7 +100,11 @@
 
         var walker_text = $('#walk-text');
         walker_text.html(contentText);
-
+        
+        setTimeout(function(){
+            $('#walk-wrapper').show();
+        }, 500);
+        
         calculatePosition(element);
         calculateTextPosition(element);
         setupHandlers(element);
