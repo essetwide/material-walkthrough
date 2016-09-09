@@ -36,12 +36,13 @@
         var position = element.offset();
         var content = $('#walk-content');
 
-        var canRenderInRight = position.left > content.width();
-        var canRenderInLeft = ($(window).width() - position.left) > content.width();
+        var canRenderInLeft = position.left + 175 > content.width();
+        var canRenderInRight = ($(window).width() - (position.left + 175)) > content.width();
 
         console.log('content.width: ' + content.width());
         console.log('position.left: ' + position.left);
         console.log('position.right: ' + ($(window).width() - position.left));
+        console.log('canRenderInLeft: ' + canRenderInLeft + '\n canRenderInRight: ' + canRenderInRight);
 
         /*
         -170%    -75%    100%
