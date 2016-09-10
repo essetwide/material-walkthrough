@@ -4,6 +4,7 @@
         var walker = $('#walk-wrapper');
 
         var size = element.outerHeight() > element.outerWidth() ? element.outerHeight() : element.outerWidth();
+        if (size < 60) size = 60;
         console.log('walk size:' + size);
 
         var position = element.offset();
@@ -23,7 +24,7 @@
         $('html, body').animate({
             scrollTop: element.scrollTop()
         }, 500);
-    
+
     };
 
     function calculateTextPosition(element) {
@@ -60,7 +61,7 @@
         }
     }
 
-    function setupHandlers(element) {
+    function setupHandlers(element, closeCallback) {
         var handlers = function () {
             calculatePosition(element);
             calculateTextPosition(element);
@@ -72,12 +73,36 @@
             $('html').css({
                 'overflow': 'auto'
             });
+            if(closeCallback) {
+                if (typeof closeCallback == 'Function') closeCallback();
+                else {
+                    $._WALK_CURRENT_POINT++;
+                    var point = $._WALK_CURRENT_WALKPOINTS[$._WALK_CURRENT_POINT];
+                    // Se o ponto existe, entao pegue-o!
+                    console.log($._WALK_CURRENT_POINT);
+                    if (!!point) {
+                        $(point.selector).walk(point.text, point.color);
+                    } else {
+                        if ($._WALK_CURRENT_ENDCALLBACK) $._WALK_CURRENT_ENDCALLBACK();
+                    }
+                }
+            }
             $(window).off('resize', handlers);
         });
     };
-    $.walk = function (object) {
-    //$.fn.walk = function (contentText, color) {
-        var element = $('#'+object.id);
+
+    $._WALK_CURRENT_WALKPOINTS;
+    $._WALK_CURRENT_ENDCALLBACK;
+    $._WALK_CURRENT_POINT;
+
+    /**
+     * Walk Function. Show a walkthrough for a single point.
+     * @param {string}   contentText     Text that will be displayed in the content of the walkthrough;
+     * @param {string}   [color]         Optional (for default blue color). Color in hash hex or in rgb() function;
+     * @param {function|boolean} [closeCallback] Callback that will be called when the walkthrough point is closed. Or a boolean used to indicate if the walk is compound;
+     */
+    $.fn.walk = function (contentText, color, closeCallback) {
+        var element = this;
         if (!element.width()) return; //Tentei .isEmptyObject() mas ele sempre retornava falso
         $('html').css({
             'overflow': 'hidden'
@@ -95,18 +120,32 @@
         }
         var walker = $('#walk-wrapper');
         walker.css({
-            'border-color': (!!object.color) ? object.color : '#2196F3'
+            'border-color': (!!color) ? color : '#2196F3'
         });
 
         var walker_text = $('#walk-text');
-        walker_text.html(object.text);
-        
-        setTimeout(function(){
+        walker_text.html(contentText);
+
+        setTimeout(function () {
             $('#walk-wrapper').show();
         }, 500);
-        
+
         calculatePosition(element);
         calculateTextPosition(element);
-        setupHandlers(element);
+        setupHandlers(element, closeCallback);
     };
+
+    /**
+     * Set a walkthrough for multiple points in order.
+     * @param {object[]} walkPoints A WalkPoints array to set.
+     */
+    $.walk = function (walkPoints, endCallback) {
+        $._WALK_CURRENT_WALKPOINTS = walkPoints;
+        $._WALK_CURRENT_POINT = 0;
+        $._WALK_CURRENT_ENDCALLBACK = endCallback;
+
+        var point = walkPoints[0];
+        $(point.selector).walk(point.text, point.color, true);
+    }
+
 })(jQuery);
