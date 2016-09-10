@@ -75,13 +75,13 @@
             $(window).off('resize', handlers);
         });
     };
-
-    $.fn.walk = function (contentText, color) {
-        if (!this.width()) return; //Tentei .isEmptyObject() mas ele sempre retornava falso
+    $.walk = function (object) {
+    //$.fn.walk = function (contentText, color) {
+        var element = $('#'+object.id);
+        if (!element.width()) return; //Tentei .isEmptyObject() mas ele sempre retornava falso
         $('html').css({
             'overflow': 'hidden'
         });
-        var element = this;
         if ($('#walk-wrapper').length == 0) {
             $('body').append(`
 	<div id="walk-wrapper">
@@ -95,11 +95,11 @@
         }
         var walker = $('#walk-wrapper');
         walker.css({
-            'border-color': (!!color) ? color : '#2196F3'
+            'border-color': (!!object.color) ? object.color : '#2196F3'
         });
 
         var walker_text = $('#walk-text');
-        walker_text.html(contentText);
+        walker_text.html(object.text);
         
         setTimeout(function(){
             $('#walk-wrapper').show();
