@@ -1,6 +1,7 @@
 (function ($) {
 
     function calculatePosition(element) {
+
         var walker = $('#walk-wrapper');
 
         var size = element.outerHeight() > element.outerWidth() ? element.outerHeight() : element.outerWidth();
@@ -9,6 +10,11 @@
 
         var position = element.offset();
         console.log('walk position:' + position.left + 'x' + position.top);
+
+        console.log('scroll to: ' + (position.top - ($(window).height() / 2)));
+        $('html, body').animate({
+            scrollTop: (position.top - ($(window).height() / 2))
+        }, 500);
 
         walker.css({
             'height': (size + 20) + 'px',
@@ -20,10 +26,6 @@
             'left': (position.left + (element.outerWidth() / 2)) + 'px',
             'top': (position.top + (element.outerHeight() / 2)) + 'px',
         });
-
-        $('html, body').animate({
-            scrollTop: element.scrollTop()
-        }, 500);
 
     };
 
@@ -71,9 +73,10 @@
         $('#walk-button').on('click', function () {
             $('#walk-wrapper').hide();
             $('html').css({
+                'height': '',
                 'overflow': 'auto'
             });
-            if(closeCallback) {
+            if (closeCallback) {
                 if (typeof closeCallback == 'Function') closeCallback();
                 else {
                     $._WALK_CURRENT_POINT++;
@@ -105,6 +108,7 @@
         var element = this;
         if (!element.width()) return; //Tentei .isEmptyObject() mas ele sempre retornava falso
         $('html').css({
+            'height': '100vh',
             'overflow': 'hidden'
         });
         if ($('#walk-wrapper').length == 0) {
