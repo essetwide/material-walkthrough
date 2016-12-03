@@ -1,5 +1,43 @@
 (function ($) {
 
+     //Locking scroll
+        //Thanks to @galambalazs
+        // left: 37, up: 38, right: 39, down: 40,
+// spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+var keys = {37: 1, 38: 1, 39: 1, 40: 1, 32: 1, 33: 1, 34: 1};
+
+function preventDefault(e) {
+  e = e || window.event;
+  if (e.preventDefault)
+      e.preventDefault();
+  e.returnValue = false;  
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+function disableScroll() {
+  if (window.addEventListener) // older FF
+      window.addEventListener('DOMMouseScroll', preventDefault, false);
+  window.onwheel = preventDefault; // modern standard
+  window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+  window.ontouchmove  = preventDefault; // mobile
+  document.onkeydown  = preventDefaultForScrollKeys;
+}
+
+function enableScroll() {
+    if (window.removeEventListener)
+        window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.onmousewheel = document.onmousewheel = null; 
+    window.onwheel = null; 
+    window.ontouchmove = null;  
+    document.onkeydown = null;  
+}
+
     function calculatePosition(element) {
 
         var walker = $('#walk-wrapper');
@@ -72,26 +110,31 @@
 
         $('#walk-button').on('click', function () {
             $('#walk-wrapper').hide();
-            $('html').css({
-                'height': '',
-                'overflow': 'auto'
-            });
+            /*;*/
             if (closeCallback) {
                 if (typeof closeCallback == 'Function') closeCallback();
                 else {
                     $._WALK_CURRENT_POINT++;
                     var point = $._WALK_CURRENT_WALKPOINTS[$._WALK_CURRENT_POINT];
-                    // Se o ponto existe, entao pegue-o!
                     console.log($._WALK_CURRENT_POINT);
+                    // Se o ponto existe, entao pegue-o!
                     if (!!point) {
                         $(point.selector).walk(point.text, point.color);
                     } else {
+                        $('html').css({
+                'height': '',
+                'overflow': 'auto'
+            })
+                        enableScroll();
                         if ($._WALK_CURRENT_ENDCALLBACK) $._WALK_CURRENT_ENDCALLBACK();
                     }
                 }
             }
             $(window).off('resize', handlers);
         });
+
+       disableScroll();
+
     };
 
     $._WALK_CURRENT_WALKPOINTS;
