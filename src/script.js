@@ -46,7 +46,7 @@
     };
 
     function calculateTextPosition(targetElt) {
-        var position = targetElt.offset();
+        var position = targetElt[0].getBoundingClientRect();
         var walkContent = $('#walk-content');
 
         console.log('CALCULATING TEXT POSITION:');
@@ -56,15 +56,18 @@
 
         // REVER
         var canRenderInTop = position.top + walkContent.height() / 2 > $(window).height() / 2;
-        var canRenderInBottom = ($(window).height() - position.top + walkContent.height() / 2) > $(window).height() / 2;
+        var canRenderInBottom = $(window).height() - (position.top + $('#walk-wrapper').height() / 2) > walkContent.height();
+
         console.log('\tcanRenderInTop: ' + canRenderInTop + '\n\tcanRenderInBottom: ' + canRenderInBottom);
+        console.log("\t\tEspaco Livre:"+ ($(window).height() - (position.top + $('#walk-wrapper').height() / 2) ));
+        console.log("\t\tEspaco Necessário: "+walkContent.height());
 
         /* QUADRO DE POSIÇÕES
          LEFT: -170%  -40%    100%
          TOP:  -70%   -70%   -70%     <-- top minimo para posiçao superior. Se a caso o conteudo do texto for grande, diminuir mais ainda este numero
 
          LEFT: -170%    -40%    100%
-         TOP:  -100%    100%    100%
+         TOP:  100%    100%    100%
          */
 
         console.log('\tRENDERING...');
@@ -81,6 +84,16 @@
                 'text-align': 'center',
             });
         }
+
+        if(!canRenderInBottom) {
+            $('#walk-content').css({
+                'top': '-70%'
+            });
+        } else {
+            $('#walk-content').css({
+                'top': '100%'
+            });
+        }
     }
 
     function updatePositions(element) {
@@ -91,6 +104,7 @@
 
     function setupHandlers(element) {
         function updateHandler() {
+            console.error();
             updatePositions(element)
         }
         $(window).off('resize', updateHandler);
@@ -115,15 +129,19 @@
     $.fn.walk = function (contentText, color, closeCallback, isPartial) {
         console.log(contentText + ' ' + color + ' ' + closeCallback + ' ' + isPartial);
         var element = this;
+        var walkerWrapper = $('#walk-wrapper'); // ESSA MERDA DE COMEÇO NAO EXISTE
         if (!element.width()) return;
-        var walkerWrapper = $('#walk-wrapper');
-        var walkText = $('#walk-text');
 
         disableScroll();
-        walkText.html(contentText);
+
         if (walkerWrapper.length == 0) {
-            $('body').append("<div id='walk-wrapper'><div id='walk-content'><div id='walk-text'></div><button id='walk-button'>ENTENDI</button></div></div>");
+            $('body').append("<div id='walk-wrapper'><div id='walk-content'><div id='walk-text'></div><button id='walk-button'>ENTENDI</button></div></div>"); // AQUI ELE CRIA
+            walkerWrapper = $('#walk-wrapper'); // TEM QUE PEGAR O CARA DE NOVO
         }
+
+        var walkText = $('#walk-text'); //ESSA LINHA VEIO PRA BAIXO
+        walkText.html(contentText);
+
         walkerWrapper.css({
             'border-color': (!!color) ? color : WALK_DEFAULT_COLOR
         });
