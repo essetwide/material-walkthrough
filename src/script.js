@@ -145,6 +145,10 @@
 
         var walkText = $('#walk-text'); //ESSA LINHA VEIO PRA BAIXO
         walkText.html(contentText);
+        $('#walk-content').hide();
+        setTimeout(function() {
+            $('#walk-content').show();
+        }, WALK_SCROLL_DELAY);
 
         walkerWrapper.css({
             'border-color': (!!color) ? color : WALK_DEFAULT_COLOR
