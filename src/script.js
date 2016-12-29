@@ -146,8 +146,11 @@
         var walkText = $('#walk-text'); //ESSA LINHA VEIO PRA BAIXO
         walkText.html(contentText);
         $('#walk-content').hide();
+        
+        if(isPartial && $._WALK_CURRENT_POINT == 0) walkerWrapper.removeClass('open');
         setTimeout(function() {
             $('#walk-content').show();
+             if(isPartial && $._WALK_CURRENT_POINT == 0) walkerWrapper.addClass('open');
         }, WALK_SCROLL_DELAY);
 
         walkerWrapper.css({
@@ -180,14 +183,23 @@
                     $._WALK_MUTATION_OBSERVER.disconnect();
 
                     if ($._WALK_CURRENT_ENDCALLBACK) $._WALK_CURRENT_ENDCALLBACK();
-                    walkerWrapper.hide();
+                    
+                    walkerWrapper.removeClass('open');
+                    setTimeout(function(){
+                        walkerWrapper.hide();
+                    }, 500);
                 }
             } else { // se é um walk único, então
                 enableScroll();
                 $('#walk-button').off('click', confirmCallback);
                 $._WALK_MUTATION_OBSERVER.disconnect();
-
+                
                 if (!!closeCallback) closeCallback();
+                
+                walkerWrapper.removeClass('open');
+                setTimeout(function(){
+                        walkerWrapper.hide();
+                }, 500);
             }
         };
 

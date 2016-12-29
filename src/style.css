@@ -14,13 +14,15 @@
     top: 500px; /* POSIÇÃO DO CIRCULO  */
 
     /* FIXO DO ESTILO */
-
-    transition: 0.5s ease-in;
-
+    transform: translateZ(0);
     position: absolute;
     border-radius: 50%;
     z-index: 1000;
     box-shadow: inset 0px 0px 16px rgba(0,0,0,0.5);
+}
+
+#walk-wrapper.open {
+    transition: 0.5s ease-in;
 }
 
 #walk-wrapper:before {
@@ -29,17 +31,25 @@
     display: block;
     position: absolute;
     background: transparent;
-    border: solid 300vw #fff;
+    border: solid 0vw #fff;
     border-radius: 50%;
     width: inherit;
     height: inherit;
-    margin-top: -300vw;
-    margin-left: -300vw;
+    margin-top: 0vw;
+    margin-left: 0vw;
     opacity: .9;
     box-sizing: content-box !important;
 
     /* JS SETA A PARTIR DO PROGRAMADOR */
-    border-color: inherit /* HERDADO DO PAI */
+    border-color: inherit; /* HERDADO DO PAI */
+    transition: border 0.25s ease-in, margin 0.25s ease-in;
+}
+
+#walk-wrapper.open:before {
+    border: solid 300vw;
+    margin-top: -300vw;
+    margin-left: -300vw;
+    border-color: inherit;
 }
 
 #walk-wrapper:after {
