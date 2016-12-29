@@ -47,7 +47,7 @@
                     <div class="nav-wrapper">
                         <a href="#" id="logo-container" class="brand-logo">Material Walkthrough</a>
                         <ul class="right hide-on-med-and-down">
-                            <li><a href="#contact"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                            <li id='home'><a href="#contact"><i class="fa fa-github" aria-hidden="true"></i></a></li>
                             <li><a href="#team">Documentação</a></li>
                             <li><a href="https://github.com/joashp/material-design-template" target="_blank">Download</a></li>
                         </ul>
@@ -347,7 +347,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="white-text" href="https://www.linkedin.com/in/joashp">
+                                <a id='teste' class="white-text" href="https://www.linkedin.com/in/joashp">
                                     <i class="small fa fa-linkedin-square white-text"></i> Linkedin
                                 </a>
                             </li>
@@ -386,8 +386,12 @@
 	            },{
 	                selector: '#home',
 	                text: 'texto 4',
-	                color: 'yellow'
-	            }
+	                color: 'blue'
+	            }, {
+                    selector: '#teste',
+                    text: 'texto 5',
+                    color: 'cyan'
+                }
 	        ]);
 	    </script>
     </body>
