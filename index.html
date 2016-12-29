@@ -24,10 +24,10 @@
         <script type="text/javascript">SyntaxHighlighter.all();</script>
 
         <!-- JQuery 3.1 minified -->
-    	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
-    	<!-- Walkthrough CSS -->
-   		<link rel="stylesheet" href="src/style.css">
+        <!-- Walkthrough CSS -->
+        <link rel="stylesheet" href="src/style.css">
     </head>
     <body id="top" class="scrollspy">
 
@@ -97,7 +97,7 @@
                         <h2 class="center header text_h2">Auxilie seus usários com o<span class="span_h2"> Material Walkthrough  </span></h2>
                     </div>
                     <div class="center">
-                        <a id="inicio" class="waves-effect waves-light btn">Testar Agora!</a>
+                        <a id="inicio" class="waves-effect waves-light btn" onclick="startWalk();">Testar Agora!</a>
                     </div>
                 </div>
             </div>
@@ -369,30 +369,36 @@
         <!-- /container -->
 
          <!--Walkthrough  Scripts-->
-	    <script src="src/script.js"></script>
-	    <script type="text/javascript">
-	        $.walk([
-	            {
-	                selector: '#inicio',
-	                text: 'texto 1',
-	                color: 'red'
-	            }, {
-	                selector: '#home',
-	                text: 'texto 2'
-	            }, {
-	                selector: '#inicio',
-	                text: 'texto 3',
-	                color: 'purple'
-	            },{
-	                selector: '#home',
-	                text: 'texto 4',
-	                color: 'blue'
-	            }, {
+        <script src="src/script.js"></script>
+        <script type="text/javascript">
+        function startWalk(){
+            $.walk([
+                {
+                    selector: '#inicio',
+                    text: 'texto 1',
+                    color: 'red'
+                }, {
+                    selector: '#home',
+                    text: 'texto 2'
+                }, {
+                    selector: '#inicio',
+                    text: 'texto 3',
+                    color: 'purple'
+                },{
+                    selector: '#home',
+                    text: 'texto 4',
+                    color: 'blue'
+                }, {
                     selector: '#teste',
                     text: 'texto 5',
                     color: 'cyan'
                 }
-	        ]);
-	    </script>
+            ]);
+        }
+        $( document ).ready(function() {
+            startWalk();
+        });
+            
+        </script>
     </body>
 </html>
