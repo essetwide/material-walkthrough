@@ -90,12 +90,13 @@
     };
 
     function setupHandlers(element) {
-        $(window).on('resize', function () {
+        function updateHandler() {
             updatePositions(element)
-        });
-        $._WALK_MUTATION_OBSERVER = new MutationObserver(function () {
-            updatePositions(element)
-        });
+        }
+        $(window).off('resize', updateHandler);
+        $(window).on('resize', updateHandler);
+
+        $._WALK_MUTATION_OBSERVER = new MutationObserver(updateHandler);
         $._WALK_MUTATION_OBSERVER.observe(document.body, {
             childList: true,
             subtree: true
@@ -144,7 +145,7 @@
                 // Se o ponto existe, entao pegue-o!
                 if (!!point) {
                     $('#walk-button').off('click', confirmCallback);
-                    console.log(point);
+                    $._WALK_MUTATION_OBSERVER.disconnect();
                     $(point.selector).walk(point.text, point.color, null, true);
                 } else {
                     enableScroll();
