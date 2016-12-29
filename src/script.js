@@ -119,10 +119,10 @@
         var element = this;
         if (!element.width()) return;
         var walkerWrapper = $('#walk-wrapper');
-        var contentText = $('#walk-text');
+        var walkText = $('#walk-text');
 
         disableScroll();
-        contentText.html(contentText);
+        walkText.html(contentText);
         if (walkerWrapper.length == 0) {
             $('body').append("<div id='walk-wrapper'><div id='walk-content'><div id='walk-text'></div><button id='walk-button'>ENTENDI</button></div></div>");
         }
