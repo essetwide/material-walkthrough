@@ -25,11 +25,13 @@
 
         var scrollTo = (position.top - ($(window).height() / 2)); // Tenta centralizar a tela com a posição do alvo
         if (scrollTo > 0) {
+            if (scrollTo + $(window).height() > $(document.body).height()) scrollTo = $(document.body).height() - $(window).height(); //Definindo o limite a partir do tamanho do documento;
             console.log('\tscrolling to: ' + scrollTo);
             $('html, body').animate({
                 scrollTop: scrollTo
             }, WALK_SCROLL_DELAY);
         }
+
 
         console.log('\tRENDERING...');
         walkElement.css({
@@ -192,6 +194,7 @@
      * @param {function} [endCallback] An optional callback that will be executed when the walk is terminated.
      */
     $.walk = function (walkPoints, endCallback) {
+        $._WALK_DEFAULT_DOCSIZE =
         $._WALK_CURRENT_WALKPOINTS = walkPoints;
         $._WALK_CURRENT_POINT = 0;
         $._WALK_CURRENT_ENDCALLBACK = endCallback;
