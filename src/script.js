@@ -139,6 +139,8 @@
         if (walkerWrapper.length == 0) {
             $('body').append("<div id='walk-wrapper'><div id='walk-content'><div id='walk-text'></div><button id='walk-button'>ENTENDI</button></div></div>"); // AQUI ELE CRIA
             walkerWrapper = $('#walk-wrapper'); // TEM QUE PEGAR O CARA DE NOVO
+        }else{
+        	walkerWrapper.show();
         }
 
         var walkText = $('#walk-text'); //ESSA LINHA VEIO PRA BAIXO
