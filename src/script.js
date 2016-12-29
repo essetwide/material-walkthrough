@@ -102,20 +102,17 @@
         });
     }
 
-    function cleanHandlersAndListeners() {
-        enableScroll();
-        $._WALK_MUTATION_OBSERVER.disconnect();
-    }
-
 
 
     /**
      * Walk Function. Show a walkthrough for a single point.
      * @param {string}   contentText     Text that will be displayed in the content of the walkthrough;
      * @param {string}   [color]         Optional (for default blue color). Color in hash hex or in rgb() function;
-     * @param {function|boolean} [closeCallback] Callback that will be called when the walkthrough point is closed. Or a boolean used to indicate if the walk is compound;
+     * @param {function} [closeCallback] Callback that will be called when the walkthrough point is closed;
+     * @param {boolean}  [isPartial]     Or a boolean used to indicate if the walk is compound;
      */
-    $.fn.walk = function (contentText, color, closeCallback) {
+    $.fn.walk = function (contentText, color, closeCallback, isPartial) {
+        console.log(contentText + ' ' + color + ' ' + closeCallback + ' ' + isPartial);
         var element = this;
         if (!element.width()) return;
         var walkerWrapper = $('#walk-wrapper');
@@ -136,30 +133,34 @@
             }, WALK_SCROLL_DELAY);
         }
 
-        calculatePosition(element);
-        calculateTextPosition(element);
+        updatePositions(element);
         setupHandlers(element, closeCallback);
 
         var confirmCallback = function (ev) {
             if (WALK_BLINK_TRANSITION) walkerWrapper.hide();
-            if (!!closeCallback) {
-                if (typeof closeCallback == 'Function') closeCallback();
-                else {
-                    $._WALK_CURRENT_POINT++;
-                    var point = $._WALK_CURRENT_WALKPOINTS[$._WALK_CURRENT_POINT];
+            if (!!isPartial) {
+                $._WALK_CURRENT_POINT++;
+                var point = $._WALK_CURRENT_WALKPOINTS[$._WALK_CURRENT_POINT];
+                // Se o ponto existe, entao pegue-o!
+                if (!!point) {
+                    $('#walk-button').off('click', confirmCallback);
                     console.log(point);
-                    // Se o ponto existe, entao pegue-o!
-                    if (!!point) {
-                        $('#walk-button').off('click', confirmCallback);
-                        $(window).off('resize', updatePositions);
-                        $(point.selector).walk(point.text, point.color, true);
-                    } else {
-                        cleanHandlersAndListeners();
-                        if ($._WALK_CURRENT_ENDCALLBACK) $._WALK_CURRENT_ENDCALLBACK();
-                    }
+                    $(point.selector).walk(point.text, point.color, null, true);
+                } else {
+                    enableScroll();
+
+                    $('#walk-button').off('click', confirmCallback);
+                    $._WALK_MUTATION_OBSERVER.disconnect();
+
+                    if ($._WALK_CURRENT_ENDCALLBACK) $._WALK_CURRENT_ENDCALLBACK();
+                    walkerWrapper.hide();
                 }
-            } else {
-                cleanHandlersAndListeners();
+            } else { // se é um walk único, então
+                enableScroll();
+                $('#walk-button').off('click', confirmCallback);
+                $._WALK_MUTATION_OBSERVER.disconnect();
+
+                if (!!closeCallback) closeCallback();
             }
         };
 
@@ -177,7 +178,7 @@
         $._WALK_CURRENT_ENDCALLBACK = endCallback;
 
         var point = walkPoints[0];
-        $(point.selector).walk(point.text, point.color, true);
+        $(point.selector).walk(point.text, point.color, null, true);
     };
 
 
