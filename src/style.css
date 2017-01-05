@@ -3,6 +3,12 @@
     src: url(https://fonts.googleapis.com/css?family=Roboto);
 }
 
+@media (max-width: 720px) {
+    #walk-wrapper {
+        box-shadow: none !important; /* Removing shadows because it cracks the mobile experience */
+    }
+}
+
 #walk-wrapper {
     /* JS VAI SETAR A PARTIR DO ELEMENTO 
     height: 80px; 
@@ -13,7 +19,6 @@
     left: 500px; /* POSIÇÃO DO CIRCULO 
     top: 500px; /* POSIÇÃO DO CIRCULO  */
 
-    /* FIXO DO ESTILO */
     transform: translateZ(0);
     position: absolute;
     border-radius: 50%;
@@ -62,6 +67,11 @@
     top: 0;
     border-radius: 50%;
     border: solid 1px white; /* COR DA BORDINHA */
+}
+
+#walk-wrapper.close {
+    height: 300vw !important;
+    width: 300vw !important;
 }
 
 #walk-content {

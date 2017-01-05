@@ -1,20 +1,51 @@
 (function ($) {
-    // REALIZAR ALGUNS AJUSTES DE PERFORMANCE: Armazenar valores (chamadas jquery etc) frequentemente utilizados.
-    // Organizar o escopo aqui em cima.
-    var WALK_MIN_SIZE = 60;
-    var WALK_DEFAULT_COLOR = '#2196F3';
-    var WALK_SCROLL_DELAY = 500;
-    var WALK_BLINK_TRANSITION = false;
+    // Settings
+    var WALK_MIN_SIZE = 60; // Defines a min size for the walk hole;
+    var WALK_DEFAULT_COLOR = '#2196F3'; // Default color used when the color param is null;
+    var WALK_TRANSITION_DELAY = 500; // Delay of walk transitions;
+    var WALK_BLINK_TRANSITION = false; // hide/show in transitions;
+    var WALK_MAX_PERCENTAGE_SIZE = 0.5; //;
 
-    $._WALK_CURRENT_WALKPOINTS;
-    $._WALK_CURRENT_ENDCALLBACK;
-    $._WALK_CURRENT_POINT;
-    $._WALK_MUTATION_OBSERVER;
+    var walkContent = {};
+    var walkWrapper = {};
+    var walkText = {};
+    var walkButton = {};
 
+    /**
+     * Global variable that holds the current walk configuration.
+     * @type {WalkPoint[]}
+     */
+    $._walkPoints = [];
+
+    /**
+     * Global variable that holds the current callback function that will be called when the walk is ended.
+     * @type {function}
+     */
+    $._walkCallback = null;
+
+    /**
+     * Global variable that holds the current point index in _walkPoints array.
+     * @type {number}
+     */
+    $._walkCurrentIndex = 0;
+
+    /**
+     * Global variable that holds the MutationObserver that listen body modifications.
+     * @type {MutationObserver}
+     */
+    $._walkMutationObserver = null;
+
+
+    function init() {
+        $('body').append("<div id='walk-wrapper'><div id='walk-content'><div id='walk-text'></div><button id='walk-button'></button></div></div>");
+        walkContent = $('#walk-content');
+        walkWrapper = $('#walk-wrapper');
+        walkText = $('#walk-text');
+        walkButton = $('#walk-button');
+    }
 
     function calculatePosition(targetElt) {
         console.log('CALCULATING WALK POSITION:');
-        var walkElement = $('#walk-wrapper');
 
         var holeSize = targetElt.outerHeight() > targetElt.outerWidth() ? targetElt.outerHeight() : targetElt.outerWidth(); // Pegar a maior medida
         if (holeSize < WALK_MIN_SIZE) holeSize = WALK_MIN_SIZE;
@@ -29,12 +60,20 @@
             console.log('\tscrolling to: ' + scrollTo);
             $('html, body').animate({
                 scrollTop: scrollTo
-            }, WALK_SCROLL_DELAY);
+            }, WALK_TRANSITION_DELAY);
+        }
+
+        // Fixing zoom
+        var smallestMeasure = $(window).height() > $(window).width() ? $(window).width() : $(window).height();
+        if (holeSize > smallestMeasure * WALK_MAX_PERCENTAGE_SIZE) {
+            var zoomAmount = (100 - WALK_MAX_PERCENTAGE_SIZE * 100);
+            console.log('\tsetting zoom: ' + zoomAmount);
+            $(document.body).css('zoom', zoomAmount + '%');
         }
 
 
         console.log('\tRENDERING...');
-        walkElement.css({
+        walkWrapper.css({
             'height': (holeSize + 20) + 'px',
             'width': (holeSize + 20) + 'px',
 
@@ -49,7 +88,6 @@
 
     function calculateTextPosition(targetElt) {
         var position = targetElt[0].getBoundingClientRect();
-        var walkContent = $('#walk-content');
 
         console.log('CALCULATING TEXT POSITION:');
         var canRenderInLeft = position.left + 175 > walkContent.width(); // 175 é a metade da largura do conteudo
@@ -58,10 +96,10 @@
 
         // REVER
         var canRenderInTop = position.top + walkContent.height() / 2 > $(window).height() / 2;
-        var canRenderInBottom = $(window).height() - (position.top + $('#walk-wrapper').height() / 2) > walkContent.height();
+        var canRenderInBottom = $(window).height() - (position.top + walkWrapper.height() / 2) > walkContent.height();
 
         console.log('\tcanRenderInTop: ' + canRenderInTop + '\n\tcanRenderInBottom: ' + canRenderInBottom);
-        console.log("\t\tEspaco Livre:"+ ($(window).height() - (position.top + $('#walk-wrapper').height() / 2) ));
+        console.log("\t\tEspaco Livre:"+ ($(window).height() - (position.top + walkWrapper.height() / 2) ));
         console.log("\t\tEspaco Necessário: "+walkContent.height());
 
         /* QUADRO DE POSIÇÕES
@@ -74,13 +112,13 @@
 
         console.log('\tRENDERING...');
         if (canRenderInRight || canRenderInLeft) {
-            $('#walk-content').css({
+            walkContent.css({
                 'margin-top': '0px',
                 'left': canRenderInRight ? '100%' : '-170%',
                 'text-align': canRenderInRight ? 'left' : 'right',
             });
         } else { //centralizado
-            $('#walk-content').css({
+            walkContent.css({
                 'margin-top': '20px',
                 'left': '-40%',
                 'text-align': 'center',
@@ -88,11 +126,11 @@
         }
 
         if(!canRenderInBottom) {
-            $('#walk-content').css({
+            walkContent.css({
                 'top': '-70%'
             });
         } else {
-            $('#walk-content').css({
+            walkContent.css({
                 'top': '100%'
             });
         }
@@ -112,8 +150,8 @@
         $(window).off('resize', updateHandler);
         $(window).on('resize', updateHandler);
 
-        $._WALK_MUTATION_OBSERVER = new MutationObserver(updateHandler);
-        $._WALK_MUTATION_OBSERVER.observe(document.body, {
+        $._walkMutationObserver = new MutationObserver(updateHandler);
+        $._walkMutationObserver.observe(document.body, {
             childList: true,
             subtree: true
         });
@@ -125,100 +163,108 @@
      * Walk Function. Show a walkthrough for a single point.
      * @param {string}   contentText     Text that will be displayed in the content of the walkthrough;
      * @param {string}   [color]         Optional (for default blue color). Color in hash hex or in rgb() function;
+     * @param {string}   acceptText    The text that will be displayed on accept button;
      * @param {function} [closeCallback] Callback that will be called when the walkthrough point is closed;
      * @param {boolean}  [isPartial]     Or a boolean used to indicate if the walk is compound;
      */
-    $.fn.walk = function (contentText, color, closeCallback, isPartial) {
-        console.log(contentText + ' ' + color + ' ' + closeCallback + ' ' + isPartial);
+    $.fn.walk = function (contentText, color, acceptText, closeCallback, isPartial) {
         var element = this;
-        var walkerWrapper = $('#walk-wrapper'); // ESSA MERDA DE COMEÇO NAO EXISTE
         if (!element.width()) return;
 
         disableScroll();
 
-        if (walkerWrapper.length == 0) {
-            $('body').append("<div id='walk-wrapper'><div id='walk-content'><div id='walk-text'></div><button id='walk-button'>ENTENDI</button></div></div>"); // AQUI ELE CRIA
-            walkerWrapper = $('#walk-wrapper'); // TEM QUE PEGAR O CARA DE NOVO
-        } else {
-            walkerWrapper.show();
+        if ($('#walk-wrapper').length == 0) {
+            init();
         }
-
-        var walkText = $('#walk-text'); //ESSA LINHA VEIO PRA BAIXO
+        walkWrapper.show();
+        walkContent.hide();
         walkText.html(contentText);
-        $('#walk-content').hide();
+        walkButton.html(acceptText);
         
-        if(isPartial && $._WALK_CURRENT_POINT == 0) walkerWrapper.removeClass('open');
+        if(isPartial && $._walkCurrentIndex == 0) {
+            walkWrapper.removeClass('open');
+        }
         setTimeout(function() {
-            $('#walk-content').show();
-             if(isPartial && $._WALK_CURRENT_POINT == 0) walkerWrapper.addClass('open');
-        }, WALK_SCROLL_DELAY);
+            walkContent.show();
+            if(isPartial && $._walkCurrentIndex == 0) walkWrapper.addClass('open');
+        }, WALK_TRANSITION_DELAY);
 
-        walkerWrapper.css({
+        walkWrapper.css({
             'border-color': (!!color) ? color : WALK_DEFAULT_COLOR
         });
 
+
         if (WALK_BLINK_TRANSITION) {
             setTimeout(function () {
-                walkerWrapper.show();
-            }, WALK_SCROLL_DELAY);
+                walkWrapper.show();
+            }, WALK_TRANSITION_DELAY);
         }
 
         updatePositions(element);
         setupHandlers(element, closeCallback);
 
-        var confirmCallback = function (ev) {
-            if (WALK_BLINK_TRANSITION) walkerWrapper.hide();
+        var confirmCallback = function () {
+            if (WALK_BLINK_TRANSITION) walkWrapper.hide();
             if (!!isPartial) {
-                $._WALK_CURRENT_POINT++;
-                var point = $._WALK_CURRENT_WALKPOINTS[$._WALK_CURRENT_POINT];
+                $._walkCurrentIndex++;
+                var point = $._walkPoints[$._walkCurrentIndex];
                 // Se o ponto existe, entao pegue-o!
                 if (!!point) {
-                    $('#walk-button').off('click', confirmCallback);
-                    $._WALK_MUTATION_OBSERVER.disconnect();
-                    $(point.selector).walk(point.text, point.color, null, true);
+                    walkButton.off('click', confirmCallback);
+                    $._walkMutationObserver.disconnect();
+                    $(point.selector).walk(point.text, point.color, point.acceptText, null, true);
                 } else {
                     enableScroll();
 
-                    $('#walk-button').off('click', confirmCallback);
-                    $._WALK_MUTATION_OBSERVER.disconnect();
+                    walkButton.off('click', confirmCallback);
+                    $._walkMutationObserver.disconnect();
 
-                    if ($._WALK_CURRENT_ENDCALLBACK) $._WALK_CURRENT_ENDCALLBACK();
+                    if ($._walkCallback) $._walkCallback();
                     
-                    walkerWrapper.removeClass('open');
+                    walkWrapper.removeClass('open');
                     setTimeout(function(){
-                        walkerWrapper.hide();
-                    }, 500);
+                        walkWrapper.hide();
+                    }, WALK_TRANSITION_DELAY);
                 }
             } else { // se é um walk único, então
                 enableScroll();
-                $('#walk-button').off('click', confirmCallback);
-                $._WALK_MUTATION_OBSERVER.disconnect();
+                walkButton.off('click', confirmCallback);
+                $._walkMutationObserver.disconnect();
                 
                 if (!!closeCallback) closeCallback();
                 
-                walkerWrapper.removeClass('open');
+                walkWrapper.removeClass('open');
                 setTimeout(function(){
-                        walkerWrapper.hide();
-                }, 500);
+                        walkWrapper.hide();
+                }, WALK_TRANSITION_DELAY);
             }
         };
 
-        $('#walk-button').on('click', confirmCallback);
+        walkButton.on('click', confirmCallback);
     };
 
     /**
-     * Set a walkthrough for multiple points in order.
-     * @param {object[]} walkPoints A WalkPoints array to set.
+     * A Object that configures an walkpoint.
+     * @typedef {object} WalkPoint
+     * @property {string} selector A jQuery selector of the element that the walk will focus;
+     * @property {string} [color] A CSS (rgb, rgba, hex, etc.) color specification that will paint the walk. #2196F3 is default;
+     * @property {string} text The readable content of the walk;
+     * @property {string} [acceptText] The text of the accept button of the walk;
+     */
+
+    /**
+     * Start a walkthrough for multiple points in order.
+     * @param {WalkPoint[]} walkPoints A WalkPoints array to set.
      * @param {function} [endCallback] An optional callback that will be executed when the walk is terminated.
      */
     $.walk = function (walkPoints, endCallback) {
         $._WALK_DEFAULT_DOCSIZE =
-        $._WALK_CURRENT_WALKPOINTS = walkPoints;
-        $._WALK_CURRENT_POINT = 0;
-        $._WALK_CURRENT_ENDCALLBACK = endCallback;
+        $._walkPoints = walkPoints;
+        $._walkCurrentIndex = 0;
+        $._walkCallback = endCallback;
 
         var point = walkPoints[0];
-        $(point.selector).walk(point.text, point.color, null, true);
+        $(point.selector).walk(point.text, point.color, point.acceptText,null, true);
     };
 
 
@@ -278,4 +324,5 @@
         document.onkeydown = null;
     }
 
+    init();
 })(jQuery);
