@@ -64,12 +64,12 @@
         }
 
         // Fixing zoom
-        var smallestMeasure = $(window).height() > $(window).width() ? $(window).width() : $(window).height();
-        if (holeSize > smallestMeasure * WALK_MAX_PERCENTAGE_SIZE) {
-            var zoomAmount = (100 - WALK_MAX_PERCENTAGE_SIZE * 100);
-            console.log('\tsetting zoom: ' + zoomAmount);
-            $(document.body).css('zoom', zoomAmount + '%');
-        }
+//        var smallestMeasure = $(window).height() > $(window).width() ? $(window).width() : $(window).height();
+//        if (holeSize > smallestMeasure * WALK_MAX_PERCENTAGE_SIZE) {
+//            var zoomAmount = (100 - WALK_MAX_PERCENTAGE_SIZE * 100);
+//            console.log('\tsetting zoom: ' + zoomAmount);
+//            $(document.body).css('zoom', zoomAmount + '%');
+//        }
 
 
         console.log('\tRENDERING...');
