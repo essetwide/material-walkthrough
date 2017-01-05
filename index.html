@@ -47,9 +47,9 @@
                     <div class="nav-wrapper">
                         <a href="#" id="logo-container" class="brand-logo">Material Walkthrough</a>
                         <ul class="right hide-on-med-and-down">
-                            <li id='home'><a href="#contact"><i class="fa fa-github" aria-hidden="true"></i></a></li>
-                            <li><a href="#team">Documentação</a></li>
-                            <li><a href="https://github.com/joashp/material-design-template" target="_blank">Download</a></li>
+                            <li id='git'><a href="#contact"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                            <li id="doc"><a href="#team">Documentação</a></li>
+                            <li id="download"><a href="https://github.com/joashp/material-design-template" target="_blank">Download</a></li>
                         </ul>
                         <ul id="nav-mobile" class="side-nav">
                            <li><a href="#contact">Github</a></li>
@@ -121,7 +121,7 @@
                             <p class="light center">Mude os textos e as cores facilmente. Recomendamos o uso de <a href="https://www.materialui.co/flatuicolors" target="blank">Flat Colors</a></p>
                         </div>
                     </div>
-                    <div class="col s12 m4 l4">
+                    <div class="col s12 m4 l4" id="resposivo">
                         <div class="center promo promo-example">
                             <i class="material-icons">aspect_ratio</i>
                             <h5 class="promo-caption">Responsivo</h5>
@@ -142,7 +142,7 @@
                             <p class="light center">Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0;</p>
                         </div>
                     </div>
-                    <div class="col s12 m4 l4">
+                    <div class="col s12 m4 l4" id="amor">
                         <div class="center promo promo-example">
                             <i class="material-icons">favorite</i>
                             <h5 class="promo-caption">Feito com Amor</h5>
@@ -375,26 +375,32 @@
             $.walk([
                 {
                     selector: '#inicio',
-                    text: 'texto 1',
+                    text: 'Aqui você poderá começar o tutorial!',
                     color: 'red',
-                    acceptText: 'ok'
+                    acceptText: 'OK'
                 }, {
-                    selector: '#home',
-                    text: 'texto 2',
-                    acceptText: 'sure'
+                    selector: '#git',
+                    text: '<b>Contribua</b> com a idéia!',
+                    acceptText: 'Entendi'
                 }, {
-                    selector: '#inicio',
-                    text: 'texto 3',
+                    selector: '#doc',
+                    text: 'Aprenda e faça o seu <u>agora mesmo</u>',
                     color: 'purple',
-                    acceptText: 'I got it!'
+                    acceptText: 'Compreendido'
                 },{
-                    selector: '#home',
-                    text: 'texto 4',
+                    selector: '#download',
+                    text: 'Baixe a última versão!',
                     color: 'blue'
                 }, {
-                    selector: '#teste',
-                    text: 'texto 5',
-                    color: 'cyan'
+                    selector: '#resposivo',
+                    text: 'Totalmente Responsivo! ;)',
+                    color: 'cyan',
+                    acceptText: 'OK'
+
+                }, {
+                    selector: '#amor',
+                    text: 'Por fim... Tudo feito com carinho',
+                    color: 'purple'
                 }
             ]);
         }
