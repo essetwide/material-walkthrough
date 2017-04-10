@@ -27,7 +27,7 @@ You don't need any special markup. All you need is to add an `id` atributte to a
 
 ## 3. Call the plugin
 Now call the Material Walkthrough initializer function and your walkthrough is ready.
-
+```javascript
 $.walk([
         {
             selector: '#step1',
@@ -36,3 +36,4 @@ $.walk([
             acceptText: 'OK'
         }
 ]);
+```
