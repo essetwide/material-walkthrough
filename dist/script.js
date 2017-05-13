@@ -1,40 +1,15 @@
 (function ($) {
     // Settings
-    var WALK_MIN_SIZE = 60; // Defines a min size for the walk hole;
+    var WALK_MIN_SIZE = 60; // Defines a min size in px for the walk hole;
     var WALK_DEFAULT_COLOR = '#2196F3'; // Default color used when the color param is null;
     var WALK_TRANSITION_DELAY = 500; // Delay of walk transitions;
     var WALK_BLINK_TRANSITION = false; // hide/show in transitions;
-    var WALK_MAX_PERCENTAGE_SIZE = 0.5; //;
+    // var WALK_MAX_PERCENTAGE_SIZE = 0.5; //;
 
     var walkContent = {};
     var walkWrapper = {};
     var walkText = {};
     var walkButton = {};
-
-    /**
-     * Global variable that holds the current walk configuration.
-     * @type {WalkPoint[]}
-     */
-    $._walkPoints = [];
-
-    /**
-     * Global variable that holds the current callback function that will be called when the walk is ended.
-     * @type {function}
-     */
-    $._walkCallback = null;
-
-    /**
-     * Global variable that holds the current point index in _walkPoints array.
-     * @type {number}
-     */
-    $._walkCurrentIndex = 0;
-
-    /**
-     * Global variable that holds the MutationObserver that listen body modifications.
-     * @type {MutationObserver}
-     */
-    $._walkMutationObserver = null;
-
 
     function init() {
         $('body').append("<div id='walk-wrapper'><div id='walk-content'><div id='walk-text'></div><button id='walk-button'></button></div></div>");
@@ -47,16 +22,16 @@
     function calculatePosition(targetElt) {
         console.log('CALCULATING WALK POSITION:');
 
-        var holeSize = targetElt.outerHeight() > targetElt.outerWidth() ? targetElt.outerHeight() : targetElt.outerWidth(); // Pegar a maior medida
-        if (holeSize < WALK_MIN_SIZE) holeSize = WALK_MIN_SIZE;
+        var holeSize = targetElt.outerHeight() > targetElt.outerWidth() ? targetElt.outerHeight() : targetElt.outerWidth(); // Catch the biggest measure
+        if (holeSize < WALK_MIN_SIZE) holeSize = WALK_MIN_SIZE; // Adjust with default minimun measure if it not higher than it
         console.log('\thole size:' + holeSize);
 
         var position = targetElt.offset();
         console.log('\tposition:\n\t\tx: ' + position.left + '\n\t\ty: ' + position.top);
 
-        var scrollTo = (position.top - ($(window).height() / 2)); // Tenta centralizar a tela com a posição do alvo
+        var scrollTo = (position.top - ($(window).height() / 2)); // Try to centralize the target element in the screen
         if (scrollTo > 0) {
-            if (scrollTo + $(window).height() > $(document.body).height()) scrollTo = $(document.body).height() - $(window).height(); //Definindo o limite a partir do tamanho do documento;
+            if (scrollTo + $(window).height() > $(document.body).height()) scrollTo = $(document.body).height() - $(window).height(); // Setting the scroll limit by the document's height
             console.log('\tscrolling to: ' + scrollTo);
             $('html, body').animate({
                 scrollTop: scrollTo
@@ -64,12 +39,12 @@
         }
 
         // Fixing zoom
-//        var smallestMeasure = $(window).height() > $(window).width() ? $(window).width() : $(window).height();
-//        if (holeSize > smallestMeasure * WALK_MAX_PERCENTAGE_SIZE) {
-//            var zoomAmount = (100 - WALK_MAX_PERCENTAGE_SIZE * 100);
-//            console.log('\tsetting zoom: ' + zoomAmount);
-//            $(document.body).css('zoom', zoomAmount + '%');
-//        }
+        // var smallestMeasure = $(window).height() > $(window).width() ? $(window).width() : $(window).height();
+        // if (holeSize > smallestMeasure * WALK_MAX_PERCENTAGE_SIZE) {
+        //     var zoomAmount = (100 - WALK_MAX_PERCENTAGE_SIZE * 100);
+        //     console._log('\tsetting zoom: ' + zoomAmount);
+        //     $(document.body).css('zoom', zoomAmount + '%');
+        // }
 
 
         console.log('\tRENDERING...');
@@ -266,6 +241,30 @@
         var point = walkPoints[0];
         $(point.selector).walk(point.text, point.color, point.acceptText,null, true);
     };
+
+    /**
+     * Global variable that holds the current walk configuration.
+     * @type {WalkPoint[]}
+     */
+    $.walk._points = [];
+
+    /**
+     * Global variable that holds the current callback function that will be called when the walk is ended.
+     * @type {function}
+     */
+    $.walk._callback = null;
+
+    /**
+     * Global variable that holds the current point index in _walkPoints array.
+     * @type {number}
+     */
+    $.walk._currentIndex = 0;
+
+    /**
+     * Global variable that holds the MutationObserver that listen body modifications.
+     * @type {MutationObserver}
+     */
+    $.walk._mutationObserver = null;
 
 
 

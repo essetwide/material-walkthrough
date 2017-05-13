@@ -25,9 +25,10 @@
 
         <!-- JQuery 3.1 minified -->
         <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src="dist/jquery-2.1.4.js"></script>
 
         <!-- Walkthrough CSS -->
-        <link rel="stylesheet" href="src/style.css">
+        <link rel="stylesheet" href="dist/dev_style.css">
     </head>
     <body id="top" class="scrollspy">
 
@@ -161,7 +162,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="img/project1.jpg">
+                                <img class="activatdist src="img/project1.jpg">
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
@@ -176,7 +177,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="img/project2.jpeg">
+                                <img class="activatdist src="img/project2.jpeg">
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
@@ -191,7 +192,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="img/project3.png">
+                                <img class="activatdist src="img/project3.png">
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
@@ -206,7 +207,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="img/project4.jpg">
+                                <img class="activatdist src="img/project4.jpg">
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
@@ -221,7 +222,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="img/project5.png">
+                                <img class="activatdist src="img/project5.png">
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
@@ -236,7 +237,7 @@
                     <div class="col s12 m4 l4">
                         <div class="card">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="img/project6.jpeg">
+                                <img class="activatdist src="img/project6.jpeg">
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
@@ -254,7 +255,7 @@
 
         <!--Parallax-->
         <!--div class="parallax-container">
-            <div class="parallax"><img src="img/parallax2.png"></div>
+            <div class="parallax"><dist src="img/parallax2.png"></div>
         </div-->
 
         <!--Team-->
@@ -369,37 +370,37 @@
         <!-- /container -->
 
          <!--Walkthrough  Scripts-->
-        <script src="src/script.js"></script>
+        <script src="dist/dev_script.js"></script>
         <script type="text/javascript">
         function startWalk(){
             $.walk([
                 {
-                    selector: '#inicio',
-                    text: 'Aqui você poderá começar o tutorial!',
+                    target: '#inicio',
+                    content: 'Aqui você poderá começar o tutorial!',
                     color: 'red',
                     acceptText: 'OK'
                 }, {
-                    selector: '#git',
-                    text: '<b>Contribua</b> com a idéia!',
+                    target: '#git',
+                    content: '<b>Contribua</b> com a idéia!',
                     acceptText: 'Entendi'
                 }, {
-                    selector: '#doc',
-                    text: 'Aprenda e faça o seu <u>agora mesmo</u>',
+                    target: '#doc',
+                    content: 'Aprenda e faça o seu <u>agora mesmo</u>',
                     color: 'purple',
                     acceptText: 'Compreendido'
                 },{
-                    selector: '#download',
-                    text: 'Baixe a última versão!',
+                    target: '#download',
+                    content: 'Baixe a última versão!',
                     color: 'blue'
                 }, {
-                    selector: '#resposivo',
-                    text: 'Totalmente Responsivo! ;)',
+                    target: '#resposivo',
+                    content: 'Totalmente Responsivo! ;)',
                     color: 'cyan',
                     acceptText: 'OK'
 
                 }, {
-                    selector: '#amor',
-                    text: 'Por fim... Tudo feito com carinho',
+                    target: '#amor',
+                    content: 'Por fim... Tudo feito com carinho',
                     color: 'purple'
                 }
             ]);
