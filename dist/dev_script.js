@@ -1,10 +1,10 @@
 var _logenv = {
-    MSG: true,
+    MSG: false,
     WALK_CONTENT: false,
     WALK_CONTENT_TOP: false,
-    WALK_LOCK: true,
-    WALK_SCROLL: true,
-    ALL: false
+    WALK_LOCK: false,
+    WALK_SCROLL: false,
+    ALL: true
 };
 function _log(context, message) {
     if(!!_logenv[context] || _logenv.ALL) console.log(context +': '+ message);
@@ -54,8 +54,6 @@ function _log(context, message) {
 
         disableScroll();
         walkWrapper.removeClass('closed');
-        walkWrapper.css('display', 'block');
-        setTimeout(function () {walkWrapper.addClass('opened')}, WALK_TRANSITION_DURATION);
         setWalker(target, walkPoint);
     };
 
@@ -70,16 +68,18 @@ function _log(context, message) {
         _log('MSG', 'Setting a walk to #' + target[0].id);
         _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
 
-        // Blinking the content when walker moves
-        walkContentWrapper.css('display', 'none');
-        setTimeout(function(){walkContentWrapper.css('display', '');}, WALK_TRANSITION_DURATION);
-
-        setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
         setupListeners(target, walkPoint.onClose);
-        locateTarget(target); /* @TODO: REVER ESSA FUNÇÃO POIS DA PROBLEMA, SERIA NECESSARIO UM CALLBACK PARA CALCULAR AS COISAS CERTINHO */
 
-        renderFrame(target, function () {
-            renderContent(target);
+        walkContentWrapper.css('display', 'none');
+        locateTarget(target, function () {
+            setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
+            walkWrapper.css('display', 'block');
+            renderFrame(target, function () {
+                walkWrapper.addClass('opened');
+                renderContent(target, function() {
+                    walkContentWrapper.css('display', '');
+                });
+            });
         });
 
         _log('MSG', 'Walk created. Calling onSet() (if exists)');
@@ -96,7 +96,10 @@ function _log(context, message) {
         enableScroll();
         walkWrapper.css({marginTop: '-500px', marginLeft: '-500px'});
         walkWrapper.addClass('closed');
-        setTimeout(function () {walkWrapper.css('display', 'none')}, WALK_TRANSITION_DURATION);
+        setTimeout(function () {
+            walkWrapper.css('display', 'none');
+            walkWrapper.removeClass('opened');
+        }, WALK_TRANSITION_DURATION);
 
         _log('MSG', 'Walker Closed!');
     }
@@ -124,10 +127,12 @@ function _log(context, message) {
 
         var updateHandler =  function () {
             _log('MSG', 'Updating and rendering');
-            locateTarget(target);
-            renderFrame(target, function () {
-                renderContent(target);
+            locateTarget(target, function () {
+                renderFrame(target, function () {
+                    renderContent(target);
+                });
             });
+
 
         };
         updateHandler.toString = function () {
@@ -180,7 +185,7 @@ function _log(context, message) {
      * Move the Walker to a target
      * @param {JQueryElement} target
      */
-    function locateTarget(target) {
+    function locateTarget(target, locateCallback) {
         var position = target.offset();
         var positionMode = window.getComputedStyle(target[0])['position'];
         var windowHeight = $(window).height();
@@ -209,13 +214,18 @@ function _log(context, message) {
 
             $('body').animate({
                 scrollTop: scrollTo
-            }, WALK_TRANSITION_DURATION);
+            }, WALK_TRANSITION_DURATION, function () {
+                locateCallback();
+            });
         } else {
             _log('WALK_LOCK', 'Resetting scroll');
             $('body').animate({
                 scrollTop: 0
-            }, WALK_TRANSITION_DURATION);
+            }, WALK_TRANSITION_DURATION, function () {
+                locateCallback();
+            });
         }
+
     }
 
     function renderFrame(target, renderCallback) {
@@ -243,15 +253,13 @@ function _log(context, message) {
         }, 250);
     }
 
-    function renderContent(target) {
+    function renderContent(target, renderCallback) {
         var position = target.offset();
 
         var itCanBeRenderedInRight = position.left + (walkWrapper.outerWidth() - WALK_PADDING) + walkContentWrapper.outerWidth() < $(window).outerWidth();
         var itCanBeRenderedInLeft = (position.left - WALK_PADDING) - walkContentWrapper.outerWidth() > 0;
 
         var itCanBeRenderedInTop = walkWrapper.offset().top - walkContentWrapper.outerHeight() > 0;
-        _log('WALK_CONTENT_TOP', JSON.stringify({walkTop: walkWrapper.offset().top, walkContentHeight: walkContentWrapper.outerHeight(), result: (walkWrapper.offset().top - walkContentWrapper.outerHeight())}, null, 2));
-
         var itCanBeRenderedInBottom = walkWrapper.offset().top + walkWrapper.outerHeight() + walkContentWrapper.outerHeight() < $(window).outerHeight();
 
         _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' +itCanBeRenderedInRight);
@@ -282,6 +290,8 @@ function _log(context, message) {
             'margin-top': marginTop,
             'margin-left': marginLeft
         });
+
+        if(renderCallback) renderCallback();
     }
 
     $.walk = function (walkPoints) {

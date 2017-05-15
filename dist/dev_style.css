@@ -7,7 +7,7 @@
 }
 
 #walk-wrapper.opened {
-    transition: 0.25s ease-in;
+    transition: 0.25s;
 }
 
 #walk-wrapper.closed {
