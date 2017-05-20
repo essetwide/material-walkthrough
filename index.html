@@ -9,6 +9,9 @@
         <!-- CSS PAGE THEME  -->
         <link href="page_theme/min/plugin-min.css" type="text/css" rel="stylesheet">
         <link href="page_theme/min/custom-min.css" type="text/css" rel="stylesheet" >
+
+        <!-- OWN STYLE -->
+        <link href="page_theme/style.css" type="text/css" rel="stylesheet" >
         
         <!-- GOOGLE ICONS -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -83,16 +86,17 @@
                 <div class="row">
                     <div  class="col s12">
                         <pre class="brush: js;">
-                        $.walk([{
-                            id: "inicio",
-                            color: ,
-                            text: "",
-                            formType: "circ"
-                        },{
-                            id: "home",
-                            color: ,
-                            text: "when low when high",
-                            formType: "rect"
+                       $.walk([
+				                {
+				                    target: '#login',
+				                    content: 'Faça aqui o seu login!',
+				                    color: 'rgb(0,0,255)',
+				                    acceptText: 'OK'
+				                }, {
+				                    target: '#relatorio',
+				                    content: 'Aqui estão os seus <b>relatórios</b>!',
+				                    acceptText: 'Entendi'
+				                },
                         }]);
                         </pre>
                         <h2 class="center header text_h2">Auxilie seus usários com o<span class="span_h2"> Material Walkthrough  </span></h2>
@@ -272,12 +276,6 @@
                                 <span class="card-title activator grey-text text-darken-4">Guilherme Prezzi<br/>
                                     <small><em><a class="red-text text-darken-1" href="#">Developer</a></em></small></span>
                                 <p>
-                                    <a class="blue-text text-lighten-2" href="https://www.facebook.com/joash.c.pereira">
-                                        <i class="fa fa-facebook-square"></i>
-                                    </a>
-                                    <a class="blue-text text-lighten-2" href="https://twitter.com/im_joash">
-                                        <i class="fa fa-twitter-square"></i>
-                                    </a>
                                     <a class="blue-text text-lighten-2" href="https://menosprezzi.github.io/" target="_blank">
                                         <i class="fa fa-github-square"></i>
                                     </a>
@@ -299,7 +297,7 @@
                                 </span>
                                 <p>
                                      <a class="blue-text text-lighten-2" href="http://lattes.cnpq.br/6507527573289187" target="_blank">
-                                        <i class="fa fa-plus-square-o"></i>
+                                        <i class="fa fa-graduation-cap"></i>
                                     </a>
                                     <!--a class="blue-text text-lighten-2" href="https://twitter.com/im_joash">
                                         <i class="fa fa-twitter-square"></i>
@@ -358,7 +356,14 @@
             </div>
             <div class="footer-copyright default_color">
                 <div class="container">
-                    Theme by <a class="white-text" href="http://joashpereira.com">Joash Pereira</a>.
+                	<div class="row">
+		                <div class="col s5">
+		                    Theme by <a class="white-text" href="http://joashpereira.com">Joash Pereira</a>.
+		                </div>
+		                <div class="col offset-s6 s1">
+		                    <img class="right-align" src="page_theme/esset.png" height="50px">
+		                </div>
+	                </div>
                 </div>
             </div>
         </footer>
@@ -378,7 +383,7 @@
                 {
                     target: '#inicio',
                     content: 'Aqui você poderá começar o tutorial!',
-                    color: 'rgb(0,0,255)',
+                    color: 'red',
                     acceptText: 'OK'
                 }, {
                     target: '#git',

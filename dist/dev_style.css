@@ -50,7 +50,7 @@
     left: 0px;
     width: calc(100% - 2px);
     height: calc(100% - 2px);
-    border: 1px solid white;
+    border: 1px solid red;
     border-radius: 50%;
     box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);
 }

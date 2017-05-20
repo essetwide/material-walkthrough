@@ -72,59 +72,64 @@
         <div class="section scrollspy">
             <div class="container">
                 <div class="row">
-                    <div  class="col s12">
-                        <h1>Começando</h1>
-                        <p>Inclua o jQuery e os arquivos do plugin Material Walkthrough</p>
-                         <pre class="brush: html;">
-                            <!-- JQuery 3.1 minified -->
-                            <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+                    <div id="documentation">
+                        <div  class="col s12">
+                            <h1>Começando</h1>
+                            <p>Inclua o jQuery e os arquivos do plugin Material Walkthrough</p>
+                             <pre class="brush: html;">
+                                <!-- JQuery 3.1 minified -->
+                                <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
-                            <!-- Material Walk. stylesheet -->
-                            <link rel="stylesheet" href="material-walkthrough/material.walkthrough.css">
+                                <!-- Material Walk. stylesheet -->
+                                <link rel="stylesheet" href="material-walkthrough/material.walkthrough.css">
 
-                            <!-- Material Walk. JS-->
-                            <script src="material-walkthrough/material.walkthrough.js"></script>
-                        </pre>
-                    </div>
-                    <div class="col s12">
-                        <h1>Prepare seu HTML</h1>
-                        <p>Você não precisa de nenhuma marcação especial,tudo o que você precisa é um atributo <span class="code">id</span> em um elemento HTML.</p>
-                         <pre class="brush: html;">
-                           <a id="passo1">Testar Agora!</a>
-                        </pre>
-                    </div>
-                     <div class="col s12">
-                        <h1>Chame o Plugin</h1>
-                        <p>Agora chame a função inicializadora do Material Walkthrough e seu walkthrough estará pronto.</p>
-                         <pre class="brush: js;">
-                           $.walk([
-                                    {
-                                        selector: '#passo1',
-                                        text: 'Aqui você poderá começar o Walkthrough!',
-                                        color: 'red',
-                                        acceptText: 'OK'
-                                    }
-                            ]);
-                        </pre>
-                    </div>
-                    <div class="col s12">
-                        <h1>A função Walk</h1>
-                        <p>A função <span class="code">$.walk()</span>, possui 2 parâmetros:</p>
-                        <h2>Os Objetos</h2>
-                        <p>O 1º parâmetro será um <span class="code">array</span> de objetos</p>
-                        <p>Estes objetos possuirão os seguintes atributos:</p>
-                        <ul>
-                            <li><span class="code">selector</span>: O <span class="code">id</span> do elemento que será destacado pelo Walkthrough.</li>
-                            <li><span class="code">text</span>: O texto que será informado para o usuário.</li>
-                            <li><span class="code">[color]</span>: A cor que aquele passo do Walkthrough terá. Poderá ser informado via <span class="code">Name, RGB ou Hexadecimal</span>. Mais informações: <a href="https://www.w3schools.com/colors/default.asp" target="_blank">Tutoral de Cores</a>. Aconselhamos o uso de <a href="https://www.materialui.co/flatuicolors" target="_blank">Cores Flat</a>. <span class="code">Padrão: rgb(33, 150, 243)</span></li>
-                            <li><span class="code">[acceptText]</span>: Um texto curto para compor o botão de compreensão. <span class="code">Padrão: "OK"</span></li>
-                        </ul>
-                        <h2>Função Callback</h2>
-                        <p>O 2º parâmetro é opcional, será uma <span class="code">função callback</span> para ser executada no término do Walkthrough</p>
-                    </div>
-                    <br>
-                    <div class="col s12">
-                        <h1>Licença</h1>
+                                <!-- Material Walk. JS-->
+                                <script src="material-walkthrough/material.walkthrough.js"></script>
+                            </pre>
+                        </div>
+                        <div class="col s12">
+                            <h1>Prepare seu HTML</h1>
+                            <p>Você não precisa de nenhuma marcação especial,tudo o que você precisa é um atributo <span class="code">id</span> em um elemento HTML.</p>
+                             <pre class="brush: html;">
+                               <a id="passo1">Testar Agora!</a>
+                            </pre>
+                        </div>
+                         <div class="col s12">
+                            <h1>Chame o Plugin</h1>
+                            <p>Agora chame a função inicializadora do Material Walkthrough e seu walkthrough estará pronto.</p>
+                             <pre class="brush: js;">
+                               $.walk([
+                                        {
+                                            selector: '#passo1',
+                                            text: 'Aqui você poderá começar o Walkthrough!',
+                                            color: 'red',
+                                            acceptText: 'OK'
+                                        }
+                                ]);
+                            </pre>
+                        </div>
+                        <div class="col s12">
+                            <h1>A função Walk</h1>
+                            <p>A função <span class="code">$.walk()</span>, possui 2 parâmetros:</p>
+                            <h2>Os Objetos</h2>
+                            <p>O 1º parâmetro será um <span class="code">array</span> de objetos</p>
+                            <p>Estes objetos possuirão os seguintes atributos:</p>
+                            <ul>
+                                <li><span class="code">selector</span>: O <span class="code">id</span> do elemento que será destacado pelo Walkthrough.</li>
+
+                                <li><span class="code">text</span>: O texto que será informado para o usuário. Você poderá inserir elementos HTML como <span class="code"><&zwj;a>,<&zwj;b>,<&zwj;u></span>.</li>
+
+                                <li><span class="code">[color]</span>: A cor que aquele passo do Walkthrough terá. Poderá ser informado via <span class="code">Name, RGB ou Hexadecimal</span>. Mais informações: <a href="https://www.w3schools.com/colors/default.asp" target="_blank">Tutoral de Cores</a>. Aconselhamos o uso de <a href="https://www.materialui.co/flatuicolors" target="_blank">Cores Flat</a>. <span class="code">Padrão: rgb(33, 150, 243)</span></li>
+
+                                <li><span class="code">[acceptText]</span>: Um texto curto para compor o botão de compreensão. <span class="code">Padrão: "OK"</span></li>
+                            </ul>
+                            <h2>Função Callback</h2>
+                            <p>O 2º parâmetro é opcional, será uma <span class="code">função callback</span> para ser executada no término do Walkthrough</p>
+                        </div>
+                        <br>
+                        <div class="col s12">
+                            <h1>Licença</h1>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,9 +174,16 @@
                     </div>
                 </div-->
             </div>
-            <div class="footer-copyright default_color">
+             <div class="footer-copyright default_color">
                 <div class="container">
-                    Theme by <a class="white-text" href="http://joashpereira.com">Joash Pereira</a>.
+                    <div class="row">
+                        <div class="col s5">
+                            Theme by <a class="white-text" href="http://joashpereira.com">Joash Pereira</a>.
+                        </div>
+                        <div class="col offset-s6 s1">
+                            <img class="right-align" src="../page_theme/esset.png" height="50px">
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
