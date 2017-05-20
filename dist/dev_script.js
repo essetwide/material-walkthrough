@@ -3,8 +3,8 @@ var _logenv = {
     WALK_CONTENT: false,
     WALK_CONTENT_TOP: false,
     WALK_LOCK: false,
-    WALK_SCROLL: false,
-    ALL: true
+    WALK_SCROLL: true,
+    ALL: false
 };
 function _log(context, message) {
     if(!!_logenv[context] || _logenv.ALL) console.log(context +': '+ message);
@@ -212,14 +212,14 @@ function _log(context, message) {
             if (scrollTo + windowHeight > documentHeight && !positionOutOfBounds) scrollTo = documentHeight - windowHeight; // Setting the scroll limit by the document's height
             _log('WALK_LOCK', 'Corrected scroll amount: ' +scrollTo);
 
-            $('body').animate({
+            $('body,html').animate({
                 scrollTop: scrollTo
             }, WALK_TRANSITION_DURATION, function () {
                 locateCallback();
             });
         } else {
             _log('WALK_LOCK', 'Resetting scroll');
-            $('body').animate({
+            $('body,html').animate({
                 scrollTop: 0
             }, WALK_TRANSITION_DURATION, function () {
                 locateCallback();
