@@ -53,6 +53,7 @@
 }
 
 .syntaxhighlighter {
+  padding: 10px 0 10px 0;
   width: 100% !important;
   margin: 1em 0 1em 0 !important;
   position: relative !important;
