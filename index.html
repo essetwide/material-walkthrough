@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <meta name="theme-color" content="#2196F3">
+        <title>Material UI One Page Theme</title>
+
+        <!-- CSS PAGE THEME  -->
+        <link href="page_theme/min/plugin-min.css" type="text/css" rel="stylesheet">
+        <link href="page_theme/min/custom-min.css" type="text/css" rel="stylesheet" >
+
+        <!-- OWN STYLE -->
+        <link href="page_theme/style.css" type="text/css" rel="stylesheet" >
+        
+        <!-- GOOGLE ICONS -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <!-- FONTAWESOME ICONS -->
+        <script src="https://use.fontawesome.com/8e1ee3c5fb.js"></script>
+
+        <!-- SINTAX HIGHLIGHTER-->
+        <script type="text/javascript" src="page_theme/highlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="page_theme/highlighter/scripts/shBrushJScript.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="page_theme/highlighter/styles/shCoreRDark.css"/>
+        <script type="text/javascript">SyntaxHighlighter.all();</script>
+
+        <!-- JQuery 3.1 minified -->
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+        <!-- Walkthrough CSS -->
+        <link rel="stylesheet" href="dist/dev_style.css">
+    </head>
+    <body id="top" class="scrollspy">
+
+        <!-- Pre Loader -->
+        <div id="loader-wrapper">
+            <div id="loader"></div>
+
+            <div class="loader-section section-left"></div>
+            <div class="loader-section section-right"></div>
+
+        </div>
+
+        <!--Navigation-->
+        <div class="navbar-fixed">
+            <nav id="nav_f" class="default_color" role="navigation">
+                <div class="container">
+                    <div class="nav-wrapper">
+                        <a href="../index.html" id="logo-container" class="brand-logo">Material Walkthrough</a>
+                        <ul class="right hide-on-med-and-down">
+                            <li id='git'><a href="https://github.com/essetwide/material-walkthrough" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                            <li id="doc"><a href="pages/doc_pt-br.html">Documentação</a></li>
+                            <li id="download"><a href="https://github.com/essetwide/material-walkthrough/archive/master.zip">Download</a></li>
+                        </ul>
+                        <ul id="nav-mobile" class="side-nav">
+                            <li><a href="https://github.com/essetwide/material-walkthrough" target="_blank">Github</a></li>
+                            <li><a href="pages/doc_pt-br.html"">Documentação</a></li>
+                            <li><a href="https://github.com/essetwide/material-walkthrough/archive/master.zip" target="_blank">Download</a></li>
+                       </ul>
+                        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!--Hero-->
+        <!--div class="section no-pad-bot" id="index-banner">
+            <div class="container">
+                <h1 class="text_h center header cd-headline letters type">
+                    <span>I Love</span> 
+                    <span class="cd-words-wrapper waiting">
+                        <b class="is-visible">creating</b>
+                        <b>designing</b>
+                        <b>developing</b>
+                    </span>
+                </h1>
+            </div>
+        </div-->
+
+        <!--Intro and service-->
+        <div id="intro" class="section scrollspy">
+            <div class="container">
+                <div class="row">
+                    <div  class="col s12">
+                        <pre class="brush: js;">
+                       $.walk([
+				                {
+				                    target: '#login',
+				                    content: 'Faça aqui o seu login!',
+				                    color: 'rgb(0,0,255)',
+				                    acceptText: 'OK'
+				                }, {
+				                    target: '#relatorio',
+				                    content: 'Aqui estão os seus <b>relatórios</b>!',
+				                    acceptText: 'Entendi'
+				                },
+                        }]);
+                        </pre>
+                        <h2 class="center header text_h2">Auxilie seus usários com o<span class="span_h2"> Material Walkthrough  </span></h2>
+                    </div>
+                    <div class="center">
+                        <a id="inicio" class="waves-effect waves-light btn">Testar Agora!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--Features-->
+        <div class="section scrollspy">
+            <div class="container">
+                <div class="row">
+                    <div  class="col s12 m4 l4">
+                        <div class="center promo promo-example">
+                            <i class="material-icons">format_paint</i>
+                            <h5 class="promo-caption">Material Design</h5>
+                            <p class="light center">Possui um visual Material baseado no tour apresentado pelo Inbox do Google.</p>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="center promo promo-example">
+                            <i class="material-icons">mode_edit</i>
+                            <h5 class="promo-caption">Customizável</h5>
+                            <p class="light center">Mude os textos e as cores facilmente. Recomendamos o uso de <a href="https://www.materialui.co/flatuicolors" target="blank">Flat Colors</a></p>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4" id="resposivo">
+                        <div class="center promo promo-example">
+                            <i class="material-icons">aspect_ratio</i>
+                            <h5 class="promo-caption">Responsivo</h5>
+                            <p class="light center">Redimensione a tela e continue usufruindo do seu Walkthrough.</p>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="center promo promo-example">
+                            <i class="material-icons">code</i>
+                            <h5 class="promo-caption">Simples</h5>
+                            <p class="light center">Com poucas linhas de código você já terá um Walkthrough.</p>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="center promo promo-example">
+                            <i class="material-icons">language</i>
+                            <h5 class="promo-caption">Compatível</h5>
+                            <p class="light center">Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0;</p>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4" id="amor">
+                        <div class="center promo promo-example">
+                            <i class="material-icons">favorite</i>
+                            <h5 class="promo-caption">Feito com Amor</h5>
+                            <p class="light center">Muito amor e algumas noites sem estudar para provas para desenvolver este plugin com muito &#128150;.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Work-->
+        <!-- div class="section scrollspy" id="work">
+            <div class="container">
+                <h2 class="header text_b">Work </h2>
+                <div class="row">
+                    <div class="col s12 m4 l4">
+                        <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activatdist src="img/project1.jpg">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
+                                <p><a href="#">Project link</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">Project Title <i class="mdi-navigation-close right"></i></span>
+                                <p>Here is some more information about this project that is only revealed once clicked on.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activatdist src="img/project2.jpeg">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
+                                <p><a href="#">Project link</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">Project Title <i class="mdi-navigation-close right"></i></span>
+                                <p>Here is some more information about this project that is only revealed once clicked on.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activatdist src="img/project3.png">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
+                                <p><a href="#">Project link</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">Project Title <i class="mdi-navigation-close right"></i></span>
+                                <p>Here is some more information about this project that is only revealed once clicked on.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activatdist src="img/project4.jpg">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
+                                <p><a href="#">Project link</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">Project Title <i class="mdi-navigation-close right"></i></span>
+                                <p>Here is some more information about this project that is only revealed once clicked on.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activatdist src="img/project5.png">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
+                                <p><a href="#">Project link</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">Project Title <i class="mdi-navigation-close right"></i></span>
+                                <p>Here is some more information about this project that is only revealed once clicked on.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activatdist src="img/project6.jpeg">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Project Title <i class="mdi-navigation-more-vert right"></i></span>
+                                <p><a href="#">Project link</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">Project Title <i class="mdi-navigation-close right"></i></span>
+                                <p>Here is some more information about this project that is only revealed once clicked on.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div -->
+
+        <!--Parallax-->
+        <!--div class="parallax-container">
+            <div class="parallax"><dist src="img/parallax2.png"></div>
+        </div-->
+
+        <!--Team-->
+        <div class="section scrollspy" id="team">
+            <div class="container">
+                <h2 class="header text_b">A equipe</h2>
+                <div class="row">
+                    <div class="col s12 m4 offset-m3 l3 offset-l3">
+                        <div class="card card-avatar">
+                            <div class="waves-effect waves-block waves-light">
+                                <img class="activator" src="page_theme/img/avatar1.png">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Guilherme Prezzi<br/>
+                                    <small><em><a class="red-text text-darken-1" href="#">Developer</a></em></small></span>
+                                <p>
+                                    <a class="blue-text text-lighten-2" href="https://menosprezzi.github.io/" target="_blank">
+                                        <i class="fa fa-github-square"></i>
+                                    </a>
+                                    <a class="blue-text text-lighten-2" href="https://br.linkedin.com/in/guilherme-prezzi-779247109" target="_blank">
+                                        <i class="fa fa-linkedin-square"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m4 l3">
+                        <div class="card card-avatar">
+                            <div class="waves-effect waves-block waves-light">
+                                <img class="activator" src="page_theme/img/avatar2.png">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">Filipe Oliveira<br/>
+                                    <small><em><a class="red-text text-darken-1" href="#">Developer</a></em></small>
+                                </span>
+                                <p>
+                                     <a class="blue-text text-lighten-2" href="http://lattes.cnpq.br/6507527573289187" target="_blank">
+                                        <i class="fa fa-graduation-cap"></i>
+                                    </a>
+                                    <!--a class="blue-text text-lighten-2" href="https://twitter.com/im_joash">
+                                        <i class="fa fa-twitter-square"></i>
+                                    </a>
+                                    <a class="blue-text text-lighten-2" href="https://plus.google.com/u/0/+JoashPereira">
+                                        <i class="fa fa-google-plus-square"></i>
+                                    </a>
+                                    <a class="blue-text text-lighten-2" href="https://www.linkedin.com/in/joashp">
+                                        <i class="fa fa-linkedin-square"></i>
+                                    </a-->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Footer-->
+        <footer id="contact" class="page-footer default_color scrollspy">
+            <!--div class="container">  
+                <div class="row">
+                    <div class="col l3 s12">
+                        <h5 class="white-text">Material Walkthrough</h5>
+                        <ul>
+                            <li><a class="white-text" href="http://www.joashpereira.com/">Home</a></li>
+                            <li><a class="white-text" href="http://www.joashpereira.com/blog">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="col l3 s12">
+                        <h5 class="white-text">Social</h5>
+                        <ul>
+                            <li>
+                                <a class="white-text" href="https://www.behance.net/joashp">
+                                    <i class="small fa fa-behance-square white-text"></i> Behance
+                                </a>
+                            </li>
+                            <li>
+                                <a class="white-text" href="https://www.facebook.com/joash.c.pereira">
+                                    <i class="small fa fa-facebook-square white-text"></i> Facebook
+                                </a>
+                            </li>
+                            <li>
+                                <a class="white-text" href="https://github.com/joashp">
+                                    <i class="small fa fa-github-square white-text"></i> Github
+                                </a>
+                            </li>
+                            <li>
+                                <a id='teste' class="white-text" href="https://www.linkedin.com/in/joashp">
+                                    <i class="small fa fa-linkedin-square white-text"></i> Linkedin
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div-->
+            </div>
+            <div class="footer-copyright default_color">
+                <div class="container">
+                	<div class="row">
+		                <div class="col s5">
+		                    Theme by <a class="white-text" href="http://joashpereira.com">Joash Pereira</a>.
+		                </div>
+		                <div class="col offset-s6 s1">
+		                    <img class="right-align" src="page_theme/esset.png" height="50px">
+		                </div>
+	                </div>
+                </div>
+            </div>
+        </footer>
+
+
+        <!-- Theme Scripts-->
+        <script src="page_theme/min/plugin-min.js"></script>
+        <script src="page_theme/min/custom-min.js"></script>
+        <!-- /container -->
+
+         <!--Walkthrough  Scripts-->
+        <script src="dist/dev_script.js"></script>
+        <script type="text/javascript">
+        function startWalk(){
+        	//return;
+            $.walk([
+                {
+                    target: '#inicio',
+                    content: 'Aqui você poderá começar o tutorial!',
+                    color: 'red',
+                    acceptText: 'OK'
+                }, {
+                    target: '#git',
+                    content: '<b>Contribua</b> com a idéia!',
+                    acceptText: 'Entendi'
+                }, {
+                    target: '#doc',
+                    content: 'Aprenda e faça o seu <u>agora mesmo</u>',
+                    color: 'purple',
+                    acceptText: 'Compreendido'
+                },{
+                    target: '#download',
+                    content: 'Baixe a última versão!',
+                    color: 'blue'
+                }, {
+                    target: '#resposivo',
+                    content: 'Totalmente Responsivo! ;)',
+                    color: 'cyan',
+                    acceptText: 'OK'
+
+                }, {
+                    target: '#amor',
+                    content: 'Por fim... Tudo feito com carinho',
+                    color: 'purple'
+                }
+            ]);
+        }
+        $( document ).ready(function() {
+        	startWalk();
+            $("#inicio").click(startWalk);
+        });
+            
+        </script>
+    </body>
+</html>

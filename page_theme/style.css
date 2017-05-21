@@ -1,0 +1,26 @@
+#documentation h1 {
+	font-size: 3em;
+    border-bottom: 1px solid #2196f3;
+    padding-bottom: 0.3em;
+}
+
+#documentation h2 {
+	font-size: 2em;
+    border-bottom: 1px solid #2196f3;
+    padding-bottom: 0.3em;
+    margin-left: 20px;
+}
+
+.code{
+	font-family: monospace, monospace;
+	color: #14a037;
+	font-size: 1.2em;
+}
+
+#documentation h2 ~ *{
+	margin-left: 20px;
+}
+
+.footer-copyright{
+	padding-bottom: 60px;
+}
