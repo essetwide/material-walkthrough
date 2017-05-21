@@ -28,7 +28,7 @@ function _log(context, message) {
 
 /**
  * @license Apache License 2.0.
- * @copyright Esset LTD. Wide.
+ * @copyright Esset Software LTD.
  */
 (function($) {
 
