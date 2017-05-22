@@ -31,7 +31,7 @@ Now call the Material Walkthrough initializer function and your walkthrough is r
 $.walk([
         {
             selector: '#step1',
-            text: 'Here you can begin the walk!',
+            content: 'Here you can begin the walk!',
             color: 'red',
             acceptText: 'OK'
         }
