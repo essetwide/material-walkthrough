@@ -1,16 +1,17 @@
 # Material Walkthrough
-A material tour (eg Inbox from Google), for your site enhancing the UX.
+A material tour (eg Inbox from Google) for your site, enhancing the UX.
+[See the demo here!](https://essetwide.github.io/material-walkthrough/)
 
 ## Features
 * Material Design - Have a Material look, based on the tour presented by Google Inbox.
-* Customizable - Change the text and colors easily.
+* Customizable - Change the content and colors easily.
 * Responsive - Resize the screen and continue enjoying your Walkthrough.
-* Simple - With a few lines of code you will got a Walkthrough
+* Simple - With a few lines of code you will got a Walkthrough.
 * Compatible - Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0.
-* Made with love - Much love and a few nights without studying to develop this plugin with much love 
+* Made with love - Few nights without studying to develop this plugin with much love. 
 
 ## 1. Getting Started
-Load jQuery() and include Material-Walkthrough plugin files
+Load jQuery and include Material-Walkthrough plugin files
 ```html
 <!-- Basic stylesheet -->
 <link rel="stylesheet" href="material-walkthrough/material.walkthrough.css">
@@ -31,7 +32,7 @@ Now call the Material Walkthrough initializer function and your walkthrough is r
 $.walk([
         {
             selector: '#step1',
-            content: 'Here you can begin the walk!',
+            content: 'Here you can begin the walk!', //Hey, it can also be an HTML code!
             color: 'red',
             acceptText: 'OK'
         }
@@ -53,4 +54,4 @@ $.walk([
   limitations under the License.
   
 # Thanks To
-* Thanks to [@galambalazs](https://github.com/galambalazs) for the Lock Scroll code 
+* Thanks to [@galambalazs](https://github.com/galambalazs) for the Lock Scroll code. 
