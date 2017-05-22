@@ -1,4 +1,4 @@
-# material-walkthrough
+# Material Walkthrough
 A material tour (eg Inbox from Google), for your site enhancing the UX.
 
 ## Features
@@ -51,3 +51,6 @@ $.walk([
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
+  
+# Thanks To
+* Thanks to [@galambalazs](https://github.com/galambalazs) for the Lock Scroll code 
