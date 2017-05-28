@@ -275,8 +275,8 @@ function _log(context, message) {
         var itCanBeRenderedInRight = position.left + (walkWrapper.outerWidth() - WALK_PADDING) + walkContentWrapper.outerWidth() < $(window).outerWidth();
         var itCanBeRenderedInLeft = (position.left - WALK_PADDING) - walkContentWrapper.outerWidth() > 0;
 
-        var itCanBeRenderedInTop = walkWrapper.offset().top - walkContentWrapper.outerHeight() > 0;
-        var itCanBeRenderedInBottom = walkWrapper.offset().top + walkWrapper.outerHeight() + walkContentWrapper.outerHeight() < $(window).outerHeight();
+        var itCanBeRenderedInTop = walkWrapper[0].getBoundingClientRect().top - walkContentWrapper.outerHeight() > 0;
+        var itCanBeRenderedInBottom = walkWrapper[0].getBoundingClientRect().top + walkWrapper.outerHeight() + walkContentWrapper.outerHeight() < $(window).outerHeight();
 
         _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' +itCanBeRenderedInRight);
         _log('WALK_CONTENT', 'itCanBeRenderedInLeft: ' +itCanBeRenderedInLeft);
@@ -290,9 +290,9 @@ function _log(context, message) {
         var textAlign = 'left';
 
         if (!itCanBeRenderedInRight) {
-            positionLeft = itCanBeRenderedInLeft ? '-'+ walkContentWrapper.outerWidth() +'px': '-75%';
+            positionLeft = itCanBeRenderedInLeft ? '-'+ walkContentWrapper.outerWidth() +'px': (itCanBeRenderedInTop ? '25%':  '-75%');
             textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
-            marginTop = itCanBeRenderedInLeft ? 0 : '20px';
+            marginTop = itCanBeRenderedInLeft ? 0 : (itCanBeRenderedInBottom ? '20px' : '-20px');
         }
         if (!itCanBeRenderedInBottom) {
             positionTop = itCanBeRenderedInTop ? '-'+ walkContentWrapper.outerHeight() +'px': walkWrapper.outerHeight() / 2 - walkContentWrapper.outerHeight() / 2 + 'px';
