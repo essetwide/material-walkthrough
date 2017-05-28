@@ -16,7 +16,7 @@
 
 var _logenv = {
     MSG: false,
-    WALK_CONTENT: false,
+    WALK_CONTENT: true,
     WALK_CONTENT_TOP: false,
     WALK_LOCK: false,
     WALK_SCROLL: true,
@@ -290,7 +290,7 @@ function _log(context, message) {
         var textAlign = 'left';
 
         if (!itCanBeRenderedInRight) {
-            positionLeft = itCanBeRenderedInLeft ? '-'+ walkContentWrapper.outerWidth() +'px': (itCanBeRenderedInTop ? '25%':  '-75%');
+            positionLeft = itCanBeRenderedInLeft ? '-'+ walkContentWrapper.outerWidth() +'px': (itCanBeRenderedInBottom ? '-75%':  '25%');
             textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
             marginTop = itCanBeRenderedInLeft ? 0 : (itCanBeRenderedInBottom ? '20px' : '-20px');
         }
