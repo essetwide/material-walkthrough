@@ -13,10 +13,13 @@ A material tour (eg Inbox from Google) for your site, enhancing the UX.
 ## 1. Getting Started
 Load jQuery and include Material-Walkthrough plugin files
 ```html
-<!-- Basic stylesheet -->
+<!-- Plugin Stylesheet -->
 <link rel="stylesheet" href="material-walkthrough/material-walkthrough.css">
 
-<!-- Include js plugin -->
+<!-- JQuery 3.1 minified -->
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<!-- Plugin File -->
 <script src="material-walkthrough/material-walkthrough.js"></script>
 ```
 
