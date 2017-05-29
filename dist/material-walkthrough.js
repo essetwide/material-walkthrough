@@ -292,7 +292,7 @@ function _log(context, message) {
         var textAlign = 'left';
 
         if (!itCanBeRenderedInRight) {
-            positionLeft = itCanBeRenderedInLeft ? '-'+ walkContentWrapper.outerWidth() +'px': (itCanBeRenderedInBottom ? '-75%':  '25%');
+            positionLeft = itCanBeRenderedInLeft ? '-'+ walkContentWrapper.outerWidth() +'px': (itCanBeRenderedInBottom ? '0%':  '25%');
             textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
             marginTop = itCanBeRenderedInLeft ? 0 : (itCanBeRenderedInBottom ? '20px' : '-20px');
         }
