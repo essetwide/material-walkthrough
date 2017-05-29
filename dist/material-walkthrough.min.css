@@ -1,0 +1,16 @@
+/**
+ * Copyright 2017 Esset Software LTD.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+#walk-wrapper{transform:translateZ(0);position:absolute;color:#fff;z-index:1000;display:none}#walk-wrapper.opened{transition:.25s}#walk-wrapper.closed{height:1000px!important;width:1000px!important;opacity:0}#walk-wrapper.closed #walk-content-wrapper{display:none}#walk-wrapper:before{content:'';display:block;position:absolute;background:0 0;border:0 solid;border-radius:50%;border-color:inherit;width:inherit;height:inherit;margin-top:0;margin-left:0;opacity:.9;box-sizing:content-box!important;transition:border-width .25s ease-in,margin .25s ease-in}#walk-wrapper.opened:before{border-width:300vw;margin-left:-300vw;margin-top:-300vw}#walk-wrapper:after{content:' ';position:absolute;top:0;left:0;width:100%;height:100%;border:1px solid #fff;border-radius:50%;box-shadow:inset 0 0 10px rgba(0,0,0,.5)}#walk-wrapper #walk-content-wrapper{position:relative;min-width:200px;width:33vw;font-family:Roboto,sans-serif;font-size:24px;top:100%;left:100%}#walk-wrapper #walk-action{height:36px;padding:0 2rem;margin-top:10px;background-color:rgba(255,255,255,.2);border:0;border-radius:2px;letter-spacing:1px;font-size:15px;font-weight:700;text-transform:uppercase;color:#fff}#walk-wrapper #walk-action:hover{background-color:rgba(255,255,255,.25)}
