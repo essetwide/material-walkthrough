@@ -181,6 +181,8 @@ function _log(context, message) {
             } else {
                 $.walk._currentIndex = 0;
                 $.walk._points = null;
+                if($.walk._callback) $.walk._callback();
+                $.walk._callback = null;
                 closeWalker();
             }
             walkActionButton.off('click', actionCallback);
@@ -310,9 +312,10 @@ function _log(context, message) {
         if(renderCallback) renderCallback();
     }
 
-    $.walk = function (walkPoints) {
+    $.walk = function (walkPoints, callback) {
         $.walk._points = walkPoints;
         $.walk._currentIndex = 0;
+        $.walk._callback = callback;
 
         $(walkPoints[0].target).walk(walkPoints[0]);
     };
