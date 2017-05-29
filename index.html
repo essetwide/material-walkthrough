@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="google-site-verification" content="NLuVEz8obQ8Jszoz3-BIeOlC6cX6J_IHJTnZ8P0qGlI" />
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
         <meta name="theme-color" content="#2196F3">
@@ -30,7 +32,7 @@
         <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
         <!-- Walkthrough CSS -->
-        <link rel="stylesheet" href="https://cdn.rawgit.com/essetwide/material-walkthrough/master/dist/material-walkthrough.css">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/essetwide/material-walkthrough/master/dist/material-walkthrough.min.css">
     </head>
     <body id="top" class="scrollspy">
 
@@ -59,7 +61,7 @@
                             <li><a href="pages/doc_pt-br.html">Documentação</a></li>
                             <li><a href="https://github.com/essetwide/material-walkthrough/archive/master.zip" target="_blank">Download</a></li>
                        </ul>
-                        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+                        <a href="#" data-activates="nav-mobile" class="button-collapse" id="menu_trigger"><i class="material-icons">menu</i></a>
                     </div>
                 </div>
             </nav>
@@ -125,9 +127,9 @@
                             <p class="light center">Mude os textos e as cores facilmente. Recomendamos o uso de <a href="https://www.materialui.co/flatuicolors" target="blank">Flat Colors</a></p>
                         </div>
                     </div>
-                    <div class="col s12 m4 l4" id="resposivo">
+                    <div class="col s12 m4 l4" id="responsivo">
                         <div class="center promo promo-example">
-                            <i class="material-icons">aspect_ratio</i>
+                            <i id="responsivo_i" class="material-icons">aspect_ratio</i>
                             <h5 class="promo-caption">Responsivo</h5>
                             <p class="light center">Redimensione a tela e continue usufruindo do seu Walkthrough.</p>
                         </div>
@@ -148,7 +150,7 @@
                     </div>
                     <div class="col s12 m4 l4" id="amor">
                         <div class="center promo promo-example">
-                            <i class="material-icons">favorite</i>
+                            <i class="material-icons" id="amor_i">favorite</i>
                             <h5 class="promo-caption">Feito com Amor</h5>
                             <p class="light center">Muito amor e algumas noites sem estudar para provas para desenvolver este plugin com muito &#128150;.</p>
                         </div>
@@ -374,45 +376,73 @@
         <!-- /container -->
 
          <!--Walkthrough  Scripts-->
-        <script  type="text/javascript" src="https://cdn.rawgit.com/essetwide/material-walkthrough/master/dist/material-walkthrough.js"></script>
+        <script  type="text/javascript" src="https://cdn.rawgit.com/essetwide/material-walkthrough/master/dist/material-walkthrough.min.js"></script>
         <script type="text/javascript">
         function startWalk(){
         	//return;
-            $.walk([
-                {
-                    target: '#inicio',
-                    content: 'Aqui você poderá começar o tutorial!',
-                    color: '#f44336',
-                    acceptText: 'OK'
-                }, {
-                    target: '#git',
-                    content: '<b>Contribua</b> com a idéia!',
-                    color: '#2e7d32',
-                    acceptText: 'Entendi'
-                }, {
-                    target: '#doc',
-                    content: 'Aprenda e faça o seu <u>agora mesmo</u>',
-                    color: '#009688',
-                    acceptText: 'Compreendido'
-                },{
-                    target: '#download',
-                    content: 'Baixe a última versão!',
-                    color: '#2196F3'
-                }, {
-                    target: '#resposivo',
-                    content: 'Totalmente Responsivo! ;)',
-                    color: '#3f51b5',
-                    acceptText: 'OK'
 
-                }, {
-                    target: '#amor',
-                    content: 'Por fim... Tudo feito com carinho',
-                    color: '#f44336'
-                }
-            ]);
+            if ($(window).outerWidth() > 1000) {
+                $.walk([
+                    {
+                        target: '#inicio',
+                        content: 'Olá! Este é o Material Walkthrough, um belo plugin para engajar seus usuários!',
+                        color: '#f44336',
+                        acceptText: 'OK'
+                    }, {
+                        target: '#git',
+                        content: '<b>Contribua</b> com a idéia!',
+                        color: '#2e7d32',
+                        acceptText: 'Entendi'
+                    }, {
+                        target: '#doc',
+                        content: 'Aprenda e faça o seu <u>agora mesmo</u>',
+                        color: '#009688',
+                        acceptText: 'Compreendido'
+                    },{
+                        target: '#download',
+                        content: 'Baixe a última versão!',
+                        color: '#2196F3'
+                    }, {
+                        target: '#responsivo',
+                        content: 'Totalmente Responsivo! ;)',
+                        color: '#3f51b5',
+                        acceptText: 'OK'
+
+                    }, {
+                        target: '#amor',
+                        content: 'Por fim... Tudo feito com carinho',
+                        color: '#f44336'
+                    }
+                ]);
+            } else {
+                $.walk([
+                    {
+                        target: '#inicio',
+                        content: 'Olá! Este é o Material Walkthrough.',
+                        color: '#f44336',
+                        acceptText: 'OK'
+                    }, {
+                        target: '#menu_trigger',
+                        content: 'Explore a documentação aqui e contribua no <b>Github</b>',
+                        color: '#3f51b5',
+                        acceptText: 'OK'
+
+                    }, {
+                        target: '#responsivo_i',
+                        content: 'Totalmente Responsivo! ;)',
+                        color: '#3f51b5',
+                        acceptText: 'OK'
+
+                    }, {
+                        target: '#amor_i',
+                        content: 'Por fim... Tudo feito com carinho',
+                        color: '#f44336'
+                    }
+                ]);
+            }
         }
         $( document ).ready(function() {
-        	startWalk();
+        	setTimeout(startWalk, 1000);
             $("#inicio").click(startWalk);
         });
             
