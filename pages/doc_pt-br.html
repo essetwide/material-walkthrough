@@ -199,11 +199,25 @@
                 </div>
             </div>
         </footer>
+        <!-- JQuery 3.1 minified -->
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
+
+        <!-- FONTAWESOME ICONS -->
+        <script src="https://use.fontawesome.com/8e1ee3c5fb.js"></script>
+
+        <!-- SINTAX HIGHLIGHTER-->
+        <script type="text/javascript" src="page_theme/highlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="page_theme/highlighter/scripts/shBrushJScript.js"></script>
 
         <!-- Theme Scripts-->
         <script src="page_theme/min/plugin-min.js"></script>
         <script src="page_theme/min/custom-min.js"></script>
+        <script type="text/javascript">
+        $( document ).ready(function() {
+                SyntaxHighlighter.all();
+            });
+        </script>
         <!-- /container -->
 
     </body>
