@@ -1,0 +1,25 @@
+{
+  "name": "material-walkthrough",
+  "version": "2.0.0",
+  "description": "A material tour (eg Inbox from Google) for your site, enhancing the UX.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/essetwide/material-walkthrough.git"
+  },
+  "keywords": [
+    "Material;",
+    "Walkthrough;",
+    "UX;",
+    "Step-to-Step;"
+  ],
+  "author": "Guilherme Prezzi; Filipe Oliveira;",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/essetwide/material-walkthrough/issues"
+  },
+  "homepage": "https://github.com/essetwide/material-walkthrough#readme"
+}
