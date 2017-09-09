@@ -16,11 +16,11 @@
 
 var _logenv = {
     MSG: false,
-    WALK_CONTENT: false,
+    WALK_CONTENT: true,
     WALK_CONTENT_TOP: false,
     WALK_LOCK: false,
-    WALK_SCROLL: false,
-    ALL: false
+    WALK_SCROLL: true,
+    ALL: true
 };
 function _log(context, message) {
     if(!!_logenv[context] || _logenv.ALL) console.log(context +': '+ message);
@@ -37,12 +37,12 @@ function _log(context, message) {
     var WALK_MIN_SIZE = 60;
     var WALK_PADDING = 20;
     var WALK_COMPONENT =
-        "<div id='walk-wrapper'>" +
-            "<div id='walk-content-wrapper'>" +
-                "<div id='walk-content'></div>" +
-                "<button id='walk-action'></button>" +
-            "</div>" +
-        "</div>";
+        "<div id='walk-bounds'><div id='walk-wrapper'>" +
+        "<div id='walk-content-wrapper'>" +
+        "<div id='walk-content'></div>" +
+        "<button id='walk-action'></button>" +
+        "</div>" +
+        "</div></div>";
 
     var walkWrapper = {};
     var walkContentWrapper = {};
@@ -69,9 +69,7 @@ function _log(context, message) {
         var target = this;
 
         disableScroll();
-        //REVIEW jQuery to JS Changes
-        removeClasse(walkWrapper, 'closed');
-        //walkWrapper.removeClass('closed');
+        walkWrapper.removeClass('closed');
         setWalker(target, walkPoint);
     };
 
@@ -87,28 +85,15 @@ function _log(context, message) {
         _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
 
         setupListeners(target, walkPoint.onClose);
-        //REVIEW jQuery to JS Changes
-        //walkContentWrapper.css('display', 'none');
-        setCss(walkContentWrapper,{
-           'display' : 'none',
-        });
+
+        walkContentWrapper.css('display', 'none');
         locateTarget(target, function () {
             setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
-            //REVIEW jQuery to JS Changes
-            //walkWrapper.css('display', 'block');
-            setCss(walkWrapper,{
-                'display' : 'block',
-            });
+            walkWrapper.css('display', 'block');
             renderFrame(target, function () {
-                //REVIEW jQuery to JS Changes
-                //walkWrapper.addClass('opened');
-                addClasse(walkWrapper,'opened');
+                walkWrapper.addClass('opened');
                 renderContent(target, function() {
-                    //REVIEW jQuery to JS Changes
-                    //walkContentWrapper.css('display', '');
-                    setCss(walkWrapper,{
-                        'display' : '',
-                    });
+                    walkContentWrapper.css('display', '');
                 });
             });
         });
@@ -143,15 +128,9 @@ function _log(context, message) {
      */
     function setProperties(content, color, acceptText) {
         color = !!color ? color : WALK_DEFAULT_COLOR;
-        //REVIEW jQuery to JS Changes
-        walkContent.innerHTML = content;
-        setCss(walkWrapper, {
-            'border-color': color,
-        });
-        walkActionButton.innerHTML = acceptText;
-        //walkContent.html(content);
-        //walkWrapper.css('border-color', color);
-        //walkActionButton.text(acceptText);
+        walkContent.html(content);
+        walkWrapper.css('border-color', color);
+        walkActionButton.text(acceptText);
     }
 
     /***
@@ -194,10 +173,7 @@ function _log(context, message) {
             subtree: true
         });
 
-        //REVIEW jQuery to JS Changes
-        // walkActionButton.addEventListener("click", myScript);
-        walkActionButton.onclick = function actionCallback(){
-        // walkActionButton.on('click', function actionCallback(){
+        walkActionButton.on('click', function actionCallback(){
             if (!!onClose) onClose();
             if (!!$.walk._points && !!$.walk._points[$.walk._currentIndex + 1]) {
                 $.walk._currentIndex++;
@@ -210,7 +186,7 @@ function _log(context, message) {
                 closeWalker();
             }
             walkActionButton.off('click', actionCallback);
-        };
+        });
     }
 
     /***
@@ -241,11 +217,11 @@ function _log(context, message) {
 
         var scrollTo = (position.top - (windowHeight / 2));
         _log('WALK_LOCK', 'Trying to centralize the target in the screen: \n ' + JSON.stringify({
-                scrollTo: scrollTo,
-                targetY: position.top,
-                windowHeightPer2: windowHeight / 2,
-                targetPositionMode: positionMode,
-                positionOutOfBounds: positionOutOfBounds
+            scrollTo: scrollTo,
+            targetY: position.top,
+            windowHeightPer2: windowHeight / 2,
+            targetPositionMode: positionMode,
+            positionOutOfBounds: positionOutOfBounds
         }, null, 2));
 
         if (scrollTo > 0 && positionMode != 'fixed') {
@@ -279,18 +255,6 @@ function _log(context, message) {
         if (holeSize < WALK_MIN_SIZE) holeSize = WALK_MIN_SIZE; // Adjust with default min measure if it not higher than it
         _log('WALK_LOCK', 'Walk hole size ' +holeSize+ 'px');
 
-        //REVIEW jQuery to JS Changes
-        setCss(walkWrapper,{
-            'height': (holeSize + WALK_PADDING) + 'px',
-            'width': (holeSize + WALK_PADDING) + 'px',
-
-            'margin-left': -((holeSize + WALK_PADDING) / 2) + 'px',
-            'margin-top': -((holeSize + WALK_PADDING) / 2) + 'px',
-
-            'left': (position.left + (width / 2)) + 'px',
-            'top': (position.top + (height / 2)) + 'px',
-        });
-        /*
         walkWrapper.css({
             'height': (holeSize + WALK_PADDING) + 'px',
             'width': (holeSize + WALK_PADDING) + 'px',
@@ -301,7 +265,6 @@ function _log(context, message) {
             'left': (position.left + (width / 2)) + 'px',
             'top': (position.top + (height / 2)) + 'px',
         });
-        */
 
         setTimeout(function () {
             renderCallback();
@@ -309,10 +272,6 @@ function _log(context, message) {
     }
 
     function renderContent(target, renderCallback) {
-        walkWrapper = $('#walk-wrapper');
-        walkContentWrapper = $('#walk-content-wrapper');
-        walkContent = $('#walk-content');
-        walkActionButton = $('#walk-action');
         var position = target.offset();
 
         var itCanBeRenderedInRight = position.left + (walkWrapper.outerWidth() - WALK_PADDING) + walkContentWrapper.outerWidth() < $(window).outerWidth();
@@ -341,15 +300,6 @@ function _log(context, message) {
             positionTop = itCanBeRenderedInTop ? '-'+ walkContentWrapper.outerHeight() +'px': walkWrapper.outerHeight() / 2 - walkContentWrapper.outerHeight() / 2 + 'px';
             marginLeft = itCanBeRenderedInTop ? 0 : (!itCanBeRenderedInRight ? '-20px' : '20px');
         }
-
-        //REVIEW jQuery to JS Changes
-        // setCss(walkContentWrapper,{
-        //     'left': positionLeft,
-        //     'top': positionTop,
-        //     'text-align': textAlign,
-        //     'margin-top': marginTop,
-        //     'margin-left': marginLeft
-        // });
 
         walkContentWrapper.css({
             'left': positionLeft,
@@ -388,30 +338,14 @@ function _log(context, message) {
      */
     $.walk._mutationObserver = null;
 
-    //REVIEW jQuery to JS Changes
     function init() {
-        appendContent(document.getElementsByTagName("body")[0],WALK_COMPONENT);
-        walkWrapper = document.getElementById('walk-wrapper');
-        walkContentWrapper = document.getElementById('walk-content-wrapper');
-        walkContent = document.getElementById('walk-content');
-        walkActionButton = document.getElementById('walk-action');
-        // $('body').append(WALK_COMPONENT);
-        // walkWrapper = $('#walk-wrapper');
-        // walkContentWrapper = $('#walk-content-wrapper');
-        // walkContent = $('#walk-content');
-        // walkActionButton = $('#walk-action');
+        $('body').append(WALK_COMPONENT);
+        walkWrapper = $('#walk-wrapper');
+        walkContentWrapper = $('#walk-content-wrapper');
+        walkContent = $('#walk-content');
+        walkActionButton = $('#walk-action');
     }
     init();
-
-
-
-
-
-
-
-
-
-
 
     //Locking scroll
     //Thanks to @galambalazs
@@ -440,17 +374,12 @@ function _log(context, message) {
             return false;
         }
     }
-    //REVIEW jQuery to JS Changes
-    function disableScroll() {
 
-        setCss(document.getElementsByTagName("html")[0],{
+    function disableScroll() {
+        $('html').css({
             'height': '100vh',
             'overflow': 'hidden'
         });
-       /* $('html').css({
-            'height': '100vh',
-            'overflow': 'hidden'
-        });*/
         if (window.addEventListener) // older FF
             window.addEventListener('DOMMouseScroll', preventDefault, false);
         window.onwheel = preventDefault; // modern standard
@@ -459,16 +388,11 @@ function _log(context, message) {
         document.onkeydown = preventDefaultForScrollKeys;
     }
 
-    //REVIEW jQuery to JS Changes
     function enableScroll() {
-        setCss(document.getElementsByTagName("html")[0],{
+        $('html').css({
             'height': '',
             'overflow': 'auto'
         });
-        /*$('html').css({
-            'height': '',
-            'overflow': 'auto'
-        });*/
         if (window.removeEventListener)
             window.removeEventListener('DOMMouseScroll', preventDefault, false);
         window.onmousewheel = document.onmousewheel = null;
@@ -476,26 +400,5 @@ function _log(context, message) {
         window.ontouchmove = null;
         document.onkeydown = null;
     }
-
-    //REVIEW jQuery to JS Changes
-    function setCss(element, properties){
-            Object.getOwnPropertyNames(properties).forEach(function (val) {
-                element.style[val] = properties[val];
-            });
-    }
-
-    //REVIEW jQuery to JS Changes
-    function appendContent(element, content) {
-        element.innerHTML += content;
-    }
-
-    //REVIEW jQuery to JS Changes
-    function removeClasse(element, className){
-        element.classList.remove(className);
-    }
-
-    //REVIEW jQuery to JS Changes
-    function addClasse(element, className){
-        element.classList.add(className);
-    }
+    window.enableScroll = enableScroll;
 })(window.$);

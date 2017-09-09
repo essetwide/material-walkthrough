@@ -14,7 +14,24 @@
  * limitations under the License.
  */
 
+/* FIX FROM ISSUE #30 */
+body {
+    position: relative;
+}
+#walk-bounds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    z-index: 1000;
+    overflow: hidden;
+    pointer-events: none;
+}
+/* END */
+
 #walk-wrapper {
+    pointer-events: all;
     transform: translateZ(0);
     position: absolute;
     color: white;
