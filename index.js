@@ -1,1 +1,1 @@
-export default from 'dist/MaterialWalkthrough';
+export default from 'src/MaterialWalkthrough';

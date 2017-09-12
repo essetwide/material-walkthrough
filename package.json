@@ -4,7 +4,9 @@
   "description": "A material tour (eg Inbox from Google) for your site, enhancing the UX.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/rollup -c",
+    "build:prod": "NODE_ENV=prod ./node_modules/.bin/rollup -c"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,16 @@
   "bugs": {
     "url": "https://github.com/essetwide/material-walkthrough/issues"
   },
-  "homepage": "https://github.com/essetwide/material-walkthrough#readme"
+  "homepage": "https://github.com/essetwide/material-walkthrough#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "rollup": "^0.49.3",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
+  }
 }
