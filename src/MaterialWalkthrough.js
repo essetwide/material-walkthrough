@@ -178,7 +178,7 @@ export default class MaterialWalkthrough {
             MaterialWalkthrough._renderFrame(target, () => {
                 dom.addClass(MaterialWalkthrough._wrapper, 'opened');
                 MaterialWalkthrough._renderContent(target, () => {
-                    dom.setStyle(MaterialWalkthrough._wrapper, { display : '' });
+                    dom.setStyle(MaterialWalkthrough._contentWrapper, { display : 'block' });
                 });
             });
         });
@@ -274,13 +274,16 @@ export default class MaterialWalkthrough {
         _log('WALK_LOCK', 'Moving Walker to:', targetRect);
 
         // TODO: Animate Scroll
-        document.body.scrollTop =
+        const YCoordinate =
             (document.body.scrollTop + targetRect.top) - (windowHeight / 2) + (targetRect.height / 2);
+
+        window.scrollTo(0, YCoordinate);
 
         // TODO: Timeout on callback
         if (locateCallback) locateCallback();
     }
 
+    // TODO: _renderFrame to renderWrapper
     static _renderFrame(target, renderCallback) {
         const position = { top: target.offsetTop, left: target.offsetLeft };
         const height = target.outerHeight;
