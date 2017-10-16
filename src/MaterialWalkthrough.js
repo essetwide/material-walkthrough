@@ -15,11 +15,11 @@
  */
 
 const _logenv = {
-    MSG: false,
-    WALK_CONTENT: false,
-    WALK_CONTENT_TOP: false,
-    WALK_LOCK: false,
-    WALK_SCROLL: false,
+    MSG: true,
+    WALK_CONTENT: true,
+    WALK_CONTENT_TOP: true,
+    WALK_LOCK: true,
+    WALK_SCROLL: true,
     ALL: true
 };
 
@@ -220,7 +220,7 @@ export default class MaterialWalkthrough {
 
         window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
         MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
-        MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
+        //MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
         MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
             if (!!onClose) onClose();
@@ -269,15 +269,16 @@ export default class MaterialWalkthrough {
      * @param {function} locateCallback
      */
     static _locateTarget(target, locateCallback) {
-        const targetRect = target.getBoundingClientRect(); // getClientRects()
+        const top = target.offsetTop;
         const windowHeight = window.innerHeight;
-        _log('WALK_LOCK', 'Moving Walker to:', targetRect);
 
         // TODO: Animate Scroll
-        const YCoordinate =
-            (document.body.scrollTop + targetRect.top) - (windowHeight / 2) + (targetRect.height / 2);
+        const YCoordinate = top - (windowHeight / 2);
 
-        window.scrollTo(0, YCoordinate);
+
+        _log('WALK_LOCK', 'Moving Scroll to:', top);
+        //window.scrollTo(0, YCoordinate);
+        setTimeout(function(){window.scrollTo(0,YCoordinate)}, 500);
 
         // TODO: Timeout on callback
         if (locateCallback) locateCallback();
@@ -286,8 +287,7 @@ export default class MaterialWalkthrough {
     // TODO: _renderFrame to renderWrapper
     static _renderFrame(target, renderCallback) {
         const position = { top: target.offsetTop, left: target.offsetLeft };
-        const height = target.outerHeight;
-        const width = target.outerWidth;
+        const { height, width } = target.getClientRects()[0];
 
         let holeSize = height > width ? height : width; // Catch the biggest measure
         // Adjust with default min measure if it not higher than it
