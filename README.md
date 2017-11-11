@@ -1,4 +1,6 @@
 # Material Walkthrough
+This is the **STABLE** branch, that uses jQuery as a core. Check the [V2 (under development)](https://github.com/essetwide/material-walkthrough/tree/v2) branch for a JS ES6 implementation.
+
 A material tour (eg Inbox from Google) for your site, enhancing the UX.
 [See the demo here!](https://essetwide.github.io/material-walkthrough/)
 
