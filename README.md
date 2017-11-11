@@ -1,4 +1,6 @@
 # Material Walkthrough
+**WARNING:** This is a **UNSTABLE** branch. Help us to develop a new Material Walkthrough based on JS ES6
+
 A material tour (eg Inbox from Google) for your site, enhancing the UX.
 [See the demo here!](https://essetwide.github.io/material-walkthrough/)
 
