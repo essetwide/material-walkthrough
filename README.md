@@ -1,8 +1,10 @@
 # Material Walkthrough
 **WARNING:** This is a **UNSTABLE** branch. Help us to develop a new Material Walkthrough based on JS ES6
 
-A material tour (eg Inbox from Google) for your site, enhancing the UX.
+A material tour, based on Google's Inbox (Fullscreen Tooltip Message), for your site, enhancing the UX.
 [See the demo here!](https://essetwide.github.io/material-walkthrough/)
+
+Nov, 2014 - "[User Experience Design Concepts from Google Inbox](http://spyrestudios.com/ux-design-from-google-inbox/)" by Jake Rocheleau
 
 ## Features
 * Material Design - Have a Material look, based on the tour presented by Google Inbox.
