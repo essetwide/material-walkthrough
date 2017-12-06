@@ -29,7 +29,7 @@ function _log(context, message, ...attrs) {
 
 const dom = {
     get: (target) => {
-        if (typeof target === 'string') target = document.querySelector(target);
+        if (typeof target === 'string') return document.querySelector(target);
         return target;
     },
     setStyle: (element, properties) => {
@@ -122,6 +122,7 @@ const ScrollManager = {
  */
 export default class MaterialWalkthrough {
     static DEFAULT_COLOR = '#2196F3';
+    static DEFAULT_ACCEPT_TEXT = 'Ok';
     static TRANSITION_DURATION = 500;
     static MIN_SIZE = 60;
     static GUTTER = 20;
@@ -180,6 +181,11 @@ export default class MaterialWalkthrough {
                 MaterialWalkthrough._renderContent(target, () => {
                     dom.setStyle(MaterialWalkthrough._contentWrapper, { display : 'block' });
                 });
+
+                // Pequeno XGH
+                MaterialWalkthrough._renderContent(target, () => {
+                  dom.setStyle(MaterialWalkthrough._contentWrapper, { display : 'block' });
+                });
             });
         });
 
@@ -227,8 +233,8 @@ export default class MaterialWalkthrough {
             if (!!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1]) {
                 MaterialWalkthrough._instance.currentIndex++;
                 MaterialWalkthrough._setWalker(
-                    MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex].target,
-                    MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
+                    MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]
+                );
             } else {
                 MaterialWalkthrough._instance.currentIndex = 0;
                 MaterialWalkthrough._instance.points = null;
@@ -260,7 +266,7 @@ export default class MaterialWalkthrough {
         color = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
         dom.setStyle(MaterialWalkthrough._wrapper, { borderColor: color });
         MaterialWalkthrough._content.innerHTML = content;
-        MaterialWalkthrough._actionButton.innerHTML = acceptText;
+        MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
     }
 
     /***
@@ -278,7 +284,7 @@ export default class MaterialWalkthrough {
 
         _log('WALK_LOCK', 'Moving Scroll to:', top);
         //window.scrollTo(0, YCoordinate);
-        setTimeout(function(){window.scrollTo(0,YCoordinate)}, 500);
+        setTimeout(() => window.scrollTo(0, YCoordinate), 500);
 
         // TODO: Timeout on callback
         if (locateCallback) locateCallback();
@@ -307,22 +313,23 @@ export default class MaterialWalkthrough {
 
         setTimeout(function () {
             renderCallback();
-        }, MaterialWalkthrough.TRANSITION_DURATION / 2);
+        }, MaterialWalkthrough.TRANSITION_DURATION + 50);
     }
 
     static _renderContent(target, renderCallback) {
-        const position = target.getBoundingClientRect(); // getClientRects()
+        const position = target.getBoundingClientRect(); // target.getClientRects()[0];
+        console.log(position);
 
         const itCanBeRenderedInRight =
-            position.left + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)
+            position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)
             + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-        const itCanBeRenderedInLeft = (position.left - MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+        const itCanBeRenderedInLeft = (position.x - MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
         const itCanBeRenderedInTop =
-            MaterialWalkthrough._wrapper.getBoundingClientRect().top
+            MaterialWalkthrough._wrapper.getBoundingClientRect().y
             - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
         const itCanBeRenderedInBottom =
-            MaterialWalkthrough._wrapper.getBoundingClientRect().top
+            MaterialWalkthrough._wrapper.getBoundingClientRect().y
             + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight
             < window.innerHeight;
 

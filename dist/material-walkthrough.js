@@ -182,7 +182,7 @@ function _log(context, message) {
 
 var dom = {
     get: function get$$1(target) {
-        if (typeof target === 'string') target = document.querySelector(target);
+        if (typeof target === 'string') return document.querySelector(target);
         return target;
     },
     setStyle: function setStyle(element, properties) {
@@ -313,6 +313,11 @@ var MaterialWalkthrough = function () {
                     MaterialWalkthrough._renderContent(target, function () {
                         dom.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
                     });
+
+                    // Pequeno XGH
+                    MaterialWalkthrough._renderContent(target, function () {
+                        dom.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
+                    });
                 });
             });
 
@@ -365,7 +370,7 @@ var MaterialWalkthrough = function () {
                 if (!!onClose) onClose();
                 if (!!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1]) {
                     MaterialWalkthrough._instance.currentIndex++;
-                    MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex].target, MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
+                    MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
                 } else {
                     MaterialWalkthrough._instance.currentIndex = 0;
                     MaterialWalkthrough._instance.points = null;
@@ -403,7 +408,7 @@ var MaterialWalkthrough = function () {
             color = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
             dom.setStyle(MaterialWalkthrough._wrapper, { borderColor: color });
             MaterialWalkthrough._content.innerHTML = content;
-            MaterialWalkthrough._actionButton.innerHTML = acceptText;
+            MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
         }
 
         /***
@@ -424,7 +429,7 @@ var MaterialWalkthrough = function () {
             _log('WALK_LOCK', 'Moving Scroll to:', top);
             //window.scrollTo(0, YCoordinate);
             setTimeout(function () {
-                window.scrollTo(0, YCoordinate);
+                return window.scrollTo(0, YCoordinate);
             }, 500);
 
             // TODO: Timeout on callback
@@ -460,18 +465,19 @@ var MaterialWalkthrough = function () {
 
             setTimeout(function () {
                 renderCallback();
-            }, MaterialWalkthrough.TRANSITION_DURATION / 2);
+            }, MaterialWalkthrough.TRANSITION_DURATION + 50);
         }
     }, {
         key: '_renderContent',
         value: function _renderContent(target, renderCallback) {
-            var position = target.getBoundingClientRect(); // getClientRects()
+            var position = target.getBoundingClientRect(); // target.getClientRects()[0];
+            console.log(position);
 
-            var itCanBeRenderedInRight = position.left + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-            var itCanBeRenderedInLeft = position.left - MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+            var itCanBeRenderedInRight = position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
+            var itCanBeRenderedInLeft = position.x - MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
-            var itCanBeRenderedInTop = MaterialWalkthrough._wrapper.getBoundingClientRect().top - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
-            var itCanBeRenderedInBottom = MaterialWalkthrough._wrapper.getBoundingClientRect().top + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight < window.innerHeight;
+            var itCanBeRenderedInTop = MaterialWalkthrough._wrapper.getBoundingClientRect().y - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
+            var itCanBeRenderedInBottom = MaterialWalkthrough._wrapper.getBoundingClientRect().y + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight < window.innerHeight;
 
             _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' + itCanBeRenderedInRight);
             _log('WALK_CONTENT', 'itCanBeRenderedInLeft: ' + itCanBeRenderedInLeft);
@@ -544,6 +550,7 @@ var MaterialWalkthrough = function () {
 }();
 
 MaterialWalkthrough.DEFAULT_COLOR = '#2196F3';
+MaterialWalkthrough.DEFAULT_ACCEPT_TEXT = 'Ok';
 MaterialWalkthrough.TRANSITION_DURATION = 500;
 MaterialWalkthrough.MIN_SIZE = 60;
 MaterialWalkthrough.GUTTER = 20;
