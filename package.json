@@ -1,23 +1,23 @@
 {
-  "name": "material-walkthrough",
-  "version": "2.0.0",
+  "name": "@essetwide/material-walkthrough",
+  "version": "2.0.1-edge",
   "description": "A material tour (eg Inbox from Google) for your site, enhancing the UX.",
-  "main": "dist/material-walkthrough.min.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/rollup -c",
     "build:prod": "NODE_ENV=prod ./node_modules/.bin/rollup -c",
-    "release": "NODE_ENV=prod ./node_modules/.bin/rollup -c && npm publish"
+    "release": "NODE_ENV=prod ./node_modules/.bin/rollup -c && npm publish --access=public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/essetwide/material-walkthrough.git"
+    "url": "git+https://github.com/essetwide/materials-walkthrough.git"
   },
   "keywords": [
-    "Material;",
-    "Walkthrough;",
-    "UX;",
-    "Step-to-Step;"
+    "Material",
+    "Walkthrough",
+    "UX",
+    "Step-to-Step"
   ],
   "author": "Guilherme Prezzi; Filipe Oliveira;",
   "license": "Apache-2.0",

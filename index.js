@@ -1,1 +1,1 @@
-export default from 'src/MaterialWalkthrough';
+module.exports = require('dist/material-walkthrough');
