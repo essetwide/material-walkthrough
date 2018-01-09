@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import './style.css';
 
 const _logenv = {
     MSG: true,
@@ -226,7 +227,7 @@ export default class MaterialWalkthrough {
 
         window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
         MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
-        //MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
+        MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
         MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
             if (!!onClose) onClose();
@@ -278,13 +279,15 @@ export default class MaterialWalkthrough {
         const top = target.offsetTop;
         const windowHeight = window.innerHeight;
 
-        // TODO: Animate Scroll
-        const YCoordinate = top - (windowHeight / 2);
+        const { height, width } = target.getClientRects()[0];
+        let holeSize = height > width ? height : width;
+        const YCoordinate = top - (windowHeight / 2) + (holeSize / 2);
+        const secureYCoordinate = YCoordinate > windowHeight ? windowHeight : YCoordinate;
 
 
-        _log('WALK_LOCK', 'Moving Scroll to:', top);
-        //window.scrollTo(0, YCoordinate);
-        setTimeout(() => window.scrollTo(0, YCoordinate), 500);
+        _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
+        _log('WALK_LOCK', 'windowHeight:', windowHeight);
+        setTimeout(() => window.scrollTo(0, secureYCoordinate), 500);
 
         // TODO: Timeout on callback
         if (locateCallback) locateCallback();
@@ -293,6 +296,8 @@ export default class MaterialWalkthrough {
     // TODO: _renderFrame to renderWrapper
     static _renderFrame(target, renderCallback) {
         const position = { top: target.offsetTop, left: target.offsetLeft };
+
+        /* @TODO: Can be simplified. Duplied usage. */
         const { height, width } = target.getClientRects()[0];
 
         let holeSize = height > width ? height : width; // Catch the biggest measure
@@ -318,7 +323,6 @@ export default class MaterialWalkthrough {
 
     static _renderContent(target, renderCallback) {
         const position = target.getBoundingClientRect(); // target.getClientRects()[0];
-        console.log(position);
 
         const itCanBeRenderedInRight =
             position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)

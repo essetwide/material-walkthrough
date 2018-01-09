@@ -4,6 +4,35 @@
 	(global.MaterialWalkthrough = factory());
 }(this, (function () { 'use strict';
 
+function __$styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css) { return }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n/* FIX FROM ISSUE #30 */\nbody {\n    position: relative;\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white;\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: .9;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before{\n    border-width: 300vw;\n    margin-left: -300vw;\n    margin-top: -300vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}", {});
+
 var asyncGenerator = function () {
   function AwaitValue(value) {
     this.value = value;
@@ -160,7 +189,6 @@ var createClass = function () {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 var _logenv = {
     MSG: true,
     WALK_CONTENT: true,
@@ -364,7 +392,7 @@ var MaterialWalkthrough = function () {
 
             window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
             MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
-            //MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
+            MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
             MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
                 if (!!onClose) onClose();
@@ -423,13 +451,18 @@ var MaterialWalkthrough = function () {
             var top = target.offsetTop;
             var windowHeight = window.innerHeight;
 
-            // TODO: Animate Scroll
-            var YCoordinate = top - windowHeight / 2;
+            var _target$getClientRect = target.getClientRects()[0],
+                height = _target$getClientRect.height,
+                width = _target$getClientRect.width;
 
-            _log('WALK_LOCK', 'Moving Scroll to:', top);
-            //window.scrollTo(0, YCoordinate);
+            var holeSize = height > width ? height : width;
+            var YCoordinate = top - windowHeight / 2 + holeSize / 2;
+            var secureYCoordinate = YCoordinate > windowHeight ? windowHeight : YCoordinate;
+
+            _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
+            _log('WALK_LOCK', 'windowHeight:', windowHeight);
             setTimeout(function () {
-                return window.scrollTo(0, YCoordinate);
+                return window.scrollTo(0, secureYCoordinate);
             }, 500);
 
             // TODO: Timeout on callback
@@ -442,9 +475,11 @@ var MaterialWalkthrough = function () {
         key: '_renderFrame',
         value: function _renderFrame(target, renderCallback) {
             var position = { top: target.offsetTop, left: target.offsetLeft };
-            var _target$getClientRect = target.getClientRects()[0],
-                height = _target$getClientRect.height,
-                width = _target$getClientRect.width;
+
+            /* @TODO: Can be simplified. Duplied usage. */
+            var _target$getClientRect2 = target.getClientRects()[0],
+                height = _target$getClientRect2.height,
+                width = _target$getClientRect2.width;
 
 
             var holeSize = height > width ? height : width; // Catch the biggest measure
@@ -471,7 +506,6 @@ var MaterialWalkthrough = function () {
         key: '_renderContent',
         value: function _renderContent(target, renderCallback) {
             var position = target.getBoundingClientRect(); // target.getClientRects()[0];
-            console.log(position);
 
             var itCanBeRenderedInRight = position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
             var itCanBeRenderedInLeft = position.x - MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;

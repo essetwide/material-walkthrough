@@ -1,5 +1,6 @@
 // rollup.config.js
 import resolve from 'rollup-plugin-node-resolve';
+import css from 'rollup-plugin-postcss';
 import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
 
@@ -11,6 +12,7 @@ export default {
     },
     plugins: [
         resolve(),
+        css(),
         babel({
             exclude: 'node_modules/**' // only transpile our source code
         }),

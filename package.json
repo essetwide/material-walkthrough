@@ -2,11 +2,12 @@
   "name": "material-walkthrough",
   "version": "2.0.0",
   "description": "A material tour (eg Inbox from Google) for your site, enhancing the UX.",
-  "main": "index.js",
+  "main": "dist/material-walkthrough.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/rollup -c",
-    "build:prod": "NODE_ENV=prod ./node_modules/.bin/rollup -c"
+    "build:prod": "NODE_ENV=prod ./node_modules/.bin/rollup -c",
+    "release": "NODE_ENV=prod ./node_modules/.bin/rollup -c && npm publish"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "rollup": "^0.49.3",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-postcss": "^0.5.6",
     "rollup-plugin-uglify": "^2.0.1"
   }
 }
