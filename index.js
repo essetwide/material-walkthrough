@@ -1,1 +1,1 @@
-module.exports = require('dist/material-walkthrough');
+module.exports = require('./dist/material-walkthrough');
