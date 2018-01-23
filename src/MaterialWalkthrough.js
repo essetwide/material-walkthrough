@@ -39,7 +39,9 @@ const dom = {
         });
     },
     appendTo: (element, content) => {
-        element.innerHTML += content;
+        const tmpElt = document.createElement('div');
+        tmpElt.innerHTML = content;
+        element.append(tmpElt.children[0]);
     },
     removeClass: (element, className) => {
         element.classList.remove(className);
