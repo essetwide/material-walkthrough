@@ -122,6 +122,7 @@ const ScrollManager = {
  * @copyright Esset Software LTD.
  */
 export default class MaterialWalkthrough {
+    static CURRENT_DOCUMENT_HEIGHT = 0;
     static DEFAULT_COLOR = '#2196F3';
     static DEFAULT_ACCEPT_TEXT = 'Ok';
     static TRANSITION_DURATION = 500;
@@ -278,16 +279,17 @@ export default class MaterialWalkthrough {
     static _locateTarget(target, locateCallback) {
         const top = target.offsetTop;
         const windowHeight = window.innerHeight;
+        const maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
 
         const { height, width } = target.getClientRects()[0];
         let holeSize = height > width ? height : width;
         const YCoordinate = top - (windowHeight / 2) + (holeSize / 2);
-        const secureYCoordinate = YCoordinate > windowHeight ? windowHeight : YCoordinate;
+        const secureYCoordinate = YCoordinate > maxScrollValue ? maxScrollValue : YCoordinate;
 
 
         _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
         _log('WALK_LOCK', 'windowHeight:', windowHeight);
-        setTimeout(() => window.scrollTo(0, secureYCoordinate), 500);
+        setTimeout(() => window.scrollTo(0, secureYCoordinate), 0);
 
         // TODO: Timeout on callback
         if (locateCallback) locateCallback();
@@ -295,26 +297,29 @@ export default class MaterialWalkthrough {
 
     // TODO: _renderFrame to renderWrapper
     static _renderFrame(target, renderCallback) {
-        const position = { top: target.offsetTop, left: target.offsetLeft };
+        // HAVING ISSUES IN SOME TESTS
+        // const position = { top: target.offsetTop, left: target.offsetLeft };
 
         /* @TODO: Can be simplified. Duplied usage. */
-        const { height, width } = target.getClientRects()[0];
+        const { height, width, top, left } = target.getClientRects()[0];
 
         let holeSize = height > width ? height : width; // Catch the biggest measure
         // Adjust with default min measure if it not higher than it
         if (holeSize < MaterialWalkthrough.MIN_SIZE) holeSize = MaterialWalkthrough.MIN_SIZE;
         _log('WALK_LOCK', 'Walk hole size ' +holeSize+ 'px');
 
-        dom.setStyle(MaterialWalkthrough._wrapper, {
-            height: (holeSize + MaterialWalkthrough.GUTTER) + 'px',
-            width: (holeSize + MaterialWalkthrough.GUTTER) + 'px',
+        const positions = {
+          height: (holeSize + MaterialWalkthrough.GUTTER) + 'px',
+          width: (holeSize + MaterialWalkthrough.GUTTER) + 'px',
 
-            marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
-            marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
+          marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
+          marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
-            left: (position.left + (width / 2)) + 'px',
-            top: (position.top + (height / 2)) + 'px',
-        });
+          left: (left + (width / 2)) + 'px',
+          top: (top + (height / 2)) + 'px',
+        };
+        dom.setStyle(MaterialWalkthrough._wrapper, positions);
+        _log('WALK_LOCK', 'Positioning \n'+ JSON.stringify(positions, 2));
 
         setTimeout(function () {
             renderCallback();
@@ -376,6 +381,7 @@ export default class MaterialWalkthrough {
      * @param {WalkPoint} walkPoint The configuration of the walkpoint
      */
     static to(walkPoint) {
+        MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight
         ScrollManager.disable();
         if (!MaterialWalkthrough.isInitialized) MaterialWalkthrough._init();
         dom.removeClass(MaterialWalkthrough._wrapper, 'closed');

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-/* FIX FROM ISSUE #30 */
+
 body {
-    position: relative;
+    margin: 0px; /* Having problems with getClientRects. Webkit apply 8px for maring in body. Reseting body */
+    position: relative; /* FIX FROM ISSUE #30 */
 }
 #walk-bounds {
     position: absolute;

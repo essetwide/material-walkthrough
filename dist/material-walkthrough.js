@@ -31,7 +31,7 @@ function __$styleInject(css, ref) {
   }
 }
 
-__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n/* FIX FROM ISSUE #30 */\nbody {\n    position: relative;\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white;\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: .9;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before{\n    border-width: 300vw;\n    margin-left: -300vw;\n    margin-top: -300vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}", {});
+__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n/* FIX FROM ISSUE #30 */\nbody {\n    margin: 0px;\n    position: relative;\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white;\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: .9;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before{\n    border-width: 300vw;\n    margin-left: -300vw;\n    margin-top: -300vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    box-sizing: content-box;\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n    display: inline-block;\n    flex-flow: initial;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}", {});
 
 var asyncGenerator = function () {
   function AwaitValue(value) {
@@ -450,6 +450,7 @@ var MaterialWalkthrough = function () {
         value: function _locateTarget(target, locateCallback) {
             var top = target.offsetTop;
             var windowHeight = window.innerHeight;
+            var maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
 
             var _target$getClientRect = target.getClientRects()[0],
                 height = _target$getClientRect.height,
@@ -457,13 +458,13 @@ var MaterialWalkthrough = function () {
 
             var holeSize = height > width ? height : width;
             var YCoordinate = top - windowHeight / 2 + holeSize / 2;
-            var secureYCoordinate = YCoordinate > windowHeight ? windowHeight : YCoordinate;
+            var secureYCoordinate = YCoordinate > maxScrollValue ? maxScrollValue : YCoordinate;
 
             _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
             _log('WALK_LOCK', 'windowHeight:', windowHeight);
             setTimeout(function () {
                 return window.scrollTo(0, secureYCoordinate);
-            }, 500);
+            }, 0);
 
             // TODO: Timeout on callback
             if (locateCallback) locateCallback();
@@ -474,12 +475,15 @@ var MaterialWalkthrough = function () {
     }, {
         key: '_renderFrame',
         value: function _renderFrame(target, renderCallback) {
-            var position = { top: target.offsetTop, left: target.offsetLeft };
+            // HAVING ISSUES IN SOME TESTS
+            // const position = { top: target.offsetTop, left: target.offsetLeft };
 
             /* @TODO: Can be simplified. Duplied usage. */
             var _target$getClientRect2 = target.getClientRects()[0],
                 height = _target$getClientRect2.height,
-                width = _target$getClientRect2.width;
+                width = _target$getClientRect2.width,
+                top = _target$getClientRect2.top,
+                left = _target$getClientRect2.left;
 
 
             var holeSize = height > width ? height : width; // Catch the biggest measure
@@ -487,16 +491,18 @@ var MaterialWalkthrough = function () {
             if (holeSize < MaterialWalkthrough.MIN_SIZE) holeSize = MaterialWalkthrough.MIN_SIZE;
             _log('WALK_LOCK', 'Walk hole size ' + holeSize + 'px');
 
-            dom.setStyle(MaterialWalkthrough._wrapper, {
+            var positions = {
                 height: holeSize + MaterialWalkthrough.GUTTER + 'px',
                 width: holeSize + MaterialWalkthrough.GUTTER + 'px',
 
                 marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
                 marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
-                left: position.left + width / 2 + 'px',
-                top: position.top + height / 2 + 'px'
-            });
+                left: left + width / 2 + 'px',
+                top: top + height / 2 + 'px'
+            };
+            dom.setStyle(MaterialWalkthrough._wrapper, positions);
+            _log('WALK_LOCK', 'Positioning \n' + JSON.stringify(positions, 2));
 
             setTimeout(function () {
                 renderCallback();
@@ -554,6 +560,7 @@ var MaterialWalkthrough = function () {
          * @param {WalkPoint} walkPoint The configuration of the walkpoint
          */
         value: function to(walkPoint) {
+            MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight;
             ScrollManager.disable();
             if (!MaterialWalkthrough.isInitialized) MaterialWalkthrough._init();
             dom.removeClass(MaterialWalkthrough._wrapper, 'closed');
@@ -583,6 +590,7 @@ var MaterialWalkthrough = function () {
     return MaterialWalkthrough;
 }();
 
+MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = 0;
 MaterialWalkthrough.DEFAULT_COLOR = '#2196F3';
 MaterialWalkthrough.DEFAULT_ACCEPT_TEXT = 'Ok';
 MaterialWalkthrough.TRANSITION_DURATION = 500;
