@@ -329,7 +329,7 @@ export default class MaterialWalkthrough {
     }
 
     static _renderContent(target, renderCallback) {
-        const position = target.getBoundingClientRect(); // target.getClientRects()[0];
+        const position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
 
         const itCanBeRenderedInRight =
             position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)
@@ -337,10 +337,10 @@ export default class MaterialWalkthrough {
         const itCanBeRenderedInLeft = (position.x - MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
         const itCanBeRenderedInTop =
-            MaterialWalkthrough._wrapper.getBoundingClientRect().y
+          position.y
             - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
         const itCanBeRenderedInBottom =
-            MaterialWalkthrough._wrapper.getBoundingClientRect().y
+          position.y
             + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight
             < window.innerHeight;
 
@@ -357,7 +357,7 @@ export default class MaterialWalkthrough {
 
         if (!itCanBeRenderedInRight) {
             left = itCanBeRenderedInLeft ? '-'+ MaterialWalkthrough._contentWrapper.offsetWidth +'px'
-                : (itCanBeRenderedInBottom ? '0%':  '25%');
+                : 'calc(50% - 100px)';
             textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
             marginTop = itCanBeRenderedInLeft ? 0 : (itCanBeRenderedInBottom ? '20px' : '-20px');
         }

@@ -513,13 +513,13 @@ var MaterialWalkthrough = function () {
     }, {
         key: '_renderContent',
         value: function _renderContent(target, renderCallback) {
-            var position = target.getBoundingClientRect(); // target.getClientRects()[0];
+            var position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
 
             var itCanBeRenderedInRight = position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
             var itCanBeRenderedInLeft = position.x - MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
-            var itCanBeRenderedInTop = MaterialWalkthrough._wrapper.getBoundingClientRect().y - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
-            var itCanBeRenderedInBottom = MaterialWalkthrough._wrapper.getBoundingClientRect().y + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight < window.innerHeight;
+            var itCanBeRenderedInTop = position.y - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
+            var itCanBeRenderedInBottom = position.y + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight < window.innerHeight;
 
             _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' + itCanBeRenderedInRight);
             _log('WALK_CONTENT', 'itCanBeRenderedInLeft: ' + itCanBeRenderedInLeft);
@@ -533,7 +533,7 @@ var MaterialWalkthrough = function () {
             var textAlign = 'left';
 
             if (!itCanBeRenderedInRight) {
-                left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px' : itCanBeRenderedInBottom ? '0%' : '25%';
+                left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px' : 'calc(50% - 100px)';
                 textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
                 marginTop = itCanBeRenderedInLeft ? 0 : itCanBeRenderedInBottom ? '20px' : '-20px';
             }
