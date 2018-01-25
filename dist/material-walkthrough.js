@@ -516,7 +516,7 @@ var MaterialWalkthrough = function () {
             var position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
 
             var itCanBeRenderedInRight = position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-            var itCanBeRenderedInLeft = position.x - MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+            var itCanBeRenderedInLeft = position.x + MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
             var itCanBeRenderedInTop = position.y - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
             var itCanBeRenderedInBottom = position.y + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight < window.innerHeight;

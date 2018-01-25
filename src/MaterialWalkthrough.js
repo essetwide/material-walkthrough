@@ -334,7 +334,7 @@ export default class MaterialWalkthrough {
         const itCanBeRenderedInRight =
             position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)
             + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-        const itCanBeRenderedInLeft = (position.x - MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+        const itCanBeRenderedInLeft = (position.x + MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
         const itCanBeRenderedInTop =
           position.y
