@@ -221,7 +221,7 @@ var dom = {
     appendTo: function appendTo(element, content) {
         var tmpElt = document.createElement('div');
         tmpElt.innerHTML = content;
-        element.append(tmpElt.children[0]);
+        element.appendChild(tmpElt.children[0]);
     },
     removeClass: function removeClass(element, className) {
         element.classList.remove(className);
