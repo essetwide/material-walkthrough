@@ -31,7 +31,7 @@ function __$styleInject(css, ref) {
   }
 }
 
-__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n\nbody {\n    margin: 0px; /* Having problems with getClientRects. Webkit apply 8px for maring in body. Reseting body */\n    position: relative; /* FIX FROM ISSUE #30 */\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white;\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: .9;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before{\n    border-width: 300vw;\n    margin-left: -300vw;\n    margin-top: -300vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    box-sizing: content-box;\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n    display: inline-block;\n    flex-flow: initial;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}", {});
+__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n\nbody {\n    margin: 0px; /* Having problems with getClientRects. Webkit apply 8px for maring in body. Reseting body */\n    position: relative; /* FIX FROM ISSUE #30 */\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white;\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: .9;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before {\n    border-width: 200vw;\n    margin-left: -200vw;\n    margin-top: -200vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    box-sizing: content-box;\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n    display: inline-block;\n    flex-flow: initial;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}\n\n/*\nTODO: Make it responsible with layout breakpoints.\n    * The walk border\n    * The content text\n*/\n@media all and (max-width: 768px) {\n    #walk-wrapper.opened:before {\n        border-width: 320px;\n        margin-left: -320px;\n        margin-top: -320px;\n    }\n    #walk-wrapper.transiting:before {\n        border-width: 50px !important;\n        margin-left: -50px !important;\n        margin-top: -50px !important;\n    }\n    #walk-wrapper #walk-content-wrapper {\n        width: 270px;\n        font-family: 'Roboto', sans-serif;\n        font-size: 18px;\n    }\n}", {});
 
 var asyncGenerator = function () {
   function AwaitValue(value) {
@@ -397,18 +397,32 @@ var MaterialWalkthrough = function () {
             MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
             MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
+                var hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
+                var next = function next() {
+                    if (hasNext) {
+                        MaterialWalkthrough._instance.currentIndex++;
+                        MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
+                    } else {
+                        MaterialWalkthrough._instance.currentIndex = 0;
+                        MaterialWalkthrough._instance.points = null;
+                        if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
+                        MaterialWalkthrough._instance.onCloseCallback = null;
+                        MaterialWalkthrough.closeWalker();
+                    }
+                    MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
+                };
+
                 if (!!onClose) onClose();
-                if (!!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1]) {
-                    MaterialWalkthrough._instance.currentIndex++;
-                    MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
-                } else {
-                    MaterialWalkthrough._instance.currentIndex = 0;
-                    MaterialWalkthrough._instance.points = null;
-                    if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
-                    MaterialWalkthrough._instance.onCloseCallback = null;
-                    MaterialWalkthrough.closeWalker();
-                }
-                MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
+                // Responsive metrics (According the style.css)
+                // TODO: Refact this. Turn into a separated function.
+                if (window.innerWidth < 768 && hasNext) {
+                    dom.addClass(MaterialWalkthrough._wrapper, 'transiting');
+                    dom.setStyle(MaterialWalkthrough._contentWrapper, { display: 'none' });
+                    setTimeout(function () {
+                        dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
+                        next();
+                    }, MaterialWalkthrough.TRANSITION_DURATION);
+                } else next();
             });
         }
 

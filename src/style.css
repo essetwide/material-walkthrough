@@ -71,10 +71,10 @@ body {
     transition: border-width 0.25s ease-in, margin 0.25s ease-in;
 }
 
-#walk-wrapper.opened:before{
-    border-width: 300vw;
-    margin-left: -300vw;
-    margin-top: -300vw;
+#walk-wrapper.opened:before {
+    border-width: 200vw;
+    margin-left: -200vw;
+    margin-top: -200vw;
 }
 
 #walk-wrapper:after {
@@ -120,4 +120,27 @@ body {
 
 #walk-wrapper #walk-action:hover {
     background-color: rgba(255, 255, 255, 0.25);
+}
+
+/*
+TODO: Make it responsible with layout breakpoints.
+    * The walk border
+    * The content text
+*/
+@media all and (max-width: 768px) {
+    #walk-wrapper.opened:before {
+        border-width: 320px;
+        margin-left: -320px;
+        margin-top: -320px;
+    }
+    #walk-wrapper.transiting:before {
+        border-width: 50px !important;
+        margin-left: -50px !important;
+        margin-top: -50px !important;
+    }
+    #walk-wrapper #walk-content-wrapper {
+        width: 270px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+    }
 }

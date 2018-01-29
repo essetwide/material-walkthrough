@@ -233,20 +233,34 @@ export default class MaterialWalkthrough {
         MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
         MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
-            if (!!onClose) onClose();
-            if (!!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1]) {
+            const hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
+            const next = () => {
+              if (hasNext) {
                 MaterialWalkthrough._instance.currentIndex++;
                 MaterialWalkthrough._setWalker(
-                    MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]
+                  MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]
                 );
-            } else {
+              } else {
                 MaterialWalkthrough._instance.currentIndex = 0;
                 MaterialWalkthrough._instance.points = null;
                 if(MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
                 MaterialWalkthrough._instance.onCloseCallback = null;
                 MaterialWalkthrough.closeWalker();
-            }
-            MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
+              }
+              MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
+            };
+
+            if (!!onClose) onClose();
+            // Responsive metrics (According the style.css)
+            // TODO: Refact this. Turn into a separated function.
+            if (window.innerWidth < 768 && hasNext) {
+              dom.addClass(MaterialWalkthrough._wrapper, 'transiting');
+              dom.setStyle(MaterialWalkthrough._contentWrapper, { display : 'none' });
+              setTimeout(() => {
+                dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
+                next();
+              }, MaterialWalkthrough.TRANSITION_DURATION);
+            } else next();
         });
     }
 
