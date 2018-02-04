@@ -12,26 +12,58 @@ A material tour (eg Inbox from Google) for your site, enhancing the UX.
 * Compatible - Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0.
 * Made with love - Few nights without studying to develop this plugin with much love. 
 
-## 1. Getting Started
+## NPM
+
+### 1. Installing
+```
+npm install @essetwide/material-walkthrough
+```
+### 2 .Importing
+```
+import $ from "jquery"; //Babel
+require('@essetwide/material-walkthrough');
+```
+### 3. Set up your HTML
+You don't need any special markup. All you need is to add an `id` atributte to an HTML element.
+```html
+<a id="step1">Try Now!</a>
+```
+
+### 4. Call the plugin
+Now call the Material Walkthrough initializer function and your walkthrough is ready.
+```javascript
+$.walk([
+        {
+            target: '#step1',
+            content: 'Here you can begin the walk!', //Hey, it can also be an HTML code!
+            color: 'red',
+            acceptText: 'OK'
+        }
+]);
+```
+
+## ZIP
+
+### 1. Getting Started
 Load jQuery and include Material-Walkthrough plugin files
 ```html
 <!-- Plugin Stylesheet -->
-<link rel="stylesheet" href="material-walkthrough/material-walkthrough.min.css">
+<link rel="stylesheet" href="css/material-walkthrough/material-walkthrough.min.css">
 
 <!-- JQuery 3.1 minified -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
 <!-- Plugin File -->
-<script src="material-walkthrough/material-walkthrough.min.js"></script>
+<script src="js/material-walkthrough/material-walkthrough.min.js"></script>
 ```
 
-## 2. Set up your HTML
-You don't need any special markup. All you need is to add an `id` atributte to an HTML element. 
+### 2. Set up your HTML
+You don't need any special markup. All you need is to add an `id` atributte to an HTML element.
 ```html
 <a id="step1">Try Now!</a>
 ```
 
-## 3. Call the plugin
+### 3. Call the plugin
 Now call the Material Walkthrough initializer function and your walkthrough is ready.
 ```javascript
 $.walk([
