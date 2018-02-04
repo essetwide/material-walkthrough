@@ -76,7 +76,7 @@ $.walk([
 ]);
 ```
 # License
-  Copyright 2017 Esset Software LTD.
+  Copyright 2018 Esset Software LTD.
  
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this files except in compliance with the License.
