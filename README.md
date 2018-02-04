@@ -14,17 +14,21 @@ Nov, 2014 - "[User Experience Design Concepts from Google Inbox](http://spyrestu
 * Compatible - Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0.
 * Made with love - Few nights without studying to develop this plugin with much love. 
 
-## 1. Getting Started
+## 1. Installing
+```
+npm install @essetwide/material-walkthrough@beta
+```
+
+## 2. Importing
+```
+var Walk = require('@essetwide/material-walkthrough');
+```
+
+## 3. Include CSS
 Load jQuery and include Material-Walkthrough plugin files
 ```html
 <!-- Plugin Stylesheet -->
-<link rel="stylesheet" href="material-walkthrough/material-walkthrough.min.css">
-
-<!-- JQuery 3.1 minified -->
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-
-<!-- Plugin File -->
-<script src="material-walkthrough/material-walkthrough.min.js"></script>
+<link rel="stylesheet" href="node_modules\@essetwide\material-walkthrough\dist\material-walkthrough.min.css">
 ```
 
 ## 2. Set up your HTML
@@ -46,7 +50,7 @@ $.walk([
 ]);
 ```
 # License
-  Copyright 2017 Esset Software LTD.
+  Copyright 2018 Esset Software LTD.
  
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this files except in compliance with the License.
