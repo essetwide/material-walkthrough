@@ -129,6 +129,9 @@ export default class MaterialWalkthrough {
         MaterialWalkthrough._content = dom.get('#walk-content');
         MaterialWalkthrough._actionButton = dom.get('#walk-action');
 
+        if (MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) dom.addClass(MaterialWalkthrough._wrapper, 'animations-disabled');
+        if (MaterialWalkthrough.FORCE_SMALL_BORDER) dom.addClass(MaterialWalkthrough._wrapper, 'small');
+
         MaterialWalkthrough.isInitialized = true;
     }
 

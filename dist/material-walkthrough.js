@@ -424,6 +424,9 @@ var MaterialWalkthrough = function () {
             MaterialWalkthrough._content = DOMUtils.get('#walk-content');
             MaterialWalkthrough._actionButton = DOMUtils.get('#walk-action');
 
+            if (MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'animations-disabled');
+            if (MaterialWalkthrough.FORCE_SMALL_BORDER) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'small');
+
             MaterialWalkthrough.isInitialized = true;
         }
 
