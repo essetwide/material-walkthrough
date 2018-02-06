@@ -122,25 +122,49 @@ body {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
+
+/** small rules **/
+#walk-wrapper.opened.small:before {
+    border-width: 320px;
+    margin-left: -320px;
+    margin-top: -320px;
+}
+
+#walk-wrapper.transiting.small:not(.animations-disabled):before {
+    border-width: 50px !important;
+    margin-left: -50px !important;
+    margin-top: -50px !important;
+}
+
+/** animations-disabled rules **/
+#walk-wrapper.animations-disabled,
+#walk-wrapper.animations-disabled:before {
+    transition: 0s;
+}
+
+#walk-wrapper.animations-disabled:before {
+    transition: 0.25s opacity;
+}
+
+#walk-wrapper.opened.animations-disabled:before {
+    opacity: .9;
+}
+
+#walk-wrapper.animations-disabled:before,
+#walk-wrapper.transiting.animations-disabled:before,
+#walk-wrapper.closed.animations-disabled:before,
+#walk-wrapper.closed.animations-disabled {
+    opacity: 0;
+}
+
 /*
 TODO: Make it responsible with layout breakpoints.
     * The walk border
     * The content text
 */
 @media all and (max-width: 768px) {
-    #walk-wrapper.opened:before {
-        border-width: 320px;
-        margin-left: -320px;
-        margin-top: -320px;
-    }
-    #walk-wrapper.transiting:before {
-        border-width: 50px !important;
-        margin-left: -50px !important;
-        margin-top: -50px !important;
-    }
     #walk-wrapper #walk-content-wrapper {
-        width: 270px;
-        font-family: 'Roboto', sans-serif;
+        max-width: 270px;
         font-size: 18px;
     }
 }

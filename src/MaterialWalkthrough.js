@@ -13,103 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import dom from './DOMUtils';
+import ScrollManager from './ScrollManager';
 import './style.css';
 
+/**
+ * A key-value object that configs the log level of _log function.
+ * @private
+ */
 const _logenv = {
-    MSG: true,
-    WALK_CONTENT: true,
-    WALK_CONTENT_TOP: true,
-    WALK_LOCK: true,
-    WALK_SCROLL: true,
-    ALL: true
+  MSG: true,
+  WALK_CONTENT: true,
+  WALK_CONTENT_TOP: true,
+  WALK_LOCK: true,
+  WALK_SCROLL: true,
+  ALL: true
 };
-
-function _log(context, message, ...attrs) {
-    if(!!_logenv[context] || _logenv.ALL) console.log(context +': '+ message, ...attrs);
-}
-
-const dom = {
-    get: (target) => {
-        if (typeof target === 'string') return document.querySelector(target);
-        return target;
-    },
-    setStyle: (element, properties) => {
-        Object.keys(properties).forEach(function (val) {
-            element.style[val] = properties[val];
-        });
-    },
-    appendTo: (element, content) => {
-        const tmpElt = document.createElement('div');
-        tmpElt.innerHTML = content;
-        element.appendChild(tmpElt.children[0]);
-    },
-    removeClass: (element, className) => {
-        element.classList.remove(className);
-    },
-    addClass: (element, className) => {
-        element.classList.add(className);
-    }
-};
-
-// Locking scroll
-// Thanks to @galambalazs
-const ScrollManager = {
-    // left: 37, up: 38, right: 39, down: 40,
-    // spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
-    keys: {
-        37: 1,
-        38: 1,
-        39: 1,
-        40: 1,
-        32: 1,
-        33: 1,
-        34: 1
-    },
-
-    preventDefault: (e) => {
-        e = e || window.event;
-        if (e.preventDefault)
-            e.preventDefault();
-        e.returnValue = false;
-    },
-    preventDefaultForScrollKeys: (e) => {
-        if (ScrollManager.keys[e.keyCode]) {
-            ScrollManager.preventDefault(e);
-            return false;
-        }
-    },
-    disable: () => {
-        dom.setStyle(dom.get('html'),{
-            'height': '100vh',
-            'overflow': 'hidden'
-        });
-        const preventDefault = ScrollManager.preventDefault;
-        const preventDefaultForScrollKeys = ScrollManager.preventDefaultForScrollKeys;
-        if (window.addEventListener) // older FF
-            window.addEventListener('DOMMouseScroll', preventDefault, false);
-        window.onwheel = preventDefault; // modern standard
-        window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
-        window.ontouchmove = preventDefault; // mobile
-        document.onkeydown = preventDefaultForScrollKeys;
-    },
-    enable() {
-        dom.setStyle(dom.get('html'),{
-            'height': '',
-            'overflow': 'auto'
-        });
-        if (window.removeEventListener)
-            window.removeEventListener('DOMMouseScroll', ScrollManager.preventDefault, false);
-        window.onmousewheel = document.onmousewheel = null;
-        window.onwheel = null;
-        window.ontouchmove = null;
-        document.onkeydown = null;
-    }
-};
-
-
 
 /**
- * A Object that configures an walkpoint.
+ * Log with context based in _logenv.
+ * @param {string} context The context to dispatch this log.
+ * @param {string} message The verbose message.
+ * @param {*} [attrs] Optional custom metadatas to display.
+ * @private
+ */
+function _log(context, message, ...attrs) {
+  if(!!_logenv[context] || _logenv.ALL) console.log(context +': '+ message, ...attrs);
+}
+
+/**
+ * A class that configures an walkpoint.
  * @typedef {object} WalkPoint
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
  * @property {string} content A HTML code that will be inserted on the walk-content container;
@@ -120,29 +53,66 @@ const ScrollManager = {
  */
 
 /**
+ * A material tour (eg Inbox from Google) for your site, enhancing the UX.
+ * Basic usage:
+ * ``` js
+ * import MaterialWalkthrough from '@essetwide/material-walkthrough';
+ *
+ * MaterialWalkthrough.walk([
+ *   {
+ *     target: '#example1',
+ *     content: 'My First Walkthrough!',
+ *     acceptText: 'YEAH!'
+ *   }
+ * ]);
+ * ```
  * @license Apache License 2.0.
  * @copyright Esset Software LTD.
  */
 export default class MaterialWalkthrough {
-    static CURRENT_DOCUMENT_HEIGHT = 0;
-    static DEFAULT_COLOR = '#2196F3';
-    static DEFAULT_ACCEPT_TEXT = 'Ok';
-    static TRANSITION_DURATION = 500;
-    static MIN_SIZE = 60;
-    static GUTTER = 20;
-    static ELEMENT_TEMPLATE =
-        `<div id='walk-wrapper'>
-            <div id='walk-content-wrapper'>
-                <div id='walk-content'></div>
-                <button id='walk-action'></button>
-            </div>
-        </div>`;
-    static isInitialized = false;
+  /**
+   * Cache the current height size of the document.
+   * Calculated by `document.querySelector('html').offsetHeight` at `MaterialWalkthrough.to` method.
+   * @type {number}
+   */
+  static CURRENT_DOCUMENT_HEIGHT = 0;
 
-    static _wrapper = null;
-    static _contentWrapper = null;
-    static _content = null;
-    static _actionButton = null;
+  /**
+   * Default color used if none is passed in the walkpoint.
+   * It need to be a valid HEX or RGB color because it will be useful on contrast calculations.
+   * @type {string}
+   */
+  static DEFAULT_COLOR = '#2196F3';
+
+  /**
+   * Default accept text if none is passed in the walkpoint.
+   * @type {string}
+   */
+  static DEFAULT_ACCEPT_TEXT = 'Ok';
+
+  /**
+   * The duration of any animation. It needs to be the same as defined at the style.
+   * Is used in some timeouts to wait a specific transition.
+   * @type {number}
+   */
+  static TRANSITION_DURATION = 500;
+  static DISABLE_HUGE_ANIMATIONS = false;
+  static FORCE_SMALL_BORDER = false;
+  static MIN_SIZE = 60;
+  static GUTTER = 20;
+  static ELEMENT_TEMPLATE =
+    `<div id='walk-wrapper' class='${MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS ? 'animations-disabled' : ''} ${MaterialWalkthrough.FORCE_SMALL_BORDER ? 'small' : ''}'>
+      <div id='walk-content-wrapper'>
+        <div id='walk-content'></div>
+        <button id='walk-action'></button>
+      </div>
+    </div>`;
+  static isInitialized = false;
+
+  static _wrapper = null;
+  static _contentWrapper = null;
+  static _content = null;
+  static _actionButton = null;
 
     static _instance = {
         updateHandler: null,
@@ -253,7 +223,7 @@ export default class MaterialWalkthrough {
             if (!!onClose) onClose();
             // Responsive metrics (According the style.css)
             // TODO: Refact this. Turn into a separated function.
-            if (window.innerWidth < 768 && hasNext) {
+            if (MaterialWalkthrough.FORCE_SMALL_BORDER || MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) {
               dom.addClass(MaterialWalkthrough._wrapper, 'transiting');
               dom.setStyle(MaterialWalkthrough._contentWrapper, { display : 'none' });
               setTimeout(() => {
@@ -397,7 +367,7 @@ export default class MaterialWalkthrough {
      * @param {WalkPoint} walkPoint The configuration of the walkpoint
      */
     static to(walkPoint) {
-        MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight
+        MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight;
         ScrollManager.disable();
         if (!MaterialWalkthrough.isInitialized) MaterialWalkthrough._init();
         dom.removeClass(MaterialWalkthrough._wrapper, 'closed');
