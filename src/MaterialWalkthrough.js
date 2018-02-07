@@ -328,7 +328,7 @@ export default class MaterialWalkthrough {
             - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
         const itCanBeRenderedInBottom =
           position.y
-            + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight
+            + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._wrapper.offsetHeight
             < window.innerHeight;
 
         _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' +itCanBeRenderedInRight);
