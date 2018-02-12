@@ -441,6 +441,11 @@ export default class MaterialWalkthrough {
     if (renderCallback) renderCallback();
   }
 
+  /***
+   * Do a walkthrough to a set of walkpoints.
+   * @param {Array<WalkPoint>} walkPoints A list of each walkpoint to move the walktrough.
+   * @param callback Callback called when the walkthrough is closed.
+   */
   static walk(walkPoints, callback) {
     MaterialWalkthrough._instance.points = walkPoints;
     MaterialWalkthrough._instance.currentIndex = 0;
@@ -449,7 +454,7 @@ export default class MaterialWalkthrough {
   };
 
   /***
-   * Open the walker to a walkpoint.
+   * Open the walkthrough to a single walkpoint.
    * @param {WalkPoint} walkPoint The configuration of the walkpoint
    */
   static to(walkPoint) {
