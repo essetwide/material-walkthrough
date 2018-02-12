@@ -249,9 +249,9 @@ var DOMUtils = function () {
   return DOMUtils;
 }();
 
-// Thanks to @galambalazs
 /**
  * Controls the state of scroll actions.
+ * Thanks to @galambalazs.
  */
 
 var ScrollManager = function () {
@@ -266,8 +266,13 @@ var ScrollManager = function () {
       if (e.preventDefault) e.preventDefault();
       e.returnValue = false;
     }
-    // left: 37, up: 38, right: 39, down: 40,
-    // spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+
+    /**
+     * A map object that list, enable/disable each keys that manipulate the scroll into the window.
+     * left: 37, up: 38, right: 39, down: 40,
+     * spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+     * @type {object}
+     */
 
   }, {
     key: 'preventDefaultForScrollKeys',
@@ -277,6 +282,13 @@ var ScrollManager = function () {
         return false;
       }
     }
+
+    /**
+     * Override the main listeners, disabling the scroll for each enabled key in `keys` object.
+     * Also, set `height: 100vh` and `overflow: hidden` in the `html` element, forcing the content size to match
+     * with the window.
+     */
+
   }, {
     key: 'disable',
     value: function disable() {
@@ -293,6 +305,12 @@ var ScrollManager = function () {
       window.ontouchmove = preventDefault; // mobile
       document.onkeydown = preventDefaultForScrollKeys;
     }
+
+    /**
+     * Reset the main listeners, enabling the scroll.
+     * Also reset the html element styles assigned before in `disable` function.
+     */
+
   }, {
     key: 'enable',
     value: function enable() {
@@ -342,12 +360,12 @@ __$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed unde
  * @private
  */
 var _logenv = {
-    MSG: true,
-    WALK_CONTENT: true,
-    WALK_CONTENT_TOP: true,
-    WALK_LOCK: true,
-    WALK_SCROLL: true,
-    ALL: true
+  MSG: true,
+  WALK_CONTENT: true,
+  WALK_CONTENT_TOP: true,
+  WALK_LOCK: true,
+  WALK_SCROLL: true,
+  ALL: true
 };
 
 /**
@@ -358,13 +376,13 @@ var _logenv = {
  * @private
  */
 function _log(context, message) {
-    var _console;
+  var _console;
 
-    for (var _len = arguments.length, attrs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-        attrs[_key - 2] = arguments[_key];
-    }
+  for (var _len = arguments.length, attrs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    attrs[_key - 2] = arguments[_key];
+  }
 
-    if (!!_logenv[context] || _logenv.ALL) (_console = console).log.apply(_console, [context + ': ' + message].concat(attrs));
+  if (!!_logenv[context] || _logenv.ALL) (_console = console).log.apply(_console, [context + ': ' + message].concat(attrs));
 }
 
 /**
@@ -397,338 +415,438 @@ function _log(context, message) {
  */
 
 var MaterialWalkthrough = function () {
-    function MaterialWalkthrough() {
-        classCallCheck(this, MaterialWalkthrough);
+  function MaterialWalkthrough() {
+    classCallCheck(this, MaterialWalkthrough);
+  }
+
+  createClass(MaterialWalkthrough, null, [{
+    key: '_init',
+
+
+    /**
+     * Initialize the component in the document, appending `ELEMENT_TEMPLATE`,
+     * and initialize the element references (`_wrapper`, `_contentWrapper`, `_content`, `_actionButton`);
+     * @private
+     */
+
+
+    /**
+     * Caches the action button element.
+     * @type {HTMLElement}
+     * @private
+     */
+
+
+    /**
+     * Caches the content text wrapper element.
+     * @type {HTMLElement}
+     * @private
+     */
+
+
+    /**
+     * Assigned to true after the component is settled into the document.
+     * @type {boolean}
+     */
+
+
+    /**
+     * Focus hole margin.
+     * @type {number}
+     */
+
+
+    /**
+     * Enable small wrapper of walkthrough.
+     * @type {boolean}
+     */
+
+
+    /**
+     * The duration of any animation. It needs to be the same as defined at the style.
+     * Is used in some timeouts to wait a specific transition.
+     * @type {number}
+     */
+
+
+    /**
+     * Default color used if none is passed in the walkpoint.
+     * It need to be a valid HEX or RGB color because it will be useful on contrast calculations.
+     * @type {string}
+     */
+    value: function _init() {
+      DOMUtils.appendTo(DOMUtils.get('body'), MaterialWalkthrough.ELEMENT_TEMPLATE);
+      MaterialWalkthrough._wrapper = DOMUtils.get('#walk-wrapper');
+      MaterialWalkthrough._contentWrapper = DOMUtils.get('#walk-content-wrapper');
+      MaterialWalkthrough._content = DOMUtils.get('#walk-content');
+      MaterialWalkthrough._actionButton = DOMUtils.get('#walk-action');
+
+      if (MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'animations-disabled');
+      if (MaterialWalkthrough.FORCE_SMALL_BORDER) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'small');
+
+      MaterialWalkthrough.isInitialized = true;
     }
 
-    createClass(MaterialWalkthrough, null, [{
-        key: '_init',
+    /***
+     * Set the opened walker to a target with the properties from walkPoint.
+     * @param {string|HTMLElement} target A query or a Element to target the walker
+     * @param {WalkPoint} walkPoint The properties for this walker
+     */
 
 
-        /**
-         * The duration of any animation. It needs to be the same as defined at the style.
-         * Is used in some timeouts to wait a specific transition.
-         * @type {number}
-         */
+    /**
+     * Contains the current walkthrough configuration.
+     * @type {{
+     *   updateHandler: Function,
+     *   mutationObserver: MutationObserver,
+     *   points: Array<WalkPoint>,
+     *   currentIndex: Integer,
+     *   onCloseCallback: Function
+     * }}
+     * @private
+     */
 
 
-        /**
-         * Default color used if none is passed in the walkpoint.
-         * It need to be a valid HEX or RGB color because it will be useful on contrast calculations.
-         * @type {string}
-         */
-        value: function _init() {
-            DOMUtils.appendTo(DOMUtils.get('body'), MaterialWalkthrough.ELEMENT_TEMPLATE);
-            MaterialWalkthrough._wrapper = DOMUtils.get('#walk-wrapper');
-            MaterialWalkthrough._contentWrapper = DOMUtils.get('#walk-content-wrapper');
-            MaterialWalkthrough._content = DOMUtils.get('#walk-content');
-            MaterialWalkthrough._actionButton = DOMUtils.get('#walk-action');
-
-            if (MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'animations-disabled');
-            if (MaterialWalkthrough.FORCE_SMALL_BORDER) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'small');
-
-            MaterialWalkthrough.isInitialized = true;
-        }
-
-        /***
-         * Set the opened walker to a target with the properties from walkPoint.
-         * @param {string|HTMLElement} target A query or a Element to target the walker
-         * @param {WalkPoint} walkPoint The properties for this walker
-         */
+    /**
+     * Caches the content text element.
+     * @type {HTMLElement}
+     * @private
+     */
 
 
-        /**
-         * Default accept text if none is passed in the walkpoint.
-         * @type {string}
-         */
-
-        /**
-         * Cache the current height size of the document.
-         * Calculated by `document.querySelector('html').offsetHeight` at `MaterialWalkthrough.to` method.
-         * @type {number}
-         */
-
-    }, {
-        key: '_setWalker',
-        value: function _setWalker(walkPoint) {
-            var target = DOMUtils.get(walkPoint.target);
-            _log('MSG', '-------------------------------------');
-            _log('MSG', 'Setting a walk to #' + target.id);
-            _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
-
-            MaterialWalkthrough._setupListeners(target, walkPoint.onClose);
-            DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'none' });
-
-            MaterialWalkthrough._locateTarget(target, function () {
-                MaterialWalkthrough._setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
-                DOMUtils.setStyle(MaterialWalkthrough._wrapper, { display: 'block' });
-
-                MaterialWalkthrough._renderFrame(target, function () {
-                    DOMUtils.addClass(MaterialWalkthrough._wrapper, 'opened');
-                    MaterialWalkthrough._renderContent(target, function () {
-                        DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
-                    });
-
-                    // Pequeno XGH
-                    MaterialWalkthrough._renderContent(target, function () {
-                        DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
-                    });
-                });
-            });
-
-            _log('MSG', 'Walk created. Calling onSet() (if exists)');
-            if (!!walkPoint.onSet) walkPoint.onSet();
-        }
-
-        /***
-         * Create the function that updates the walker to a target
-         * @param {HTMLElement} target  The target to set the update function
-         * @returns {function} Update handler to call in the listeners
-         */
-
-    }, {
-        key: '_createUpdateHandler',
-        value: function _createUpdateHandler(target) {
-            _log('WALK_UPDATE', 'Creating UpdateHandler for #' + target.id);
-
-            var updateHandler = function updateHandler() {
-                _log('MSG', 'Updating and rendering');
-                MaterialWalkthrough._locateTarget(target, function () {
-                    MaterialWalkthrough._renderFrame(target, function () {
-                        MaterialWalkthrough._renderContent(target);
-                    });
-                });
-            };
-            updateHandler.toString = function () {
-                return 'updateHandler -> #' + target.id;
-            };
-            return updateHandler;
-        }
-
-        /***
-         * Setup the update listeners (onResize, MutationObserver) and the close callback.
-         * @param {HTMLElement} target The target to set the listeners
-         * @param {function} onClose Close callback
-         */
-
-    }, {
-        key: '_setupListeners',
-        value: function _setupListeners(target, onClose) {
-            if (!!MaterialWalkthrough._instance.updateHandler) MaterialWalkthrough._flushListeners();
-            MaterialWalkthrough._instance.updateHandler = MaterialWalkthrough._createUpdateHandler(target);
-
-            window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
-            MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
-            MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
-
-            MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
-                var hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
-                var next = function next() {
-                    if (hasNext) {
-                        MaterialWalkthrough._instance.currentIndex++;
-                        MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
-                    } else {
-                        MaterialWalkthrough._instance.currentIndex = 0;
-                        MaterialWalkthrough._instance.points = null;
-                        if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
-                        MaterialWalkthrough._instance.onCloseCallback = null;
-                        MaterialWalkthrough.closeWalker();
-                    }
-                    MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
-                };
-
-                if (!!onClose) onClose();
-                // Responsive metrics (According the style.css)
-                // TODO: Refact this. Turn into a separated function.
-                if (MaterialWalkthrough.FORCE_SMALL_BORDER || MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) {
-                    DOMUtils.addClass(MaterialWalkthrough._wrapper, 'transiting');
-                    DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'none' });
-                    setTimeout(function () {
-                        DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-                        next();
-                    }, MaterialWalkthrough.TRANSITION_DURATION);
-                } else next();
-            });
-        }
-
-        /***
-         * Clean the listeners with the actual updateHandler
-         */
-
-    }, {
-        key: '_flushListeners',
-        value: function _flushListeners() {
-            _log('WALK_UPDATER', 'Flushing handlers\n' + MaterialWalkthrough._instance.updateHandler);
-            if (!!MaterialWalkthrough._instance.mutationObserver) MaterialWalkthrough._instance.mutationObserver.disconnect();
-            MaterialWalkthrough._instance.mutationObserver = null;
-            window.removeEventListener('resize', MaterialWalkthrough._instance.updateHandler);
-        }
-
-        /***
-         * Set the properties for the walk.
-         * @param {string} content The content that will be displayed in the walk
-         * @param {string} color A CSS valid color
-         * @param {string} acceptText The text that will be displayed in the accept button
-         */
-
-    }, {
-        key: '_setProperties',
-        value: function _setProperties(content, color, acceptText) {
-            color = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
-            DOMUtils.setStyle(MaterialWalkthrough._wrapper, { borderColor: color });
-            MaterialWalkthrough._content.innerHTML = content;
-            MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
-        }
-
-        /***
-         * Move the Walker to a target
-         * @param {HTMLElement} target
-         * @param {function} locateCallback
-         */
-
-    }, {
-        key: '_locateTarget',
-        value: function _locateTarget(target, locateCallback) {
-            var top = target.offsetTop;
-            var windowHeight = window.innerHeight;
-            var maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
-
-            var _target$getClientRect = target.getClientRects()[0],
-                height = _target$getClientRect.height,
-                width = _target$getClientRect.width;
-
-            var holeSize = height > width ? height : width;
-            var YCoordinate = top - windowHeight / 2 + holeSize / 2;
-            var secureYCoordinate = YCoordinate > maxScrollValue ? maxScrollValue : YCoordinate;
-
-            _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
-            _log('WALK_LOCK', 'windowHeight:', windowHeight);
-            setTimeout(function () {
-                return window.scrollTo(0, secureYCoordinate);
-            }, 0);
-
-            // TODO: Timeout on callback
-            if (locateCallback) locateCallback();
-        }
-
-        // TODO: _renderFrame to renderWrapper
-
-    }, {
-        key: '_renderFrame',
-        value: function _renderFrame(target, renderCallback) {
-            // HAVING ISSUES IN SOME TESTS
-            // const position = { top: target.offsetTop, left: target.offsetLeft };
-
-            /* @TODO: Can be simplified. Duplied usage. */
-            var _target$getClientRect2 = target.getClientRects()[0],
-                height = _target$getClientRect2.height,
-                width = _target$getClientRect2.width,
-                top = _target$getClientRect2.top,
-                left = _target$getClientRect2.left;
+    /**
+     * Caches the wrapper element.
+     * @type {HTMLElement}
+     * @private
+     */
 
 
-            var holeSize = height > width ? height : width; // Catch the biggest measure
-            // Adjust with default min measure if it not higher than it
-            if (holeSize < MaterialWalkthrough.MIN_SIZE) holeSize = MaterialWalkthrough.MIN_SIZE;
-            _log('WALK_LOCK', 'Walk hole size ' + holeSize + 'px');
+    /**
+     * Main component template.
+     * @type {string}
+     */
 
-            var positions = {
-                height: holeSize + MaterialWalkthrough.GUTTER + 'px',
-                width: holeSize + MaterialWalkthrough.GUTTER + 'px',
 
-                marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
-                marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
+    /**
+     * Minimal size of focus hole.
+     * @type {boolean}
+     */
 
-                left: left + width / 2 + 'px',
-                top: top + height / 2 + 'px'
-            };
-            DOMUtils.setStyle(MaterialWalkthrough._wrapper, positions);
-            _log('WALK_LOCK', 'Positioning \n' + JSON.stringify(positions, 2));
 
-            setTimeout(function () {
-                renderCallback();
-            }, MaterialWalkthrough.TRANSITION_DURATION + 50);
-        }
-    }, {
-        key: '_renderContent',
-        value: function _renderContent(target, renderCallback) {
-            var position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
+    // @TODO: Auto apply DISABLE_HUGE_ANIMATIONS=true in mobile enviroment.
+    /**
+     * Disable animations such as walk's moving and opening/closing. Only Opacity animations is used.
+     * It is useful for mobile
+     * Default is false.
+     * @type {boolean}
+     */
 
-            var itCanBeRenderedInRight = position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-            var itCanBeRenderedInLeft = position.x + MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
-            var itCanBeRenderedInTop = position.y - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
-            var itCanBeRenderedInBottom = position.y + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._contentWrapper.offsetHeight < window.innerHeight;
+    /**
+     * Default accept text if none is passed in the walkpoint.
+     * @type {string}
+     */
 
-            _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' + itCanBeRenderedInRight);
-            _log('WALK_CONTENT', 'itCanBeRenderedInLeft: ' + itCanBeRenderedInLeft);
-            _log('WALK_CONTENT', 'itCanBeRenderedInTop: ' + itCanBeRenderedInTop);
-            _log('WALK_CONTENT', 'itCanBeRenderedInBottom: ' + itCanBeRenderedInBottom);
+    /**
+     * Cache the current height size of the document.
+     * Calculated by `document.querySelector('html').offsetHeight` at `MaterialWalkthrough.to` method.
+     * @type {number}
+     */
 
-            var left = '100%';
-            var top = '100%';
-            var marginTop = 0;
-            var marginLeft = 0;
-            var textAlign = 'left';
+  }, {
+    key: '_setWalker',
+    value: function _setWalker(walkPoint) {
+      var target = DOMUtils.get(walkPoint.target);
+      _log('MSG', '-------------------------------------');
+      _log('MSG', 'Setting a walk to #' + target.id);
+      _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
 
-            if (!itCanBeRenderedInRight) {
-                left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px' : 'calc(50% - 100px)';
-                textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
-                marginTop = itCanBeRenderedInLeft ? 0 : itCanBeRenderedInBottom ? '20px' : '-20px';
-            }
-            if (!itCanBeRenderedInBottom) {
-                top = itCanBeRenderedInTop ? '-' + MaterialWalkthrough._contentWrapper.offsetHeight + 'px' : MaterialWalkthrough._wrapper.offsetHeight / 2 - MaterialWalkthrough._contentWrapper.offsetHeight / 2 + 'px';
-                marginLeft = itCanBeRenderedInTop ? 0 : !itCanBeRenderedInRight ? '-20px' : '20px';
-            }
-            DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { left: left, top: top, textAlign: textAlign, marginTop: marginTop, marginLeft: marginLeft });
+      MaterialWalkthrough._setupListeners(target, walkPoint.onClose);
+      DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'none' });
 
-            if (renderCallback) renderCallback();
-        }
-    }, {
-        key: 'walk',
-        value: function walk(walkPoints, callback) {
-            MaterialWalkthrough._instance.points = walkPoints;
+      MaterialWalkthrough._locateTarget(target, function () {
+        MaterialWalkthrough._setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
+        DOMUtils.setStyle(MaterialWalkthrough._wrapper, { display: 'block' });
+
+        MaterialWalkthrough._renderFrame(target, function () {
+          DOMUtils.addClass(MaterialWalkthrough._wrapper, 'opened');
+          MaterialWalkthrough._renderContent(target, function () {
+            DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
+          });
+
+          // Little XGH
+          MaterialWalkthrough._renderContent(target, function () {
+            DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
+          });
+        });
+      });
+
+      _log('MSG', 'Walk created. Calling onSet() (if exists)');
+      if (!!walkPoint.onSet) walkPoint.onSet();
+    }
+
+    /***
+     * Create the function that updates the walker to a target
+     * @param {HTMLElement} target  The target to set the update function
+     * @returns {function} Update handler to call in the listeners
+     */
+
+  }, {
+    key: '_createUpdateHandler',
+    value: function _createUpdateHandler(target) {
+      _log('WALK_UPDATE', 'Creating UpdateHandler for #' + target.id);
+
+      var updateHandler = function updateHandler() {
+        _log('MSG', 'Updating and rendering');
+        MaterialWalkthrough._locateTarget(target, function () {
+          MaterialWalkthrough._renderFrame(target, function () {
+            MaterialWalkthrough._renderContent(target);
+          });
+        });
+      };
+      updateHandler.toString = function () {
+        return 'updateHandler -> #' + target.id;
+      };
+      return updateHandler;
+    }
+
+    /***
+     * Setup the update listeners (onResize, MutationObserver) and the close callback.
+     * @param {HTMLElement} target The target to set the listeners
+     * @param {function} onClose Close callback
+     */
+
+  }, {
+    key: '_setupListeners',
+    value: function _setupListeners(target, onClose) {
+      if (!!MaterialWalkthrough._instance.updateHandler) MaterialWalkthrough._flushListeners();
+      MaterialWalkthrough._instance.updateHandler = MaterialWalkthrough._createUpdateHandler(target);
+
+      window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
+      MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
+      MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+      MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
+        var hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
+        var next = function next() {
+          if (hasNext) {
+            MaterialWalkthrough._instance.currentIndex++;
+            MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
+          } else {
             MaterialWalkthrough._instance.currentIndex = 0;
-            MaterialWalkthrough._instance.onCloseCallback = callback;
-            MaterialWalkthrough.to(walkPoints[0]);
-        }
-    }, {
-        key: 'to',
+            MaterialWalkthrough._instance.points = null;
+            if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
+            MaterialWalkthrough._instance.onCloseCallback = null;
+            MaterialWalkthrough.closeWalker();
+          }
+          MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
+        };
+
+        if (!!onClose) onClose();
+        // Responsive metrics (According the style.css)
+        // TODO: Refact this. Turn into a separated function.
+        if (MaterialWalkthrough.FORCE_SMALL_BORDER || MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) {
+          DOMUtils.addClass(MaterialWalkthrough._wrapper, 'transiting');
+          DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'none' });
+          setTimeout(function () {
+            DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
+            next();
+          }, MaterialWalkthrough.TRANSITION_DURATION);
+        } else next();
+      });
+    }
+
+    /***
+     * Clean the listeners with the actual updateHandler
+     */
+
+  }, {
+    key: '_flushListeners',
+    value: function _flushListeners() {
+      _log('WALK_UPDATER', 'Flushing handlers\n' + MaterialWalkthrough._instance.updateHandler);
+      if (!!MaterialWalkthrough._instance.mutationObserver) MaterialWalkthrough._instance.mutationObserver.disconnect();
+      MaterialWalkthrough._instance.mutationObserver = null;
+      window.removeEventListener('resize', MaterialWalkthrough._instance.updateHandler);
+    }
+
+    /***
+     * Set the properties for the walk.
+     * @param {string} content The content that will be displayed in the walk
+     * @param {string} color A CSS valid color
+     * @param {string} acceptText The text that will be displayed in the accept button
+     */
+
+  }, {
+    key: '_setProperties',
+    value: function _setProperties(content, color, acceptText) {
+      color = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
+      DOMUtils.setStyle(MaterialWalkthrough._wrapper, { borderColor: color });
+      MaterialWalkthrough._content.innerHTML = content;
+      MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
+    }
+
+    // @TODO: Animate the scroll.
+    /***
+     * Centralize the scroll to a target.
+     * @param {HTMLElement} target
+     * @param {function} locateCallback
+     */
+
+  }, {
+    key: '_locateTarget',
+    value: function _locateTarget(target, locateCallback) {
+      var top = target.offsetTop;
+      var windowHeight = window.innerHeight;
+      var maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
+
+      var _target$getClientRect = target.getClientRects()[0],
+          height = _target$getClientRect.height,
+          width = _target$getClientRect.width;
+
+      var holeSize = height > width ? height : width;
+      var YCoordinate = top - windowHeight / 2 + holeSize / 2;
+      var secureYCoordinate = YCoordinate > maxScrollValue ? maxScrollValue : YCoordinate;
+
+      _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
+      _log('WALK_LOCK', 'windowHeight:', windowHeight);
+      setTimeout(function () {
+        return window.scrollTo(0, secureYCoordinate);
+      }, 0);
+
+      // TODO: After the animation, timeout on callback
+      if (locateCallback) locateCallback();
+    }
+
+    /**
+     * Move the walk to a target.
+     * @param {HTMLElement} target
+     * @param {function} renderCallback
+     * @private
+     */
+
+  }, {
+    key: '_renderFrame',
+    value: function _renderFrame(target, renderCallback) {
+      // HAVING ISSUES WITH THIS WAY TO GET POSITION IN SOME TESTS
+      // const position = { top: target.offsetTop, left: target.offsetLeft };
+      // Using this line.
+      var _target$getClientRect2 = target.getClientRects()[0],
+          height = _target$getClientRect2.height,
+          width = _target$getClientRect2.width,
+          top = _target$getClientRect2.top,
+          left = _target$getClientRect2.left;
 
 
-        /***
-         * Open the walker to a walkpoint.
-         * @param {WalkPoint} walkPoint The configuration of the walkpoint
-         */
-        value: function to(walkPoint) {
-            MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight;
-            ScrollManager.disable();
-            if (!MaterialWalkthrough.isInitialized) MaterialWalkthrough._init();
-            DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'closed');
-            MaterialWalkthrough._setWalker(walkPoint);
-        }
+      var holeSize = height > width ? height : width; // Catch the biggest measure
+      // Adjust with default min measure if it not higher than it
+      if (holeSize < MaterialWalkthrough.MIN_SIZE) holeSize = MaterialWalkthrough.MIN_SIZE;
+      _log('WALK_LOCK', 'Walk hole size ' + holeSize + 'px');
 
-        /***
-         * Close the walker and flush its Listeners.
-         */
+      var positions = {
+        height: holeSize + MaterialWalkthrough.GUTTER + 'px',
+        width: holeSize + MaterialWalkthrough.GUTTER + 'px',
 
-    }, {
-        key: 'closeWalker',
-        value: function closeWalker() {
-            _log('MSG', 'Closing Walker');
-            MaterialWalkthrough._flushListeners();
-            ScrollManager.enable();
+        marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
+        marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
-            DOMUtils.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
-            DOMUtils.addClass(MaterialWalkthrough._wrapper, 'closed');
-            setTimeout(function () {
-                DOMUtils.setStyle(MaterialWalkthrough._wrapper, { display: 'none' });
-                DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'opened');
-                _log('MSG', 'Walker Closed!');
-            }, MaterialWalkthrough.TRANSITION_DURATION);
-        }
-    }]);
-    return MaterialWalkthrough;
+        left: left + width / 2 + 'px',
+        top: top + height / 2 + 'px'
+      };
+      DOMUtils.setStyle(MaterialWalkthrough._wrapper, positions);
+      _log('WALK_LOCK', 'Positioning \n' + JSON.stringify(positions, 2));
+
+      setTimeout(function () {
+        renderCallback();
+      }, MaterialWalkthrough.TRANSITION_DURATION + 50);
+    }
+
+    /**
+     * Calculates the positions and render the content in the screen based in the space available around a target.
+     * @param {HTMLElement} target
+     * @param {function} renderCallback
+     * @private
+     */
+
+  }, {
+    key: '_renderContent',
+    value: function _renderContent(target, renderCallback) {
+      var position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
+
+      var itCanBeRenderedInRight = position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
+      var itCanBeRenderedInLeft = position.x + MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+
+      var itCanBeRenderedInTop = position.y - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
+      var itCanBeRenderedInBottom = position.y + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._wrapper.offsetHeight < window.innerHeight;
+
+      _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' + itCanBeRenderedInRight);
+      _log('WALK_CONTENT', 'itCanBeRenderedInLeft: ' + itCanBeRenderedInLeft);
+      _log('WALK_CONTENT', 'itCanBeRenderedInTop: ' + itCanBeRenderedInTop);
+      _log('WALK_CONTENT', 'itCanBeRenderedInBottom: ' + itCanBeRenderedInBottom);
+
+      var left = '100%';
+      var top = '100%';
+      var marginTop = 0;
+      var marginLeft = 0;
+      var textAlign = 'left';
+
+      if (!itCanBeRenderedInRight) {
+        left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px' : 'calc(50% - 100px)';
+        textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
+        marginTop = itCanBeRenderedInLeft ? 0 : itCanBeRenderedInBottom ? '20px' : '-20px';
+      }
+      if (!itCanBeRenderedInBottom) {
+        top = itCanBeRenderedInTop ? '-' + MaterialWalkthrough._contentWrapper.offsetHeight + 'px' : MaterialWalkthrough._wrapper.offsetHeight / 2 - MaterialWalkthrough._contentWrapper.offsetHeight / 2 + 'px';
+        marginLeft = itCanBeRenderedInTop ? 0 : !itCanBeRenderedInRight ? '-20px' : '20px';
+      }
+      DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { left: left, top: top, textAlign: textAlign, marginTop: marginTop, marginLeft: marginLeft });
+
+      if (renderCallback) renderCallback();
+    }
+  }, {
+    key: 'walk',
+    value: function walk(walkPoints, callback) {
+      MaterialWalkthrough._instance.points = walkPoints;
+      MaterialWalkthrough._instance.currentIndex = 0;
+      MaterialWalkthrough._instance.onCloseCallback = callback;
+      MaterialWalkthrough.to(walkPoints[0]);
+    }
+  }, {
+    key: 'to',
+
+
+    /***
+     * Open the walker to a walkpoint.
+     * @param {WalkPoint} walkPoint The configuration of the walkpoint
+     */
+    value: function to(walkPoint) {
+      MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight;
+      ScrollManager.disable();
+      if (!MaterialWalkthrough.isInitialized) MaterialWalkthrough._init();
+      DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'closed');
+      MaterialWalkthrough._setWalker(walkPoint);
+    }
+
+    /***
+     * Close the walker and flush its Listeners.
+     */
+
+  }, {
+    key: 'closeWalker',
+    value: function closeWalker() {
+      _log('MSG', 'Closing Walker');
+      MaterialWalkthrough._flushListeners();
+      ScrollManager.enable();
+
+      DOMUtils.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
+      DOMUtils.addClass(MaterialWalkthrough._wrapper, 'closed');
+      setTimeout(function () {
+        DOMUtils.setStyle(MaterialWalkthrough._wrapper, { display: 'none' });
+        DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'opened');
+        _log('MSG', 'Walker Closed!');
+      }, MaterialWalkthrough.TRANSITION_DURATION);
+    }
+  }]);
+  return MaterialWalkthrough;
 }();
 
 MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = 0;
@@ -746,11 +864,11 @@ MaterialWalkthrough._contentWrapper = null;
 MaterialWalkthrough._content = null;
 MaterialWalkthrough._actionButton = null;
 MaterialWalkthrough._instance = {
-    updateHandler: null,
-    mutationObserver: null,
-    points: null,
-    currentIndex: null,
-    onCloseCallback: null
+  updateHandler: null,
+  mutationObserver: null,
+  points: null,
+  currentIndex: null,
+  onCloseCallback: null
 };
 
 return MaterialWalkthrough;

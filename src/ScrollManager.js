@@ -1,12 +1,17 @@
 import dom from './DOMUtils';
 
-// Thanks to @galambalazs
 /**
  * Controls the state of scroll actions.
+ * Thanks to @galambalazs.
  */
 export default class ScrollManager {
-  // left: 37, up: 38, right: 39, down: 40,
-  // spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+
+  /**
+   * A map object that list, enable/disable each keys that manipulate the scroll into the window.
+   * left: 37, up: 38, right: 39, down: 40,
+   * spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+   * @type {object}
+   */
   static keys = {
     37: 1,
     38: 1,
@@ -31,6 +36,11 @@ export default class ScrollManager {
     }
   }
 
+  /**
+   * Override the main listeners, disabling the scroll for each enabled key in `keys` object.
+   * Also, set `height: 100vh` and `overflow: hidden` in the `html` element, forcing the content size to match
+   * with the window.
+   */
   static disable() {
     dom.setStyle(dom.get('html'),{
       'height': '100vh',
@@ -46,6 +56,10 @@ export default class ScrollManager {
     document.onkeydown = preventDefaultForScrollKeys;
   }
 
+  /**
+   * Reset the main listeners, enabling the scroll.
+   * Also reset the html element styles assigned before in `disable` function.
+   */
   static enable() {
     dom.setStyle(dom.get('html'),{
       'height': '',
