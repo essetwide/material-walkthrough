@@ -1,5 +1,5 @@
 # Material Walkthrough
-**WARNING:** This is a **UNSTABLE** branch. Help us to develop a new Material Walkthrough based on JS ES6
+**WARNING:** This is a **UNSTABLE** branch. Help us to develop a new Material Walkthrough based on ES6!
 
 A material tour, based on Google's Inbox (Fullscreen Tooltip Message), for your site, enhancing the UX.
 [See the demo here!](https://essetwide.github.io/material-walkthrough/)
@@ -12,41 +12,64 @@ Nov, 2014 - "[User Experience Design Concepts from Google Inbox](http://spyrestu
 * Responsive - Resize the screen and continue enjoying your Walkthrough.
 * Simple - With a few lines of code you will got a Walkthrough.
 * Compatible - Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0.
+* Clean - No more jQuery as dependency!
 * Made with love - Few nights without studying to develop this plugin with much love. 
 
-## 1. Installing
-```
+## Getting Startet
+### Using through NPM
+
+#### 1. Installing
+First, you just need to install the plugin from the NPM Registry.
+```bash
 npm install @essetwide/material-walkthrough@beta
 ```
 
-## 2. Importing
-```
-var Walk = require('@essetwide/material-walkthrough');
+#### 2. Importing
+Import the script by your language. It not need any dependency!
+#### ES6's `import` Syntax
+If your module bundler supports `import` statements.
+```js
+import MaterialWalkthrough from '@essetwide/material-walkthrough';
 ```
 
-## 3. Include CSS
-Load jQuery and include Material-Walkthrough plugin files
+#### CommonJS's `require` Syntax
+If your project use `require` pattern.
+```js
+const MaterialWalkthrough = require('@essetwide/material-walkthrough');
+```
+
+### Using without NPM
+
+#### 1. Downloading the ZIP from source
+If your project use plain JS, then you can download the ZIP from master [here](https://github.com/essetwide/material-walkthrough/archive/master.zip) and extract it in your project.
+
+#### 2. Setup your Code
+Insert the js source in your html code and use the plugin through the `MaterialWalkthrough` global.
 ```html
-<!-- Plugin Stylesheet -->
-<link rel="stylesheet" href="node_modules\@essetwide\material-walkthrough\dist\material-walkthrough.min.css">
+<body>
+  .
+  .
+  .
+  <!-- Material Walkthrough plugin -->
+  <script src="path/to/material-walkthrough/material-walkthrough.min.js"></script>
+</body>
 ```
 
-## 2. Set up your HTML
-You don't need any special markup. All you need is to add an `id` atributte to an HTML element. 
+### Usage
+#### 1. Setup your markup
+You don't need any special markup. All you need is add something to identify your HTML element - an id or a class, by example.
 ```html
-<a id="step1">Try Now!</a>
+<a id="step1">Try it Now!</a>
 ```
-
-## 3. Call the plugin
-Now call the Material Walkthrough initializer function and your walkthrough is ready.
-```javascript
-$.walk([
-        {
-            target: '#step1',
-            content: 'Here you can begin the walk!', //Hey, it can also be an HTML code!
-            color: 'red',
-            acceptText: 'OK'
-        }
+#### 2. Call the component!
+Just call the main method passing to it an array of your targets - we call it of `WalkPoints`.
+```js
+MaterialWalkthrough.walk([
+  {
+    target: '#step1',
+    content: 'My First Walkthrough!',
+    acceptText: 'YEAH!'
+  }
 ]);
 ```
 # License
