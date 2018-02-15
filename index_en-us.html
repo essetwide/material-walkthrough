@@ -59,12 +59,12 @@
                         <a href="#" id="logo-container" class="brand-logo">Material Walkthrough</a>
                         <ul class="right hide-on-med-and-down">
                             <li id='git'><a href="https://github.com/essetwide/material-walkthrough" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
-                            <li id="doc"><a href="pages/doc_pt-br.html">Documentação</a></li>
+                            <li id="doc"><a href="pages/doc_pt-br.html">Docs</a></li>
                             <li id="download"><a href="https://github.com/essetwide/material-walkthrough/archive/master.zip">Download</a></li>
                         </ul>
                         <ul id="nav-mobile" class="side-nav">
                             <li><a href="https://github.com/essetwide/material-walkthrough" target="_blank">Github</a></li>
-                            <li><a href="pages/doc_pt-br.html">Documentação</a></li>
+                            <li><a href="pages/doc_pt-br.html">Docs</a></li>
                             <li><a href="https://github.com/essetwide/material-walkthrough/archive/master.zip" target="_blank">Download</a></li>
                        </ul>
                         <a href="#" data-activates="nav-mobile" class="button-collapse" id="menu_trigger"><i class="material-icons">menu</i></a>
@@ -81,21 +81,21 @@
                         <pre class="brush: js;">
                        $.walk([
 				                {
-				                    target: '#login',
-				                    content: 'Faça aqui o seu login!',
+				                    target: '#begin',
+				                    content: 'Here are your latest emails!',
 				                    color: 'rgb(0,0,255)',
 				                    acceptText: 'OK'
 				                }, {
-				                    target: '#relatorio',
-				                    content: 'Aqui estão os seus <b>relatórios</b>!',
-				                    acceptText: 'Entendi'
+				                    target: '#report',
+				                    content: 'Emit a <b>report</b>!',
+				                    acceptText: 'Got It'
 				                },
                         }]);
                         </pre>
-                        <h2 class="center header text_h2">Auxilie seus usários com o<span class="span_h2"> Material Walkthrough  </span></h2>
+                        <h2 class="center header text_h2">Enhance your UX with<span class="span_h2"> Material Walkthrough  </span></h2>
                     </div>
                     <div class="center">
-                        <a id="inicio" class="waves-effect waves-light btn">Testar Agora!</a>
+                        <a id="begin" class="waves-effect waves-light btn">Try Now!</a>
                     </div>
                 </div>
             </div>
@@ -109,42 +109,42 @@
                         <div class="center promo promo-example">
                             <i class="material-icons">format_paint</i>
                             <h5 class="promo-caption">Material Design</h5>
-                            <p class="light center">Possui um visual Material baseado no tour apresentado pelo Inbox do Google.</p>
+                            <p class="light center">A Material Design based on Google Inbox's feature discovery.</p>
                         </div>
                     </div>
                     <div class="col s12 m4 l4">
                         <div class="center promo promo-example">
                             <i class="material-icons">mode_edit</i>
-                            <h5 class="promo-caption">Customizável</h5>
-                            <p class="light center">Mude os textos e as cores facilmente. Recomendamos o uso de <a href="https://www.materialui.co/flatuicolors" target="blank">Flat Colors</a></p>
+                            <h5 class="promo-caption">Custom</h5>
+                            <p class="light center">Change text and colors easily. We recommend you to follow the <a href="https://material.io/guidelines/style/color.html" target="blank">MD Guidelines</a></p>
                         </div>
                     </div>
-                    <div class="col s12 m4 l4" id="responsivo">
+                    <div class="col s12 m4 l4" id="responsive">
                         <div class="center promo promo-example">
                             <i id="responsivo_i" class="material-icons">aspect_ratio</i>
-                            <h5 class="promo-caption">Responsivo</h5>
-                            <p class="light center">Redimensione a tela e continue usufruindo do seu Walkthrough.</p>
+                            <h5 class="promo-caption">Responsive</h5>
+                            <p class="light center">Scale and see the magic.</p>
                         </div>
                     </div>
                     <div class="col s12 m4 l4">
                         <div class="center promo promo-example">
                             <i class="material-icons">code</i>
-                            <h5 class="promo-caption">Simples</h5>
-                            <p class="light center">Com poucas linhas de código você já terá um Walkthrough.</p>
+                            <h5 class="promo-caption">Simple</h5>
+                            <p class="light center">With a few lines you can have a Walkthrough.</p>
                         </div>
                     </div>
                     <div class="col s12 m4 l4">
                         <div class="center promo promo-example">
                             <i class="material-icons">language</i>
-                            <h5 class="promo-caption">Compatível</h5>
+                            <h5 class="promo-caption">Compatible</h5>
                             <p class="light center">Google Chrome 52.0; Firefox 48.0.2; Microsoft Edge 38.14393.0.0;</p>
                         </div>
                     </div>
                     <div class="col s12 m4 l4" id="amor">
                         <div class="center promo promo-example">
                             <i class="material-icons" id="amor_i">favorite</i>
-                            <h5 class="promo-caption">Feito com Amor</h5>
-                            <p class="light center">Muito amor e algumas noites sem estudar para provas para desenvolver este plugin com muito &#128150;.</p>
+                            <h5 class="promo-caption">Made with Love</h5>
+                            <p class="light center">A lot of love and some hours spend to give you the best Material Walkthrough &#128150;.</p>
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
         <!--Team-->
         <div class="section scrollspy" id="team">
             <div class="container">
-                <h2 class="header text_b">A equipe</h2>
+                <h2 class="header text_b">The Team</h2>
                 <div class="row">
                     <div class="col s12 m4 offset-m3 l3 offset-l3">
                         <div class="card card-avatar">
@@ -239,58 +239,58 @@
             if ($(window).outerWidth() > 1000) {
                 $.walk([
                     {
-                        target: '#inicio',
-                        content: 'Olá! Este é o Material Walkthrough, um belo plugin para engajar seus usuários!',
+                        target: '#begin',
+                        content: 'Hello! This is the Material Walkthrough, a beautiful plugin to captivate your users!',
                         color: '#f44336',
                         acceptText: 'OK'
                     }, {
                         target: '#git',
-                        content: '<b>Contribua</b> com a idéia!',
+                        content: '<b>Help</b> us, you are welcome!',
                         color: '#2e7d32',
-                        acceptText: 'Entendi'
+                        acceptText: 'Got it'
                     }, {
                         target: '#doc',
-                        content: 'Aprenda e faça o seu <u>agora mesmo</u>',
+                        content: 'Learn and try <u>rigth now</u>',
                         color: '#009688',
-                        acceptText: 'Compreendido'
+                        acceptText: 'Brilliant'
                     },{
                         target: '#download',
-                        content: 'Baixe a última versão!',
+                        content: 'Download the latest version!',
                         color: '#2196F3'
                     }, {
-                        target: '#responsivo',
-                        content: 'Totalmente Responsivo! ;)',
+                        target: '#responsive',
+                        content: 'Fully Responsive! ;)',
                         color: '#3f51b5',
-                        acceptText: 'OK'
+                        acceptText: 'Yeah!'
 
                     }, {
                         target: '#amor',
-                        content: 'Por fim... Tudo feito com carinho',
+                        content: 'Last but not least... Made with passion',
                         color: '#f44336'
                     }
                 ]);
             } else {
                 $.walk([
-                    {
-                        target: '#inicio',
-                        content: 'Olá! Este é o Material Walkthrough.',
-                        color: '#f44336',
-                        acceptText: 'OK'
-                    }, {
+                  {
+                    target: '#begin',
+                    content: 'Hello! This is the Material Walkthrough, a beautiful plugin to captivate your users!',
+                    color: '#f44336',
+                    acceptText: 'OK'
+                  }, {
                         target: '#menu_trigger',
-                        content: 'Explore a documentação aqui e contribua no <b>Github</b>',
+                        content: '<b>Help</b> us, you are welcome!',
                         color: '#3f51b5',
                         acceptText: 'OK'
 
                     }, {
-                        target: '#responsivo_i',
-                        content: 'Totalmente Responsivo! ;)',
+                        target: '#responsive_i',
+                        content: 'Fully Responsive! ;)',
                         color: '#3f51b5',
-                        acceptText: 'OK'
+                        acceptText: 'Got It!'
 
                     }, {
                         target: '#amor_i',
-                        content: 'Por fim... Tudo feito com carinho',
+                        content: 'Last but not least... Made with passion',
                         color: '#f44336'
                     }
                 ]);
@@ -299,7 +299,7 @@
         $( document ).ready(function() {
             SyntaxHighlighter.all();
         	setTimeout(startWalk, 1000);
-            $("#inicio").click(startWalk);
+            $("#begin").click(startWalk);
         });
             
         </script>
