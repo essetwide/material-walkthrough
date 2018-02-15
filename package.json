@@ -1,6 +1,6 @@
 {
   "name": "@essetwide/material-walkthrough",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A material tour (eg Inbox from Google) for your site, enhancing the UX.",
   "main": "index.js",
   "scripts": {

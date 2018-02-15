@@ -479,7 +479,7 @@ export default class MaterialWalkthrough {
     ScrollManager.enable();
 
     // This will centralize the walk while it animate the hole opening with 1000px size.
-    dom.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
+    dom.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px', opacity: '' });
     dom.addClass(MaterialWalkthrough._wrapper, 'closed');
     setTimeout(() => {
       dom.setStyle(MaterialWalkthrough._wrapper, {display: 'none'});

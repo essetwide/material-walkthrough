@@ -8,7 +8,7 @@ function __$styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
 
-  if (!css || typeof document === 'undefined') { return; }
+  if (!css) { return }
 
   var head = document.head || document.getElementsByTagName('head')[0];
   var style = document.createElement('style');
@@ -338,7 +338,7 @@ ScrollManager.keys = {
   34: 1
 };
 
-__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n\nbody {\n    margin: 0px; /* Having problems with getClientRects. Webkit apply 8px for maring in body. Reseting body */\n    position: relative; /* FIX FROM ISSUE #30 */\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white;\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: inherit;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before {\n    border-width: 200vw;\n    margin-left: -200vw;\n    margin-top: -200vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    box-sizing: content-box;\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n    display: inline-block;\n    flex-flow: initial;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}\n\n\n/** small rules **/\n#walk-wrapper.opened.small:before {\n    border-width: 320px;\n    margin-left: -320px;\n    margin-top: -320px;\n}\n\n#walk-wrapper.transiting.small:not(.animations-disabled):before {\n    border-width: 50px !important;\n    margin-left: -50px !important;\n    margin-top: -50px !important;\n}\n\n/** animations-disabled rules **/\n#walk-wrapper.animations-disabled,\n#walk-wrapper.animations-disabled:before {\n    transition: 0s;\n}\n\n#walk-wrapper.animations-disabled:before {\n    transition: 0.25s opacity;\n}\n\n#walk-wrapper.opened.animations-disabled:before {\n    opacity: .9;\n}\n\n#walk-wrapper.animations-disabled:before,\n#walk-wrapper.transiting.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled {\n    opacity: 0;\n}\n\n/*\nTODO: Make it responsible with layout breakpoints.\n    * The walk border\n    * The content text\n*/\n@media all and (max-width: 768px) {\n    #walk-wrapper #walk-content-wrapper {\n        max-width: 270px;\n        font-size: 18px;\n    }\n}\n", {});
+__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n\nbody {\n    margin: 0px; /* Having problems with getClientRects. Webkit apply 8px for maring in body. Reseting body */\n    position: relative; /* FIX FROM ISSUE #30 */\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white; /* @TODO: Decide the contrast color based on the bright of the main color */\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: inherit;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before {\n    border-width: 200vw;\n    margin-left: -200vw;\n    margin-top: -200vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    box-sizing: content-box;\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n    opacity: 1;\n    transition: 0.25s opacity;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper:not(.opened) #walk-content-wrapper,\n#walk-wrapper.transiting #walk-content-wrapper {\n    opacity: 0;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n    display: inline-block;\n    flex-flow: initial;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}\n\n\n/** small rules **/\n#walk-wrapper.opened.small:before {\n    border-width: 320px;\n    margin-left: -320px;\n    margin-top: -320px;\n}\n#walk-wrapper.small #walk-content-wrapper {\n  max-width: 300px;\n}\n\n#walk-wrapper.transiting.small:not(.animations-disabled) {\n    display: none !important;\n}\n\n@media (max-width: 750px) {\n    #walk-wrapper.opened.small:before {\n        border-width: 50vw;\n        margin-left: -50vw;\n        margin-top: -50vw;\n    }\n}\n\n/** animations-disabled rules **/\n#walk-wrapper.animations-disabled,\n#walk-wrapper.animations-disabled:before {\n    transition: 0s;\n}\n\n#walk-wrapper.animations-disabled:before {\n    transition: 0.25s opacity;\n}\n\n#walk-wrapper.opened.animations-disabled:before {\n    opacity: .9;\n}\n\n#walk-wrapper.animations-disabled:before,\n#walk-wrapper.transiting.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled {\n    opacity: 0;\n}\n\n/*\nTODO: Make it responsible with layout breakpoints.\n    * The walk border\n    * The content text\n*/\n@media all and (max-width: 768px) {\n    #walk-wrapper #walk-content-wrapper {\n        max-width: 270px;\n        font-size: 18px;\n    }\n}\n", {});
 
 /**
  * Copyright 2017 Esset Software LTD.
@@ -570,7 +570,6 @@ var MaterialWalkthrough = function () {
       _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
 
       MaterialWalkthrough._setupListeners(target, walkPoint.onClose);
-      DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'none' });
 
       MaterialWalkthrough._locateTarget(target, function () {
         MaterialWalkthrough._setProperties(walkPoint.content, walkPoint.color, walkPoint.opacity, walkPoint.acceptText);
@@ -579,12 +578,12 @@ var MaterialWalkthrough = function () {
         MaterialWalkthrough._renderFrame(target, function () {
           DOMUtils.addClass(MaterialWalkthrough._wrapper, 'opened');
           MaterialWalkthrough._renderContent(target, function () {
-            DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
+            DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
           });
 
           // Little XGH
           MaterialWalkthrough._renderContent(target, function () {
-            DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'block' });
+            DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
           });
         });
       });
@@ -653,14 +652,10 @@ var MaterialWalkthrough = function () {
         if (!!onClose) onClose();
         // Responsive metrics (According the style.css)
         // TODO: Refact this. Turn into a separated function.
-        if (MaterialWalkthrough.FORCE_SMALL_BORDER || MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) {
-          DOMUtils.addClass(MaterialWalkthrough._wrapper, 'transiting');
-          DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { display: 'none' });
-          setTimeout(function () {
-            DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-            next();
-          }, MaterialWalkthrough.TRANSITION_DURATION);
-        } else next();
+        DOMUtils.addClass(MaterialWalkthrough._wrapper, 'transiting');
+        setTimeout(function () {
+          next();
+        }, MaterialWalkthrough.TRANSITION_DURATION);
       });
     }
 
@@ -690,8 +685,6 @@ var MaterialWalkthrough = function () {
     value: function _setProperties(content, color, opacity, acceptText) {
       color = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
       opacity = !!opacity ? opacity : MaterialWalkthrough.DEFAULT_OPACITY;
-      _log("_setProperties", "OPCAITY: " + opacity);
-      console.log("DEUS");
       DOMUtils.setStyle(MaterialWalkthrough._wrapper, { borderColor: color, opacity: opacity });
       MaterialWalkthrough._content.innerHTML = content;
       MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
@@ -769,7 +762,7 @@ var MaterialWalkthrough = function () {
 
       setTimeout(function () {
         renderCallback();
-      }, MaterialWalkthrough.TRANSITION_DURATION + 50);
+      }, MaterialWalkthrough.TRANSITION_DURATION / 2);
     }
 
     /**
@@ -856,11 +849,13 @@ var MaterialWalkthrough = function () {
       MaterialWalkthrough._flushListeners();
       ScrollManager.enable();
 
-      DOMUtils.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
+      // This will centralize the walk while it animate the hole opening with 1000px size.
+      DOMUtils.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px', opacity: '' });
       DOMUtils.addClass(MaterialWalkthrough._wrapper, 'closed');
       setTimeout(function () {
         DOMUtils.setStyle(MaterialWalkthrough._wrapper, { display: 'none' });
         DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'opened');
+        DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
         _log('MSG', 'Walker Closed!');
       }, MaterialWalkthrough.TRANSITION_DURATION);
     }
