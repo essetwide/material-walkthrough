@@ -219,21 +219,20 @@ export default class MaterialWalkthrough {
     _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
 
     MaterialWalkthrough._setupListeners(target, walkPoint.onClose);
-    dom.setStyle(MaterialWalkthrough._contentWrapper, {display: 'none'});
 
     MaterialWalkthrough._locateTarget(target, () => {
       MaterialWalkthrough._setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
-      dom.setStyle(MaterialWalkthrough._wrapper, {display: 'block'});
+      dom.setStyle(MaterialWalkthrough._wrapper, { display: 'block' });
 
       MaterialWalkthrough._renderFrame(target, () => {
         dom.addClass(MaterialWalkthrough._wrapper, 'opened');
         MaterialWalkthrough._renderContent(target, () => {
-          dom.setStyle(MaterialWalkthrough._contentWrapper, {display: 'block'});
+          dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
         });
 
         // Little XGH
         MaterialWalkthrough._renderContent(target, () => {
-          dom.setStyle(MaterialWalkthrough._contentWrapper, {display: 'block'});
+          dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
         });
       });
     });
@@ -298,14 +297,10 @@ export default class MaterialWalkthrough {
       if (!!onClose) onClose();
       // Responsive metrics (According the style.css)
       // TODO: Refact this. Turn into a separated function.
-      if (MaterialWalkthrough.FORCE_SMALL_BORDER || MaterialWalkthrough.DISABLE_HUGE_ANIMATIONS) {
-        dom.addClass(MaterialWalkthrough._wrapper, 'transiting');
-        dom.setStyle(MaterialWalkthrough._contentWrapper, {display: 'none'});
-        setTimeout(() => {
-          dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-          next();
-        }, MaterialWalkthrough.TRANSITION_DURATION);
-      } else next();
+      dom.addClass(MaterialWalkthrough._wrapper, 'transiting');
+      setTimeout(() => {
+        next();
+      }, MaterialWalkthrough.TRANSITION_DURATION);
     });
   }
 
@@ -326,8 +321,8 @@ export default class MaterialWalkthrough {
    * @param {string} acceptText The text that will be displayed in the accept button
    */
   static _setProperties(content, color, acceptText) {
-    color = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
-    dom.setStyle(MaterialWalkthrough._wrapper, {borderColor: color});
+    const borderColor = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
+    dom.setStyle(MaterialWalkthrough._wrapper, { borderColor });
     MaterialWalkthrough._content.innerHTML = content;
     MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
   }
@@ -389,7 +384,7 @@ export default class MaterialWalkthrough {
 
     setTimeout(function () {
       renderCallback();
-    }, MaterialWalkthrough.TRANSITION_DURATION + 50);
+    }, MaterialWalkthrough.TRANSITION_DURATION / 2);
   }
 
   /**
@@ -473,11 +468,13 @@ export default class MaterialWalkthrough {
     MaterialWalkthrough._flushListeners();
     ScrollManager.enable();
 
-    dom.setStyle(MaterialWalkthrough._wrapper, {marginTop: '-500px', marginLeft: '-500px'});
+    // This will centralize the walk while it animate the hole opening with 1000px size.
+    dom.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
     dom.addClass(MaterialWalkthrough._wrapper, 'closed');
     setTimeout(() => {
       dom.setStyle(MaterialWalkthrough._wrapper, {display: 'none'});
       dom.removeClass(MaterialWalkthrough._wrapper, 'opened');
+      dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
       _log('MSG', 'Walker Closed!');
     }, MaterialWalkthrough.TRANSITION_DURATION);
   }
