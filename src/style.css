@@ -66,7 +66,7 @@ body {
     height: inherit;
     margin-top: 0vw;
     margin-left: 0vw;
-    opacity: inherit;
+    opacity: .9;
     box-sizing: content-box !important;
     transition: border-width 0.25s ease-in, margin 0.25s ease-in;
 }

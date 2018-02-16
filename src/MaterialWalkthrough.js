@@ -47,7 +47,6 @@ function _log(context, message, ...attrs) {
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
  * @property {string} content A HTML code that will be inserted on the walk-content container;
  * @property {string} [color] A CSS (rgb, rgba, hex, etc.) color specification that will paint the walk. #2196F3 is default;
- * @property {number} [opacity] A float number between 0 and 1, that will be used as the opacity of the walk. 0.9 is default;
  * @property {string} [acceptText] The text of the accept button of the walk;
  * @property {function} [onSet] A function that will be called when the walk content is setted;
  * @property {function} [onClose] A function that will be called when the walk is accepted;
@@ -84,13 +83,6 @@ export default class MaterialWalkthrough {
    * @type {string}
    */
   static DEFAULT_COLOR = '#2196F3';
-
-  /**
-   * Default opacity used if none is passed in the walkpoint.
-   * It need to be a valid float between 0 and 1.
-   * @type {number}
-   */
-  static DEFAULT_OPACITY = 0.9;
 
   /**
    * Default accept text if none is passed in the walkpoint.
@@ -229,7 +221,7 @@ export default class MaterialWalkthrough {
     MaterialWalkthrough._setupListeners(target, walkPoint.onClose);
 
     MaterialWalkthrough._locateTarget(target, () => {
-      MaterialWalkthrough._setProperties(walkPoint.content, walkPoint.color, walkPoint.opacity, walkPoint.acceptText);
+      MaterialWalkthrough._setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
       dom.setStyle(MaterialWalkthrough._wrapper, {display: 'block'});
 
       MaterialWalkthrough._renderFrame(target, () => {
@@ -326,13 +318,11 @@ export default class MaterialWalkthrough {
    * Set the properties for the walk.
    * @param {string} content The content that will be displayed in the walk
    * @param {string} color A CSS valid color
-   * @param {number} opacity A valid float between 0 and 1
    * @param {string} acceptText The text that will be displayed in the accept button
    */
-  static _setProperties(content, color, opacity, acceptText) {
-    color = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
-    opacity = !!opacity ? opacity : MaterialWalkthrough.DEFAULT_OPACITY;
-    dom.setStyle(MaterialWalkthrough._wrapper, {borderColor: color, opacity: opacity});
+  static _setProperties(content, color, acceptText) {
+    const borderColor = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
+    dom.setStyle(MaterialWalkthrough._wrapper, { borderColor });
     MaterialWalkthrough._content.innerHTML = content;
     MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
   }
@@ -348,9 +338,8 @@ export default class MaterialWalkthrough {
     const windowHeight = window.innerHeight;
     const maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
 
-    const {height, width} = target.getClientRects()[0];
-    let holeSize = height > width ? height : width;
-    const YCoordinate = top - (windowHeight / 2) + (holeSize / 2);
+    const { height } = target.getClientRects()[0];
+    const YCoordinate = top - (windowHeight / 2) + height / 2;
     const secureYCoordinate = YCoordinate > maxScrollValue ? maxScrollValue : YCoordinate;
 
 
@@ -370,9 +359,9 @@ export default class MaterialWalkthrough {
    */
   static _renderFrame(target, renderCallback) {
     // HAVING ISSUES WITH THIS WAY TO GET POSITION IN SOME TESTS
-    // const position = { top: target.offsetTop, left: target.offsetLeft };
+     const position = { top: target.offsetTop };
     // Using this line.
-    const { height, width, top, left } = target.getClientRects()[0];
+    const { height, width, left } = target.getClientRects()[0];
 
     let holeSize = height > width ? height : width; // Catch the biggest measure
     // Adjust with default min measure if it not higher than it
@@ -387,7 +376,7 @@ export default class MaterialWalkthrough {
       marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
       left: (left + (width / 2)) + 'px',
-      top: (top + (height / 2)) + 'px',
+      top: (position.top + (height / 2)) + 'px',
     };
     dom.setStyle(MaterialWalkthrough._wrapper, positions);
     _log('WALK_LOCK', 'Positioning \n' + JSON.stringify(positions, 2));
@@ -479,7 +468,7 @@ export default class MaterialWalkthrough {
     ScrollManager.enable();
 
     // This will centralize the walk while it animate the hole opening with 1000px size.
-    dom.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px', opacity: '' });
+    dom.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
     dom.addClass(MaterialWalkthrough._wrapper, 'closed');
     setTimeout(() => {
       dom.setStyle(MaterialWalkthrough._wrapper, {display: 'none'});
