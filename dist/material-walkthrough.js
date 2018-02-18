@@ -557,6 +557,13 @@ var MaterialWalkthrough = function () {
     key: '_setWalker',
     value: function _setWalker(walkPoint) {
       var target = DOMUtils.get(walkPoint.target);
+
+      if (!target) {
+        _log('_setWalker', 'identifier ' + walkPoint.target + ' not found. Skiping to next WalkPoint');
+        MaterialWalkthrough._next();
+        return;
+      }
+
       _log('MSG', '-------------------------------------');
       _log('MSG', 'Setting a walk to #' + target.id);
       _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
@@ -610,6 +617,26 @@ var MaterialWalkthrough = function () {
     }
 
     /***
+     * Check if is at the end and finish it or move to the next WalkPoint
+     */
+
+  }, {
+    key: '_next',
+    value: function _next() {
+      var hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
+      if (hasNext) {
+        MaterialWalkthrough._instance.currentIndex++;
+        MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
+      } else {
+        MaterialWalkthrough._instance.currentIndex = 0;
+        MaterialWalkthrough._instance.points = null;
+        if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
+        MaterialWalkthrough._instance.onCloseCallback = null;
+        MaterialWalkthrough.closeWalker();
+      }
+    }
+
+    /***
      * Setup the update listeners (onResize, MutationObserver) and the close callback.
      * @param {HTMLElement} target The target to set the listeners
      * @param {function} onClose Close callback
@@ -626,28 +653,16 @@ var MaterialWalkthrough = function () {
       MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
       MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
-        var hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
-        var next = function next() {
-          if (hasNext) {
-            MaterialWalkthrough._instance.currentIndex++;
-            MaterialWalkthrough._setWalker(MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]);
-          } else {
-            MaterialWalkthrough._instance.currentIndex = 0;
-            MaterialWalkthrough._instance.points = null;
-            if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
-            MaterialWalkthrough._instance.onCloseCallback = null;
-            MaterialWalkthrough.closeWalker();
-          }
-          MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
-        };
-
         if (!!onClose) onClose();
+
         // Responsive metrics (According the style.css)
-        // TODO: Refact this. Turn into a separated function.
         DOMUtils.addClass(MaterialWalkthrough._wrapper, 'transiting');
+
         setTimeout(function () {
-          next();
+          MaterialWalkthrough._next();
         }, MaterialWalkthrough.TRANSITION_DURATION);
+
+        MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
       });
     }
 

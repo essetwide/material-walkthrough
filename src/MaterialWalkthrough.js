@@ -214,6 +214,13 @@ export default class MaterialWalkthrough {
    */
   static _setWalker(walkPoint) {
     let target = dom.get(walkPoint.target);
+
+    if (!target) {
+      _log('_setWalker', 'Target ' + walkPoint.target + ' not found. Skiping to next WalkPoint');
+      MaterialWalkthrough._next();
+      return;
+    }
+
     _log('MSG', '-------------------------------------');
     _log('MSG', 'Setting a walk to #' + target.id);
     _log('WALK_SETUP', 'Properties:\n' + JSON.stringify(walkPoint, null, 2));
@@ -264,6 +271,25 @@ export default class MaterialWalkthrough {
   }
 
   /***
+   * Check if is at the end and finish it or move to the next WalkPoint
+   */
+  static _next(){
+    const hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
+      if (hasNext) {
+        MaterialWalkthrough._instance.currentIndex++;
+        MaterialWalkthrough._setWalker(
+          MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]
+        );
+      } else {
+        MaterialWalkthrough._instance.currentIndex = 0;
+        MaterialWalkthrough._instance.points = null;
+        if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
+        MaterialWalkthrough._instance.onCloseCallback = null;
+        MaterialWalkthrough.closeWalker();
+      }
+  }
+
+  /***
    * Setup the update listeners (onResize, MutationObserver) and the close callback.
    * @param {HTMLElement} target The target to set the listeners
    * @param {function} onClose Close callback
@@ -277,30 +303,16 @@ export default class MaterialWalkthrough {
     MaterialWalkthrough._instance.mutationObserver.observe(document.body, {childList: true, subtree: true});
 
     MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
-      const hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
-      const next = () => {
-        if (hasNext) {
-          MaterialWalkthrough._instance.currentIndex++;
-          MaterialWalkthrough._setWalker(
-            MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]
-          );
-        } else {
-          MaterialWalkthrough._instance.currentIndex = 0;
-          MaterialWalkthrough._instance.points = null;
-          if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
-          MaterialWalkthrough._instance.onCloseCallback = null;
-          MaterialWalkthrough.closeWalker();
-        }
-        MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
-      };
-
       if (!!onClose) onClose();
+
       // Responsive metrics (According the style.css)
-      // TODO: Refact this. Turn into a separated function.
       dom.addClass(MaterialWalkthrough._wrapper, 'transiting');
+
       setTimeout(() => {
-        next();
+        MaterialWalkthrough._next();
       }, MaterialWalkthrough.TRANSITION_DURATION);
+
+      MaterialWalkthrough._actionButton.removeEventListener('click', actionCallback);
     });
   }
 
