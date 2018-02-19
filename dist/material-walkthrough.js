@@ -699,7 +699,14 @@ var MaterialWalkthrough = function () {
       DOMUtils.setStyle(MaterialWalkthrough._wrapper, { borderColor: borderColor });
       MaterialWalkthrough._content.innerHTML = content;
       MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', borderColor);
+      if (!MaterialWalkthrough.FORCE_SMALL_BORDER) {
+        console.log("");
+        console.log("");
+        console.log("==== TOP ====");
+        console.log("");
+        console.log("");
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', borderColor);
+      }
     }
 
     // @TODO: Animate the scroll.
