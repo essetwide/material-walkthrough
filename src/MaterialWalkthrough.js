@@ -78,6 +78,12 @@ export default class MaterialWalkthrough {
   static CURRENT_DOCUMENT_HEIGHT = 0;
 
   /**
+   * Cache the original meta theme-color to be set back when MaterialWalkthrough finish.
+   * @type {string}
+   */
+  static ORIGINAL_THEME_COLOR = null;
+
+  /**
    * Default color used if none is passed in the walkpoint.
    * It need to be a valid HEX or RGB color because it will be useful on contrast calculations.
    * @type {string}
@@ -337,6 +343,7 @@ export default class MaterialWalkthrough {
     dom.setStyle(MaterialWalkthrough._wrapper, { borderColor });
     MaterialWalkthrough._content.innerHTML = content;
     MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', borderColor );
   }
 
   // @TODO: Animate the scroll.
@@ -456,6 +463,15 @@ export default class MaterialWalkthrough {
     MaterialWalkthrough._instance.points = walkPoints;
     MaterialWalkthrough._instance.currentIndex = 0;
     MaterialWalkthrough._instance.onCloseCallback = callback;
+    if (document.querySelector('meta[name="theme-color"]'))
+      MaterialWalkthrough.ORIGINAL_THEME_COLOR = document.querySelector('meta[name="theme-color"]').getAttribute('content');
+    else {
+      MaterialWalkthrough.ORIGINAL_THEME_COLOR = null;
+      var meta = document.createElement('meta');
+      meta.name = "theme-color";
+      meta.content = "";
+      document.querySelector('head').appendChild(meta);
+    }
     MaterialWalkthrough.to(walkPoints[0]);
   };
 
@@ -478,6 +494,7 @@ export default class MaterialWalkthrough {
     _log('MSG', 'Closing Walker');
     MaterialWalkthrough._flushListeners();
     ScrollManager.enable();
+    document.querySelector('meta[name="theme-color"]').setAttribute('content',MaterialWalkthrough.ORIGINAL_THEME_COLOR);
 
     // This will centralize the walk while it animate the hole opening with 1000px size.
     dom.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });

@@ -474,6 +474,12 @@ var MaterialWalkthrough = function () {
      * It need to be a valid HEX or RGB color because it will be useful on contrast calculations.
      * @type {string}
      */
+
+    /**
+     * Cache the current height size of the document.
+     * Calculated by `document.querySelector('html').offsetHeight` at `MaterialWalkthrough.to` method.
+     * @type {number}
+     */
     value: function _init() {
       DOMUtils.appendTo(DOMUtils.get('body'), MaterialWalkthrough.ELEMENT_TEMPLATE);
       MaterialWalkthrough._wrapper = DOMUtils.get('#walk-wrapper');
@@ -547,10 +553,10 @@ var MaterialWalkthrough = function () {
      * @type {string}
      */
 
+
     /**
-     * Cache the current height size of the document.
-     * Calculated by `document.querySelector('html').offsetHeight` at `MaterialWalkthrough.to` method.
-     * @type {number}
+     * Cache the original meta theme-color to be set back when MaterialWalkthrough finish.
+     * @type {string}
      */
 
   }, {
@@ -559,7 +565,7 @@ var MaterialWalkthrough = function () {
       var target = DOMUtils.get(walkPoint.target);
 
       if (!target) {
-        _log('_setWalker', 'identifier ' + walkPoint.target + ' not found. Skiping to next WalkPoint');
+        _log('_setWalker', 'Target ' + walkPoint.target + ' not found. Skiping to next WalkPoint');
         MaterialWalkthrough._next();
         return;
       }
@@ -693,6 +699,7 @@ var MaterialWalkthrough = function () {
       DOMUtils.setStyle(MaterialWalkthrough._wrapper, { borderColor: borderColor });
       MaterialWalkthrough._content.innerHTML = content;
       MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', borderColor);
     }
 
     // @TODO: Animate the scroll.
@@ -821,6 +828,13 @@ var MaterialWalkthrough = function () {
       MaterialWalkthrough._instance.points = walkPoints;
       MaterialWalkthrough._instance.currentIndex = 0;
       MaterialWalkthrough._instance.onCloseCallback = callback;
+      if (document.querySelector('meta[name="theme-color"]')) MaterialWalkthrough.ORIGINAL_THEME_COLOR = document.querySelector('meta[name="theme-color"]').getAttribute('content');else {
+        MaterialWalkthrough.ORIGINAL_THEME_COLOR = null;
+        var meta = document.createElement('meta');
+        meta.name = "theme-color";
+        meta.content = "";
+        document.querySelector('head').appendChild(meta);
+      }
       MaterialWalkthrough.to(walkPoints[0]);
     }
   }, {
@@ -849,6 +863,7 @@ var MaterialWalkthrough = function () {
       _log('MSG', 'Closing Walker');
       MaterialWalkthrough._flushListeners();
       ScrollManager.enable();
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', MaterialWalkthrough.ORIGINAL_THEME_COLOR);
 
       // This will centralize the walk while it animate the hole opening with 1000px size.
       DOMUtils.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
@@ -865,6 +880,7 @@ var MaterialWalkthrough = function () {
 }();
 
 MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = 0;
+MaterialWalkthrough.ORIGINAL_THEME_COLOR = null;
 MaterialWalkthrough.DEFAULT_COLOR = '#2196F3';
 MaterialWalkthrough.DEFAULT_ACCEPT_TEXT = 'Ok';
 MaterialWalkthrough.TRANSITION_DURATION = 500;
