@@ -416,15 +416,15 @@ export default class MaterialWalkthrough {
     const position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
 
     const itCanBeRenderedInRight =
-      position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)
+      position.left + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)
       + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-    const itCanBeRenderedInLeft = (position.x + MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+    const itCanBeRenderedInLeft = (position.left + MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
     const itCanBeRenderedInTop =
-      position.y
+      position.top
       - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
     const itCanBeRenderedInBottom =
-      position.y
+      position.top
       + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._wrapper.offsetHeight
       < window.innerHeight;
 

@@ -699,14 +699,7 @@ var MaterialWalkthrough = function () {
       DOMUtils.setStyle(MaterialWalkthrough._wrapper, { borderColor: borderColor });
       MaterialWalkthrough._content.innerHTML = content;
       MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
-      if (!MaterialWalkthrough.FORCE_SMALL_BORDER) {
-        console.log("");
-        console.log("");
-        console.log("==== TOP ====");
-        console.log("");
-        console.log("");
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', borderColor);
-      }
+      if (!MaterialWalkthrough.FORCE_SMALL_BORDER) document.querySelector('meta[name="theme-color"]').setAttribute('content', borderColor);
     }
 
     // @TODO: Animate the scroll.
@@ -792,11 +785,11 @@ var MaterialWalkthrough = function () {
     value: function _renderContent(target, renderCallback) {
       var position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
 
-      var itCanBeRenderedInRight = position.x + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-      var itCanBeRenderedInLeft = position.x + MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+      var itCanBeRenderedInRight = position.left + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
+      var itCanBeRenderedInLeft = position.left + MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
-      var itCanBeRenderedInTop = position.y - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
-      var itCanBeRenderedInBottom = position.y + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._wrapper.offsetHeight < window.innerHeight;
+      var itCanBeRenderedInTop = position.top - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
+      var itCanBeRenderedInBottom = position.top + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._wrapper.offsetHeight < window.innerHeight;
 
       _log('WALK_CONTENT', 'itCanBeRenderedInRight: ' + itCanBeRenderedInRight);
       _log('WALK_CONTENT', 'itCanBeRenderedInLeft: ' + itCanBeRenderedInLeft);
