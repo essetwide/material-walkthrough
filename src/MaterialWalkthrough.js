@@ -384,7 +384,7 @@ export default class MaterialWalkthrough {
 
     _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
     _log('WALK_LOCK', 'windowHeight:', windowHeight);
-    setTimeout(() => window.scrollTo(0, secureYCoordinate), 0);
+    window.scrollTo(0, secureYCoordinate);
 
     // TODO: After the animation, timeout on callback
     if (locateCallback) locateCallback();
