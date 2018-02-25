@@ -8,7 +8,7 @@ function __$styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
 
-  if (!css || typeof document === 'undefined') { return; }
+  if (!css) { return }
 
   var head = document.head || document.getElementsByTagName('head')[0];
   var style = document.createElement('style');
@@ -338,7 +338,31 @@ ScrollManager.keys = {
   34: 1
 };
 
-__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n\nbody {\n    margin: 0px; /* Having problems with getClientRects. Webkit apply 8px for maring in body. Reseting body */\n    position: relative; /* FIX FROM ISSUE #30 */\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white; /* @TODO: Decide the contrast color based on the bright of the main color */\n    z-index: 1000;\n    display: none;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: .9;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before {\n    border-width: 200vw;\n    margin-left: -200vw;\n    margin-top: -200vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    box-sizing: content-box;\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n    opacity: 1;\n    transition: 0.25s opacity;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper:not(.opened) #walk-content-wrapper,\n#walk-wrapper.transiting #walk-content-wrapper {\n    opacity: 0;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n    display: inline-block;\n    flex-flow: initial;\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}\n\n\n/** small rules **/\n#walk-wrapper.opened.small:before {\n    border-width: 320px;\n    margin-left: -320px;\n    margin-top: -320px;\n}\n#walk-wrapper.small #walk-content-wrapper {\n  max-width: 300px;\n}\n\n#walk-wrapper.transiting.small:not(.animations-disabled) {\n    display: none !important;\n}\n\n@media (max-width: 750px) {\n    #walk-wrapper.opened.small:before {\n        border-width: 50vw;\n        margin-left: -50vw;\n        margin-top: -50vw;\n    }\n}\n\n/** animations-disabled rules **/\n#walk-wrapper.animations-disabled,\n#walk-wrapper.animations-disabled:before {\n    transition: 0s;\n}\n\n#walk-wrapper.animations-disabled:before {\n    transition: 0.25s opacity;\n}\n\n#walk-wrapper.opened.animations-disabled:before {\n    opacity: .9;\n}\n\n#walk-wrapper.animations-disabled:before,\n#walk-wrapper.transiting.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled {\n    opacity: 0;\n}\n\n/*\nTODO: Make it responsible with layout breakpoints.\n    * The walk border\n    * The content text\n*/\n@media all and (max-width: 768px) {\n    #walk-wrapper #walk-content-wrapper {\n        max-width: 270px;\n        font-size: 18px;\n    }\n}\n", {});
+/**
+ * Calculate brightness value by RGB or HEX color.
+ * @param color (String) The color value in RGB or HEX (for example: #000000 || #000 || rgb(0,0,0) || rgba(0,0,0,0))
+ * @returns (Number) The brightness value (dark) 0 ... 255 (light)
+ */
+function brightnessByColor(color) {
+  var color = "" + color,
+      isHEX = color.indexOf("#") == 0,
+      isRGB = color.indexOf("rgb") == 0;
+  if (isHEX) {
+    var m = color.substr(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g);
+    if (m) var r = parseInt(m[0], 16),
+        g = parseInt(m[1], 16),
+        b = parseInt(m[2], 16);
+  }
+  if (isRGB) {
+    var m = color.match(/(\d+){3}/g);
+    if (m) var r = m[0],
+        g = m[1],
+        b = m[2];
+  }
+  if (typeof r != "undefined") return (r * 299 + g * 587 + b * 114) / 1000;
+}
+
+__$styleInject("/**\n * Copyright 2017 Esset Software LTD.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n\nbody {\n    margin: 0px; /* Having problems with getClientRects. Webkit apply 8px for maring in body. Reseting body */\n    position: relative; /* FIX FROM ISSUE #30 */\n}\n#walk-bounds {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100%;\n    z-index: 1000;\n    overflow: hidden;\n    pointer-events: none;\n}\n/* END */\n\n#walk-wrapper {\n    pointer-events: all;\n    transform: translateZ(0);\n    position: absolute;\n    color: white; /* @TODO: Decide the contrast color based on the bright of the main color */\n    z-index: 1000;\n    display: none;\n}\n#walk-wrapper.dark {\n  color: black;\n}\n\n#walk-wrapper.opened {\n    transition: 0.25s;\n}\n\n#walk-wrapper.closed {\n    height: 1000px !important;\n    width: 1000px !important;\n    opacity: 0;\n}\n\n#walk-wrapper.closed #walk-content-wrapper {\n    display: none;\n}\n\n#walk-wrapper:before {\n    content: '';\n    display: block;\n    position: absolute;\n    background: transparent;\n    border: solid 0vw;\n    border-radius: 50%;\n    border-color: inherit;\n    width: inherit;\n    height: inherit;\n    margin-top: 0vw;\n    margin-left: 0vw;\n    opacity: .9;\n    box-sizing: content-box !important;\n    transition: border-width 0.25s ease-in, margin 0.25s ease-in;\n}\n\n#walk-wrapper.opened:before {\n    border-width: 200vw;\n    margin-left: -200vw;\n    margin-top: -200vw;\n}\n\n#walk-wrapper:after {\n    content: ' ';\n    box-sizing: content-box;\n    position: absolute;\n    top: -1px;\n    left: -1px;\n    width: 100%;\n    height: 100%;\n    border: 1px solid white;\n    border-radius: 50%;\n    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);\n}\n\n#walk-wrapper #walk-content-wrapper {\n    position: relative;\n    min-width: 200px;\n    width: 33vw;\n    font-family: 'Roboto', sans-serif;\n    font-size: 24px;\n    opacity: 1;\n    transition: 0.25s opacity;\n\n    /* DEFAULT POSITION */\n    top: 100%;\n    left: 100%;\n}\n\n#walk-wrapper:not(.opened) #walk-content-wrapper,\n#walk-wrapper.transiting #walk-content-wrapper {\n    opacity: 0;\n}\n\n#walk-wrapper #walk-action {\n    height: 36px;\n    padding: 0 2rem;\n    margin-top: 10px;\n    background-color: rgba(255, 255, 255, 0.2);\n    border: 0;\n    border-radius: 2px;\n    letter-spacing: 1px;\n    font-size: 15px;\n    font-weight: bold;\n    text-transform: uppercase;\n    color: white;\n    display: inline-block;\n    flex-flow: initial;\n}\n#walk-wrapper.dark #walk-action {\n  color: black;\n  background-color: rgba(0, 0, 0, 0.2);\n}\n\n#walk-wrapper #walk-action:hover {\n    background-color: rgba(255, 255, 255, 0.25);\n}\n#walk-wrapper.dark #walk-action:hover {\n  color: black;\n  background-color: rgba(0, 0, 0, 0.25);\n}\n\n\n/** small rules **/\n#walk-wrapper.opened.small:before {\n    border-width: 320px;\n    margin-left: -320px;\n    margin-top: -320px;\n}\n#walk-wrapper.small #walk-content-wrapper {\n  max-width: 300px;\n}\n\n#walk-wrapper.transiting.small:not(.animations-disabled) {\n    display: none !important;\n}\n\n@media (max-width: 750px) {\n    #walk-wrapper.opened.small:before {\n        border-width: 50vw;\n        margin-left: -50vw;\n        margin-top: -50vw;\n    }\n}\n\n/** animations-disabled rules **/\n#walk-wrapper.animations-disabled,\n#walk-wrapper.animations-disabled:before {\n    transition: 0s;\n}\n\n#walk-wrapper.animations-disabled:before {\n    transition: 0.25s opacity;\n}\n\n#walk-wrapper.opened.animations-disabled:before {\n    opacity: .9;\n}\n\n#walk-wrapper.animations-disabled:before,\n#walk-wrapper.transiting.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled:before,\n#walk-wrapper.closed.animations-disabled {\n    opacity: 0;\n}\n\n/*\nTODO: Make it responsible with layout breakpoints.\n    * The walk border\n    * The content text\n*/\n@media all and (max-width: 768px) {\n    #walk-wrapper #walk-content-wrapper {\n        max-width: 270px;\n        font-size: 18px;\n    }\n}\n", {});
 
 /**
  * Copyright 2017 Esset Software LTD.
@@ -390,7 +414,7 @@ function _log(context, message) {
  * @typedef {object} WalkPoint
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
  * @property {string} content A HTML code that will be inserted on the walk-content container;
- * @property {string} [color] A CSS (rgb, rgba, hex, etc.) color specification that will paint the walk. #2196F3 is default;
+ * @property {string} [color] A HEX or a RGB/RGBA color that will paint the walk. #2196F3 is default;
  * @property {string} [acceptText] The text of the accept button of the walk;
  * @property {function} [onSet] A function that will be called when the walk content is setted;
  * @property {function} [onClose] A function that will be called when the walk is accepted;
@@ -688,7 +712,7 @@ var MaterialWalkthrough = function () {
     /***
      * Set the properties for the walk.
      * @param {string} content The content that will be displayed in the walk
-     * @param {string} color A CSS valid color
+     * @param {string} color A HEX or a RGB/RGBA valid color
      * @param {string} acceptText The text that will be displayed in the accept button
      */
 
@@ -696,6 +720,22 @@ var MaterialWalkthrough = function () {
     key: '_setProperties',
     value: function _setProperties(content, color, acceptText) {
       var borderColor = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
+      console.log(brightnessByColor(borderColor));
+
+      var brightness = brightnessByColor(borderColor);
+      if (
+      // BLACK CONTRAST
+      brightness == 127.916 // LIGHT BLUE 500
+      || brightness == 122.966 // CYAN 600
+      || brightness == 126.36 // TEAL 400
+      || brightness == 134.569 || // GREEN 500
+      // WHITE CONTRAST
+      (brightness != 145.93 // PINK 300
+      || brightness != 139.462 // PURPLE 300
+      || brightness != 142.449) && // BROWN 300
+      brightness > 138.872 // P&B AVR
+      ) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'dark');else DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'dark');
+
       DOMUtils.setStyle(MaterialWalkthrough._wrapper, { borderColor: borderColor });
       MaterialWalkthrough._content.innerHTML = content;
       MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;

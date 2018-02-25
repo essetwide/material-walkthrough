@@ -15,6 +15,7 @@
  */
 import dom from './DOMUtils';
 import ScrollManager from './ScrollManager';
+import { brightnessByColor } from './utils';
 import './style.css';
 
 /**
@@ -46,7 +47,7 @@ function _log(context, message, ...attrs) {
  * @typedef {object} WalkPoint
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
  * @property {string} content A HTML code that will be inserted on the walk-content container;
- * @property {string} [color] A CSS (rgb, rgba, hex, etc.) color specification that will paint the walk. #2196F3 is default;
+ * @property {string} [color] A HEX or a RGB/RGBA color that will paint the walk. #2196F3 is default;
  * @property {string} [acceptText] The text of the accept button of the walk;
  * @property {function} [onSet] A function that will be called when the walk content is setted;
  * @property {function} [onClose] A function that will be called when the walk is accepted;
@@ -335,11 +336,29 @@ export default class MaterialWalkthrough {
   /***
    * Set the properties for the walk.
    * @param {string} content The content that will be displayed in the walk
-   * @param {string} color A CSS valid color
+   * @param {string} color A HEX or a RGB/RGBA valid color
    * @param {string} acceptText The text that will be displayed in the accept button
    */
   static _setProperties(content, color, acceptText) {
     const borderColor = !!color ? color : MaterialWalkthrough.DEFAULT_COLOR;
+    console.log(brightnessByColor(borderColor));
+
+    const brightness = brightnessByColor(borderColor);
+    if (
+      // BLACK CONTRAST
+      (brightness == 127.916 // LIGHT BLUE 500
+      || brightness == 122.966 // CYAN 600
+      || brightness == 126.36 // TEAL 400
+      || brightness == 134.569) // GREEN 500
+      // WHITE CONTRAST
+      || ((brightness != 145.93 // PINK 300
+      || brightness != 139.462 // PURPLE 300
+      || brightness != 142.449) // BROWN 300
+        && brightness > 138.872) // P&B AVR
+    )
+      dom.addClass(MaterialWalkthrough._wrapper, 'dark');
+    else dom.removeClass(MaterialWalkthrough._wrapper, 'dark');
+
     dom.setStyle(MaterialWalkthrough._wrapper, { borderColor });
     MaterialWalkthrough._content.innerHTML = content;
     MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;

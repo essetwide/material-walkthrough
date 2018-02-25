@@ -19,22 +19,86 @@
 
     <script>
         function test() {
+
+          // RED
+          //    WHITE 129.302 > 127.172
+          //    BLACK 149.086 < 150.573
+          // PINK
+          //    WHITE 145.93 > 127.172 | > 138.872
+          //    BLACK 177.075
+          // PURPLE
+          //    WHITE 139.462 > 127.172 | > 138.872
+          //    BLACK 172.507
+          // DEEP PURPLE
+          //    WHITE 136.6 > 127.172
+          //    BLACK 170.646
+          // INDIGO
+          //    WHITE 137.979 > 127.172
+          //    BLACK 171.009
+          // BLUE
+          //    WHITE 125.619
+          //    BLACK 144.519 < 150.573
+          // LIGHT BLUE
+          //    WHITE 117.988
+          //    BLACK 127.916 < 150.573 | < 138.872
+          // CYAN
+          //    WHITE 107.675
+          //    BLACK 122.966 < 150.573 | < 138.872
+          // TEAL
+          //    WHITE 103.554
+          //    BLACK 126.36 < 150.573 | < 138.872
+          // GREEN
+          //    WHITE 122.047
+          //    BLACK 134.569 < 150.573 | < 138.872
+          // LIGHT GREEN
+          //    WHITE 130.813 > 127.172
+          //    BLACK 149.673 < 150.573
+          // LIME
+          //    WHITE 111.345
+          //    BLACK 143.505 < 150.573
+          // YELLOW
+          //    BLACK 143.505 < 150.573
+          // AMBER
+          //    BLACK 141.402 < 150.573
+          // ORANGE
+          //    WHITE 134.857 > 127.172
+          //    BLACK 146.043 < 150.573
+          // DEEP ORANGE
+          //    WHITE 131.19
+          //    BLACK 149.627 < 150.573
+          // BROWN
+          //    WHITE 142.449 > 127.172 | > 138.872
+          //    BLACK 174.698
+          // GREY
+          //    WHITE 117
+          //    BLACK 158
+          // BLUE GREY
+          //    WHITE 138.192 > 127.172
+          //    BLACK 159.16
+          // AVR BLACK 150.573 (AFFECT 12 BLACK CONTRAST COLORS)
+          // AVR WHITE 127.172 (AFFECT 9 WHITE CONTRAST COLORS)
+          // AVR B&W 138.872 (AFFECT 3 WHITE AND 4 BLACK CONTRAST COLORS)
+
             MaterialWalkthrough.walk([
              {
                target: '#btn_test_me',
-               content: 'Testing!'
+               content: 'Testing!',
+               color: '#f44336'
              },
              {
                target: '#target_1',
-               content: 'Test 1'
+               content: 'Test 1',
+               color: '#03a9f4'
              },
              {
                target: '#target_2',
-               content: 'Test 2'
+               content: 'Test 2',
+               color: '#43a047'
              },
              {
                target: '#target_3',
-               content: 'Test 3'
+               content: 'Test 3',
+               color: '#f57c00'
              }
             ]);
         }
