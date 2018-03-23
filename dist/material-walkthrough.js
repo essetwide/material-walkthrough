@@ -904,7 +904,9 @@ var MaterialWalkthrough = function () {
       _log('MSG', 'Closing Walker');
       MaterialWalkthrough._flushListeners();
       ScrollManager.enable();
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', MaterialWalkthrough.ORIGINAL_THEME_COLOR);
+
+      var themeColor = DOMUtils.get('meta[name="theme-color"]');
+      if (themeColor) themeColor.setAttribute('content', MaterialWalkthrough.ORIGINAL_THEME_COLOR);
 
       // This will centralize the walk while it animate the hole opening with 1000px size.
       DOMUtils.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
