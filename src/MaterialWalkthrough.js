@@ -362,8 +362,10 @@ export default class MaterialWalkthrough {
     dom.setStyle(MaterialWalkthrough._wrapper, { borderColor });
     MaterialWalkthrough._content.innerHTML = content;
     MaterialWalkthrough._actionButton.innerHTML = acceptText || MaterialWalkthrough.DEFAULT_ACCEPT_TEXT;
-    if (! MaterialWalkthrough.FORCE_SMALL_BORDER)
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', borderColor);
+    if (!MaterialWalkthrough.FORCE_SMALL_BORDER) {
+      const themeColor = dom.get('meta[name="theme-color"]');
+      if (themeColor) themeColor.setAttribute('content', borderColor);
+    }
   }
 
   // @TODO: Animate the scroll.
