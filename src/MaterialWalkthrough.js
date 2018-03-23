@@ -390,7 +390,7 @@ export default class MaterialWalkthrough {
    * @param {function} locateCallback
    */
   static _locateTarget(target, locateCallback) {
-    const { top } = _position(target);
+    const { top } = MaterialWalkthrough._position(target);
     const windowHeight = window.innerHeight;
     const maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
 
@@ -414,7 +414,7 @@ export default class MaterialWalkthrough {
    * @private
    */
   static _renderFrame(target, renderCallback) {
-    const position = _position(target);
+    const position = MaterialWalkthrough._position(target);
     // Using this line.
     const { height, width } = target.getClientRects()[0];
 
