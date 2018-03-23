@@ -368,6 +368,21 @@ export default class MaterialWalkthrough {
     }
   }
 
+  /***
+   * Sum the offsetTop and offsetLeft of all parents
+   * @param {HTMLElement} target
+   */
+  static _position(target) {
+    let left = 0;
+    let top = 0;
+    do {
+      left += target.offsetLeft;
+      top += target.offsetTop;
+      target = target.offsetParent;
+    } while (target !== null);
+    return { left, top };
+  }
+
   // @TODO: Animate the scroll.
   /***
    * Centralize the scroll to a target.
@@ -375,7 +390,7 @@ export default class MaterialWalkthrough {
    * @param {function} locateCallback
    */
   static _locateTarget(target, locateCallback) {
-    const top = target.offsetTop;
+    const { top } = _position(target);
     const windowHeight = window.innerHeight;
     const maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
 
@@ -399,10 +414,9 @@ export default class MaterialWalkthrough {
    * @private
    */
   static _renderFrame(target, renderCallback) {
-    // HAVING ISSUES WITH THIS WAY TO GET POSITION IN SOME TESTS
-     const position = { top: target.offsetTop };
+    const position = _position(target);
     // Using this line.
-    const { height, width, left } = target.getClientRects()[0];
+    const { height, width } = target.getClientRects()[0];
 
     let holeSize = height > width ? height : width; // Catch the biggest measure
     // Adjust with default min measure if it not higher than it
@@ -416,7 +430,7 @@ export default class MaterialWalkthrough {
       marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
       marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
-      left: (left + (width / 2)) + 'px',
+      left: (position.left + (width / 2)) + 'px',
       top: (position.top + (height / 2)) + 'px',
     };
     dom.setStyle(MaterialWalkthrough._wrapper, positions);
