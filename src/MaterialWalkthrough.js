@@ -414,9 +414,8 @@ export default class MaterialWalkthrough {
    * @private
    */
   static _renderFrame(target, renderCallback) {
-    const position = MaterialWalkthrough._position(target);
-    // Using this line.
-    const { height, width } = target.getClientRects()[0];
+    // Use the client bounding rect that includes css translation etc.
+    const { height, width, left, top } = target.getBoundingClientRect();
 
     let holeSize = height > width ? height : width; // Catch the biggest measure
     // Adjust with default min measure if it not higher than it
@@ -430,8 +429,8 @@ export default class MaterialWalkthrough {
       marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
       marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
-      left: (position.left + (width / 2)) + 'px',
-      top: (position.top + (height / 2)) + 'px',
+      left: (left + (width / 2)) + 'px',
+      top: (top + (height / 2)) + 'px',
     };
     dom.setStyle(MaterialWalkthrough._wrapper, positions);
     _log('WALK_LOCK', 'Positioning \n' + JSON.stringify(positions, 2));
