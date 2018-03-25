@@ -15,6 +15,7 @@
     <span id="target_2" style="position: fixed; right: 0;">Target #2</span>
     <span id="target_3" style="position: relative; left: 15px; width: 200px; height: 50px; border: 1px solid black; display: block">Target #3</span>
     <span id="target_4" style="position: relative; left: 50%; width: 70px; top: 50%; display: block">Target #4</span>
+    <div style="position: fixed; right: 0; bottom: 0"><span id="target_5">Target #5</span></div>
 
     <script>
         function test() {
@@ -102,6 +103,11 @@
              {
                target: '#target_4',
                content: 'Test 4',
+               color: '#57d80d'
+             },
+             {
+               target: '#target_5',
+               content: 'Test 5',
                color: '#57d80d'
              }
             ]);
