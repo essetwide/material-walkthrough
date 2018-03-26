@@ -417,7 +417,7 @@ export default class MaterialWalkthrough {
     // Use the client bounding rect that includes css translation etc.
     const { height, width, left, top } = target.getBoundingClientRect();
     // Adjust the top to be relative to the document
-    const docTop = top + window.scrollY;
+    const docTop = top + window.pageYOffset;
 
     let holeSize = height > width ? height : width; // Catch the biggest measure
     // Adjust with default min measure if it not higher than it
