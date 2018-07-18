@@ -28,6 +28,7 @@ const _logenv = {
   WALK_CONTENT_TOP: true,
   WALK_LOCK: true,
   WALK_SCROLL: true,
+  ERROR: true,
   ALL: true
 };
 
@@ -43,6 +44,23 @@ function _log(context, message, ...attrs) {
 }
 
 /**
+ * Manages any error that a walkpoint can encouter
+ * @param {WalkPoint} [walkPoint]
+ */
+function _error(walkPoint) {
+  const defaultErrorHandler = error => {
+    _log('ERROR', error.message);
+    MaterialWalkthrough.closeWalker();
+  };
+  if (walkPoint !== undefined) {
+    if (walkPoint.onError !== undefined) {
+      return walkPoint.onError;
+    }
+  }
+  return defaultErrorHandler;
+}
+
+/**
  * A class that configures an walkpoint.
  * @typedef {object} WalkPoint
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
@@ -51,6 +69,8 @@ function _log(context, message, ...attrs) {
  * @property {string} [acceptText] The text of the accept button of the walk;
  * @property {function} [onSet] A function that will be called when the walk content is setted;
  * @property {function} [onClose] A function that will be called when the walk is accepted;
+ * @property {function} [onError] A function that will be called when the walk encounters an error;
+ *
  */
 
 /**
@@ -236,18 +256,26 @@ export default class MaterialWalkthrough {
 
     MaterialWalkthrough._locateTarget(target, () => {
       MaterialWalkthrough._setProperties(walkPoint.content, walkPoint.color, walkPoint.acceptText);
-      dom.setStyle(MaterialWalkthrough._wrapper, {display: 'block'});
+      dom.setStyle(MaterialWalkthrough._wrapper, { display: 'block' });
 
       MaterialWalkthrough._renderFrame(target, () => {
         dom.addClass(MaterialWalkthrough._wrapper, 'opened');
-        MaterialWalkthrough._renderContent(target, () => {
-          dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-        });
+        MaterialWalkthrough._renderContent(
+          target,
+          () => {
+            dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
+          },
+          _error(walkPoint)
+        );
 
         // Little XGH
-        MaterialWalkthrough._renderContent(target, () => {
-          dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-        });
+        MaterialWalkthrough._renderContent(
+          target,
+          () => {
+            dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
+          },
+          _error(walkPoint)
+        );
       });
     });
 
@@ -267,7 +295,7 @@ export default class MaterialWalkthrough {
       _log('MSG', 'Updating and rendering');
       MaterialWalkthrough._locateTarget(target, () => {
         MaterialWalkthrough._renderFrame(target, () => {
-          MaterialWalkthrough._renderContent(target);
+          MaterialWalkthrough._renderContent(target, undefined, _error());
         });
       });
     };
@@ -280,20 +308,20 @@ export default class MaterialWalkthrough {
   /***
    * Check if is at the end and finish it or move to the next WalkPoint
    */
-  static _next(){
+  static _next() {
     const hasNext = !!MaterialWalkthrough._instance.points && !!MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex + 1];
-      if (hasNext) {
-        MaterialWalkthrough._instance.currentIndex++;
-        MaterialWalkthrough._setWalker(
-          MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]
-        );
-      } else {
-        MaterialWalkthrough._instance.currentIndex = 0;
-        MaterialWalkthrough._instance.points = null;
-        if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
-        MaterialWalkthrough._instance.onCloseCallback = null;
-        MaterialWalkthrough.closeWalker();
-      }
+    if (hasNext) {
+      MaterialWalkthrough._instance.currentIndex++;
+      MaterialWalkthrough._setWalker(
+        MaterialWalkthrough._instance.points[MaterialWalkthrough._instance.currentIndex]
+      );
+    } else {
+      MaterialWalkthrough._instance.currentIndex = 0;
+      MaterialWalkthrough._instance.points = null;
+      if (MaterialWalkthrough._instance.onCloseCallback) MaterialWalkthrough._instance.onCloseCallback();
+      MaterialWalkthrough._instance.onCloseCallback = null;
+      MaterialWalkthrough.closeWalker();
+    }
   }
 
   /***
@@ -307,7 +335,7 @@ export default class MaterialWalkthrough {
 
     window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
     MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
-    MaterialWalkthrough._instance.mutationObserver.observe(document.body, {childList: true, subtree: true});
+    MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
     MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
       if (!!onClose) onClose();
@@ -346,14 +374,14 @@ export default class MaterialWalkthrough {
     const brightness = brightnessByColor(borderColor);
     if (
       // BLACK CONTRAST
-      (brightness == 127.916 // LIGHT BLUE 500
+      brightness == 127.916 // LIGHT BLUE 500
       || brightness == 122.966 // CYAN 600
       || brightness == 126.36 // TEAL 400
-      || brightness == 134.569) // GREEN 500
+      || brightness == 134.569  // GREEN 500
       // WHITE CONTRAST
       || ((brightness != 145.93 // PINK 300
-      || brightness != 139.462 // PURPLE 300
-      || brightness != 142.449) // BROWN 300
+        || brightness != 139.462 // PURPLE 300
+        || brightness != 142.449) // BROWN 300
         && brightness > 138.872) // P&B AVR
     )
       dom.addClass(MaterialWalkthrough._wrapper, 'dark');
@@ -383,7 +411,6 @@ export default class MaterialWalkthrough {
     const YCoordinate = top - (windowHeight / 2) + height / 2;
     const secureYCoordinate = YCoordinate > maxScrollValue ? maxScrollValue : YCoordinate;
 
-
     _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
     _log('WALK_LOCK', 'windowHeight:', windowHeight);
     window.scrollTo(0, secureYCoordinate);
@@ -400,7 +427,7 @@ export default class MaterialWalkthrough {
    */
   static _renderFrame(target, renderCallback) {
     // HAVING ISSUES WITH THIS WAY TO GET POSITION IN SOME TESTS
-     const position = { top: target.offsetTop };
+    const position = { top: target.offsetTop };
     // Using this line.
     const { height, width, left } = target.getClientRects()[0];
 
@@ -410,14 +437,14 @@ export default class MaterialWalkthrough {
     _log('WALK_LOCK', 'Walk hole size ' + holeSize + 'px');
 
     const positions = {
-      height: (holeSize + MaterialWalkthrough.GUTTER) + 'px',
-      width: (holeSize + MaterialWalkthrough.GUTTER) + 'px',
+      height: holeSize + MaterialWalkthrough.GUTTER + 'px',
+      width: holeSize + MaterialWalkthrough.GUTTER + 'px',
 
       marginLeft: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
       marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
-      left: (left + (width / 2)) + 'px',
-      top: (position.top + (height / 2)) + 'px',
+      left: left + (width / 2) + 'px',
+      top: position.top + (height / 2) + 'px'
     };
     dom.setStyle(MaterialWalkthrough._wrapper, positions);
     _log('WALK_LOCK', 'Positioning \n' + JSON.stringify(positions, 2));
@@ -431,19 +458,18 @@ export default class MaterialWalkthrough {
    * Calculates the positions and render the content in the screen based in the space available around a target.
    * @param {HTMLElement} target
    * @param {function} renderCallback
+   * @param {function} errorCallback
    * @private
    */
-  static _renderContent(target, renderCallback) {
+  static _renderContent(target, renderCallback, errorCallback) {
     const position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
 
     const itCanBeRenderedInRight =
       position.left + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER)
       + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
-    const itCanBeRenderedInLeft = (position.left + MaterialWalkthrough.GUTTER) - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
+    const itCanBeRenderedInLeft = position.left + MaterialWalkthrough.GUTTER - MaterialWalkthrough._contentWrapper.offsetWidth > 0;
 
-    const itCanBeRenderedInTop =
-      position.top
-      - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
+    const itCanBeRenderedInTop = position.top - MaterialWalkthrough._contentWrapper.offsetHeight > 0;
     const itCanBeRenderedInBottom =
       position.top
       + MaterialWalkthrough._contentWrapper.offsetHeight + MaterialWalkthrough._wrapper.offsetHeight
@@ -460,20 +486,34 @@ export default class MaterialWalkthrough {
     let marginLeft = 0;
     let textAlign = 'left';
 
-    if (!itCanBeRenderedInRight) {
-      left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px'
-        : 'calc(50% - 100px)';
-      textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
-      marginTop = itCanBeRenderedInLeft ? 0 : (itCanBeRenderedInBottom ? '20px' : '-20px');
-    }
-    if (!itCanBeRenderedInBottom) {
-      top = itCanBeRenderedInTop ? '-' + MaterialWalkthrough._contentWrapper.offsetHeight + 'px'
-        : MaterialWalkthrough._wrapper.offsetHeight / 2 - MaterialWalkthrough._contentWrapper.offsetHeight / 2 + 'px';
-      marginLeft = itCanBeRenderedInTop ? 0 : (!itCanBeRenderedInRight ? '-20px' : '20px');
-    }
-    dom.setStyle(MaterialWalkthrough._contentWrapper, {left, top, textAlign, marginTop, marginLeft});
+    /* can we render the walker */
+    if (
+      itCanBeRenderedInRight === false &&
+      itCanBeRenderedInLeft === false &&
+      itCanBeRenderedInTop === false &&
+      itCanBeRenderedInBottom === false
+    ) {
+      if (errorCallback) {
+        errorCallback(
+          new Error('Cannot find a place to locate the walker, closing it, aborting walk !')
+        );
+      }
+    } else {
+      if (!itCanBeRenderedInRight) {
+        left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px'
+          : 'calc(50% - 100px)';
+        textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
+        marginTop = itCanBeRenderedInLeft ? 0 : itCanBeRenderedInBottom ? '20px' : '-20px';
+      }
+      if (!itCanBeRenderedInBottom) {
+        top = itCanBeRenderedInTop ? '-' + MaterialWalkthrough._contentWrapper.offsetHeight + 'px'
+          : MaterialWalkthrough._wrapper.offsetHeight / 2 - MaterialWalkthrough._contentWrapper.offsetHeight / 2 + 'px';
+        marginLeft = itCanBeRenderedInTop ? 0 : !itCanBeRenderedInRight ? '-20px' : '20px';
+      }
+      dom.setStyle(MaterialWalkthrough._contentWrapper, { left, top, textAlign, marginTop, marginLeft });
 
-    if (renderCallback) renderCallback();
+      if (renderCallback) renderCallback();
+    }
   }
 
   /***
@@ -490,8 +530,8 @@ export default class MaterialWalkthrough {
     else {
       MaterialWalkthrough.ORIGINAL_THEME_COLOR = null;
       var meta = document.createElement('meta');
-      meta.name = "theme-color";
-      meta.content = "";
+      meta.name = 'theme-color';
+      meta.content = '';
       document.querySelector('head').appendChild(meta);
     }
     MaterialWalkthrough.to(walkPoints[0]);
@@ -524,7 +564,7 @@ export default class MaterialWalkthrough {
     dom.setStyle(MaterialWalkthrough._wrapper, { marginTop: '-500px', marginLeft: '-500px' });
     dom.addClass(MaterialWalkthrough._wrapper, 'closed');
     setTimeout(() => {
-      dom.setStyle(MaterialWalkthrough._wrapper, {display: 'none'});
+      dom.setStyle(MaterialWalkthrough._wrapper, { display: 'none' });
       dom.removeClass(MaterialWalkthrough._wrapper, 'opened');
       dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
       _log('MSG', 'Walker Closed!');

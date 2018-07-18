@@ -389,6 +389,7 @@ var _logenv = {
   WALK_CONTENT_TOP: true,
   WALK_LOCK: true,
   WALK_SCROLL: true,
+  ERROR: true,
   ALL: true
 };
 
@@ -410,6 +411,23 @@ function _log(context, message) {
 }
 
 /**
+ * Manages any error that a walkpoint can encouter
+ * @param {WalkPoint} [walkPoint]
+ */
+function _error(walkPoint) {
+  var defaultErrorHandler = function defaultErrorHandler(error) {
+    _log('ERROR', error.message);
+    MaterialWalkthrough.closeWalker();
+  };
+  if (walkPoint !== undefined) {
+    if (walkPoint.onError !== undefined) {
+      return walkPoint.onError;
+    }
+  }
+  return defaultErrorHandler;
+}
+
+/**
  * A class that configures an walkpoint.
  * @typedef {object} WalkPoint
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
@@ -418,6 +436,8 @@ function _log(context, message) {
  * @property {string} [acceptText] The text of the accept button of the walk;
  * @property {function} [onSet] A function that will be called when the walk content is setted;
  * @property {function} [onClose] A function that will be called when the walk is accepted;
+ * @property {function} [onError] A function that will be called when the walk encounters an error;
+ *
  */
 
 /**
@@ -608,12 +628,12 @@ var MaterialWalkthrough = function () {
           DOMUtils.addClass(MaterialWalkthrough._wrapper, 'opened');
           MaterialWalkthrough._renderContent(target, function () {
             DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-          });
+          }, _error(walkPoint));
 
           // Little XGH
           MaterialWalkthrough._renderContent(target, function () {
             DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-          });
+          }, _error(walkPoint));
         });
       });
 
@@ -636,7 +656,7 @@ var MaterialWalkthrough = function () {
         _log('MSG', 'Updating and rendering');
         MaterialWalkthrough._locateTarget(target, function () {
           MaterialWalkthrough._renderFrame(target, function () {
-            MaterialWalkthrough._renderContent(target);
+            MaterialWalkthrough._renderContent(target, undefined, _error());
           });
         });
       };
@@ -680,7 +700,10 @@ var MaterialWalkthrough = function () {
 
       window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
       MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
-      MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
+      MaterialWalkthrough._instance.mutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
 
       MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
         if (!!onClose) onClose();
@@ -725,14 +748,14 @@ var MaterialWalkthrough = function () {
       var brightness = brightnessByColor(borderColor);
       if (
       // BLACK CONTRAST
-      brightness == 127.916 // LIGHT BLUE 500
-      || brightness == 122.966 // CYAN 600
-      || brightness == 126.36 // TEAL 400
-      || brightness == 134.569 || // GREEN 500
+      brightness == 127.916 || // LIGHT BLUE 500
+      brightness == 122.966 || // CYAN 600
+      brightness == 126.36 || // TEAL 400
+      brightness == 134.569 || // GREEN 500
       // WHITE CONTRAST
-      (brightness != 145.93 // PINK 300
-      || brightness != 139.462 // PURPLE 300
-      || brightness != 142.449) && // BROWN 300
+      (brightness != 145.93 || // PINK 300
+      brightness != 139.462 || // PURPLE 300
+      brightness != 142.449) && // BROWN 300
       brightness > 138.872 // P&B AVR
       ) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'dark');else DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'dark');
 
@@ -818,12 +841,13 @@ var MaterialWalkthrough = function () {
      * Calculates the positions and render the content in the screen based in the space available around a target.
      * @param {HTMLElement} target
      * @param {function} renderCallback
+     * @param {function} errorCallback
      * @private
      */
 
   }, {
     key: '_renderContent',
-    value: function _renderContent(target, renderCallback) {
+    value: function _renderContent(target, renderCallback, errorCallback) {
       var position = MaterialWalkthrough._wrapper.getBoundingClientRect(); // target.getBoundingClientRect(); // target.getClientRects()[0];
 
       var itCanBeRenderedInRight = position.left + (MaterialWalkthrough._wrapper.offsetWidth - MaterialWalkthrough.GUTTER) + MaterialWalkthrough._contentWrapper.offsetWidth < window.innerWidth;
@@ -843,18 +867,32 @@ var MaterialWalkthrough = function () {
       var marginLeft = 0;
       var textAlign = 'left';
 
-      if (!itCanBeRenderedInRight) {
-        left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px' : 'calc(50% - 100px)';
-        textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
-        marginTop = itCanBeRenderedInLeft ? 0 : itCanBeRenderedInBottom ? '20px' : '-20px';
-      }
-      if (!itCanBeRenderedInBottom) {
-        top = itCanBeRenderedInTop ? '-' + MaterialWalkthrough._contentWrapper.offsetHeight + 'px' : MaterialWalkthrough._wrapper.offsetHeight / 2 - MaterialWalkthrough._contentWrapper.offsetHeight / 2 + 'px';
-        marginLeft = itCanBeRenderedInTop ? 0 : !itCanBeRenderedInRight ? '-20px' : '20px';
-      }
-      DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { left: left, top: top, textAlign: textAlign, marginTop: marginTop, marginLeft: marginLeft });
+      /* can we render the walker */
+      if (itCanBeRenderedInRight === false && itCanBeRenderedInLeft === false && itCanBeRenderedInTop === false && itCanBeRenderedInBottom === false) {
+        console.log('An error should be thown', errorCallback);
+        if (errorCallback) {
+          errorCallback(new Error('Cannot find a place to locate the walker'));
+        }
+      } else {
+        if (!itCanBeRenderedInRight) {
+          left = itCanBeRenderedInLeft ? '-' + MaterialWalkthrough._contentWrapper.offsetWidth + 'px' : 'calc(50% - 100px)';
+          textAlign = itCanBeRenderedInLeft ? 'right' : 'center';
+          marginTop = itCanBeRenderedInLeft ? 0 : itCanBeRenderedInBottom ? '20px' : '-20px';
+        }
+        if (!itCanBeRenderedInBottom) {
+          top = itCanBeRenderedInTop ? '-' + MaterialWalkthrough._contentWrapper.offsetHeight + 'px' : MaterialWalkthrough._wrapper.offsetHeight / 2 - MaterialWalkthrough._contentWrapper.offsetHeight / 2 + 'px';
+          marginLeft = itCanBeRenderedInTop ? 0 : !itCanBeRenderedInRight ? '-20px' : '20px';
+        }
+        DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, {
+          left: left,
+          top: top,
+          textAlign: textAlign,
+          marginTop: marginTop,
+          marginLeft: marginLeft
+        });
 
-      if (renderCallback) renderCallback();
+        if (renderCallback) renderCallback();
+      }
     }
 
     /***
@@ -872,20 +910,20 @@ var MaterialWalkthrough = function () {
       if (document.querySelector('meta[name="theme-color"]')) MaterialWalkthrough.ORIGINAL_THEME_COLOR = document.querySelector('meta[name="theme-color"]').getAttribute('content');else {
         MaterialWalkthrough.ORIGINAL_THEME_COLOR = null;
         var meta = document.createElement('meta');
-        meta.name = "theme-color";
-        meta.content = "";
+        meta.name = 'theme-color';
+        meta.content = '';
         document.querySelector('head').appendChild(meta);
       }
       MaterialWalkthrough.to(walkPoints[0]);
     }
-  }, {
-    key: 'to',
-
 
     /***
      * Open the walkthrough to a single walkpoint.
      * @param {WalkPoint} walkPoint The configuration of the walkpoint
      */
+
+  }, {
+    key: 'to',
     value: function to(walkPoint) {
       MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight;
       ScrollManager.disable();
