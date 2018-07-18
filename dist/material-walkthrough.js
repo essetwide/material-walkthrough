@@ -700,10 +700,7 @@ var MaterialWalkthrough = function () {
 
       window.addEventListener('resize', MaterialWalkthrough._instance.updateHandler);
       MaterialWalkthrough._instance.mutationObserver = new MutationObserver(MaterialWalkthrough._instance.updateHandler);
-      MaterialWalkthrough._instance.mutationObserver.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
+      MaterialWalkthrough._instance.mutationObserver.observe(document.body, { childList: true, subtree: true });
 
       MaterialWalkthrough._actionButton.addEventListener('click', function actionCallback() {
         if (!!onClose) onClose();
@@ -748,14 +745,14 @@ var MaterialWalkthrough = function () {
       var brightness = brightnessByColor(borderColor);
       if (
       // BLACK CONTRAST
-      brightness == 127.916 || // LIGHT BLUE 500
-      brightness == 122.966 || // CYAN 600
-      brightness == 126.36 || // TEAL 400
-      brightness == 134.569 || // GREEN 500
+      brightness == 127.916 // LIGHT BLUE 500
+      || brightness == 122.966 // CYAN 600
+      || brightness == 126.36 // TEAL 400
+      || brightness == 134.569 // GREEN 500
       // WHITE CONTRAST
-      (brightness != 145.93 || // PINK 300
-      brightness != 139.462 || // PURPLE 300
-      brightness != 142.449) && // BROWN 300
+      || (brightness != 145.93 // PINK 300
+      || brightness != 139.462 // PURPLE 300
+      || brightness != 142.449) && // BROWN 300
       brightness > 138.872 // P&B AVR
       ) DOMUtils.addClass(MaterialWalkthrough._wrapper, 'dark');else DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'dark');
 
@@ -869,9 +866,8 @@ var MaterialWalkthrough = function () {
 
       /* can we render the walker */
       if (itCanBeRenderedInRight === false && itCanBeRenderedInLeft === false && itCanBeRenderedInTop === false && itCanBeRenderedInBottom === false) {
-        console.log('An error should be thown', errorCallback);
         if (errorCallback) {
-          errorCallback(new Error('Cannot find a place to locate the walker'));
+          errorCallback(new Error('Cannot find a place to locate the walker, closing it, aborting walk !'));
         }
       } else {
         if (!itCanBeRenderedInRight) {
@@ -883,13 +879,7 @@ var MaterialWalkthrough = function () {
           top = itCanBeRenderedInTop ? '-' + MaterialWalkthrough._contentWrapper.offsetHeight + 'px' : MaterialWalkthrough._wrapper.offsetHeight / 2 - MaterialWalkthrough._contentWrapper.offsetHeight / 2 + 'px';
           marginLeft = itCanBeRenderedInTop ? 0 : !itCanBeRenderedInRight ? '-20px' : '20px';
         }
-        DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, {
-          left: left,
-          top: top,
-          textAlign: textAlign,
-          marginTop: marginTop,
-          marginLeft: marginLeft
-        });
+        DOMUtils.setStyle(MaterialWalkthrough._contentWrapper, { left: left, top: top, textAlign: textAlign, marginTop: marginTop, marginLeft: marginLeft });
 
         if (renderCallback) renderCallback();
       }
@@ -916,14 +906,14 @@ var MaterialWalkthrough = function () {
       }
       MaterialWalkthrough.to(walkPoints[0]);
     }
+  }, {
+    key: 'to',
+
 
     /***
      * Open the walkthrough to a single walkpoint.
      * @param {WalkPoint} walkPoint The configuration of the walkpoint
      */
-
-  }, {
-    key: 'to',
     value: function to(walkPoint) {
       MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT = document.querySelector('html').offsetHeight;
       ScrollManager.disable();

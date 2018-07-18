@@ -118,7 +118,10 @@
         {
           target: 'body',
           content: 'error',
-          color: '#57d80d'
+          color: '#57d80d',
+          onError: (error) => {
+            console.log('My custom error', error.message)
+          }
         }
       ]);
     }
