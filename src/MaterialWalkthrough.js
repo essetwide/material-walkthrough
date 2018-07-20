@@ -45,7 +45,7 @@ function _log(context, message, ...attrs) {
 
 /**
  * Manages any error that a walkpoint can encouter
- * @param {WalkPoint} [walkPoint]
+ * @param {WalkPoint} [walkPoint] 
  */
 function _error(walkPoint) {
   const defaultErrorHandler = error => {
@@ -56,6 +56,9 @@ function _error(walkPoint) {
     if (walkPoint.onError !== undefined) {
       return walkPoint.onError;
     }
+  }
+  if (MaterialWalkthrough._instance.onErrorCallback !== undefined) {
+    return MaterialWalkthrough._instance.onErrorCallback
   }
   return defaultErrorHandler;
 }
@@ -72,6 +75,15 @@ function _error(walkPoint) {
  * @property {function} [onError] A function that will be called when the walk encounters an error;
  *
  */
+
+
+/**
+* An object to provide "walk wide" callbacks.
+* @typedef {object} WalkOptions
+* @property {function} [onComplete]  function that will be called when the walk ends;
+* @property {function} [onError] A function that will be called when the walk encounters an error;
+*
+*/
 
 /**
  * A material tour (eg Inbox from Google) for your site, enhancing the UX.
@@ -519,12 +531,14 @@ export default class MaterialWalkthrough {
   /***
    * Do a walkthrough to a set of walkpoints.
    * @param {Array<WalkPoint>} walkPoints A list of each walkpoint to move the walktrough.
-   * @param {function} callback Callback called when the walkthrough is closed.
+   * @param {WalkOptions} options "walk wide" callbacks.
    */
-  static walk(walkPoints, callback) {
+  static walk(walkPoints, options) {
     MaterialWalkthrough._instance.points = walkPoints;
     MaterialWalkthrough._instance.currentIndex = 0;
-    MaterialWalkthrough._instance.onCloseCallback = callback;
+    MaterialWalkthrough._instance.onCloseCallback = options.onComplete;
+    MaterialWalkthrough._instance.onErrorCallback = options.onError;
+
     if (document.querySelector('meta[name="theme-color"]'))
       MaterialWalkthrough.ORIGINAL_THEME_COLOR = document.querySelector('meta[name="theme-color"]').getAttribute('content');
     else {
