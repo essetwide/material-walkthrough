@@ -411,26 +411,6 @@ function _log(context, message) {
 }
 
 /**
- * Manages any error that a walkpoint can encouter
- * @param {WalkPoint} [walkPoint] 
- */
-function _error(walkPoint) {
-  var defaultErrorHandler = function defaultErrorHandler(error) {
-    _log('ERROR', error.message);
-    MaterialWalkthrough.closeWalker();
-  };
-  if (walkPoint !== undefined) {
-    if (walkPoint.onError !== undefined) {
-      return walkPoint.onError;
-    }
-  }
-  if (MaterialWalkthrough._instance.onErrorCallback !== undefined) {
-    return MaterialWalkthrough._instance.onErrorCallback;
-  }
-  return defaultErrorHandler;
-}
-
-/**
  * A class that configures an walkpoint.
  * @typedef {object} WalkPoint
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
@@ -563,6 +543,7 @@ var MaterialWalkthrough = function () {
      *   points: Array<WalkPoint>,
      *   currentIndex: Integer,
      *   onCloseCallback: Function
+     *   onErrorCallback: Function
      * }}
      * @private
      */
@@ -639,12 +620,12 @@ var MaterialWalkthrough = function () {
           DOMUtils.addClass(MaterialWalkthrough._wrapper, 'opened');
           MaterialWalkthrough._renderContent(target, function () {
             DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-          }, _error(walkPoint));
+          }, MaterialWalkthrough._error(walkPoint));
 
           // Little XGH
           MaterialWalkthrough._renderContent(target, function () {
             DOMUtils.removeClass(MaterialWalkthrough._wrapper, 'transiting');
-          }, _error(walkPoint));
+          }, MaterialWalkthrough._error(walkPoint));
         });
       });
 
@@ -667,7 +648,7 @@ var MaterialWalkthrough = function () {
         _log('MSG', 'Updating and rendering');
         MaterialWalkthrough._locateTarget(target, function () {
           MaterialWalkthrough._renderFrame(target, function () {
-            MaterialWalkthrough._renderContent(target, undefined, _error());
+            MaterialWalkthrough._renderContent(target, undefined, MaterialWalkthrough._error());
           });
         });
       };
@@ -961,6 +942,30 @@ var MaterialWalkthrough = function () {
         _log('MSG', 'Walker Closed!');
       }, MaterialWalkthrough.TRANSITION_DURATION);
     }
+
+    /**
+    * Manages any error that a walkpoint can encouter
+    * it returns the best error handler for that walkpoint.
+    * @param {WalkPoint} [walkPoint] 
+    */
+
+  }, {
+    key: '_error',
+    value: function _error(walkPoint) {
+      var defaultErrorHandler = function defaultErrorHandler(error) {
+        _log('ERROR', error.message);
+        MaterialWalkthrough.closeWalker();
+      };
+      if (walkPoint !== undefined) {
+        if (walkPoint.onError !== undefined) {
+          return walkPoint.onError;
+        }
+      }
+      if (MaterialWalkthrough._instance.onErrorCallback !== undefined) {
+        return MaterialWalkthrough._instance.onErrorCallback;
+      }
+      return defaultErrorHandler;
+    }
   }]);
   return MaterialWalkthrough;
 }();
@@ -985,7 +990,8 @@ MaterialWalkthrough._instance = {
   mutationObserver: null,
   points: null,
   currentIndex: null,
-  onCloseCallback: null
+  onCloseCallback: null,
+  onErrorCallback: null
 };
 
 return MaterialWalkthrough;
