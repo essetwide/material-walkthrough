@@ -217,6 +217,7 @@ export default class MaterialWalkthrough {
    *   points: Array<WalkPoint>,
    *   currentIndex: Integer,
    *   onCloseCallback: Function
+   *   onErrorCallback: Function
    * }}
    * @private
    */
@@ -226,6 +227,7 @@ export default class MaterialWalkthrough {
     points: null,
     currentIndex: null,
     onCloseCallback: null,
+    onErrorCallback: null,
   };
 
   /**
