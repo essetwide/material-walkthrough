@@ -44,26 +44,6 @@ function _log(context, message, ...attrs) {
 }
 
 /**
- * Manages any error that a walkpoint can encouter
- * @param {WalkPoint} [walkPoint] 
- */
-function _error(walkPoint) {
-  const defaultErrorHandler = error => {
-    _log('ERROR', error.message);
-    MaterialWalkthrough.closeWalker();
-  };
-  if (walkPoint !== undefined) {
-    if (walkPoint.onError !== undefined) {
-      return walkPoint.onError;
-    }
-  }
-  if (MaterialWalkthrough._instance.onErrorCallback !== undefined) {
-    return MaterialWalkthrough._instance.onErrorCallback
-  }
-  return defaultErrorHandler;
-}
-
-/**
  * A class that configures an walkpoint.
  * @typedef {object} WalkPoint
  * @property {string|HTMLElement} target A selector or a pure Element that the walk will focus;
@@ -279,7 +259,7 @@ export default class MaterialWalkthrough {
           () => {
             dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
           },
-          _error(walkPoint)
+          MaterialWalkthrough._error(walkPoint)
         );
 
         // Little XGH
@@ -288,7 +268,7 @@ export default class MaterialWalkthrough {
           () => {
             dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
           },
-          _error(walkPoint)
+          MaterialWalkthrough._error(walkPoint)
         );
       });
     });
@@ -309,7 +289,7 @@ export default class MaterialWalkthrough {
       _log('MSG', 'Updating and rendering');
       MaterialWalkthrough._locateTarget(target, () => {
         MaterialWalkthrough._renderFrame(target, () => {
-          MaterialWalkthrough._renderContent(target, undefined, _error());
+          MaterialWalkthrough._renderContent(target, undefined, MaterialWalkthrough._error());
         });
       });
     };
@@ -587,5 +567,26 @@ export default class MaterialWalkthrough {
       dom.removeClass(MaterialWalkthrough._wrapper, 'transiting');
       _log('MSG', 'Walker Closed!');
     }, MaterialWalkthrough.TRANSITION_DURATION);
+  }
+
+  /**
+  * Manages any error that a walkpoint can encouter
+  * it returns the best error handler for that walkpoint.
+  * @param {WalkPoint} [walkPoint] 
+  */
+  static _error(walkPoint) {
+    const defaultErrorHandler = error => {
+      _log('ERROR', error.message);
+      MaterialWalkthrough.closeWalker();
+    };
+    if (walkPoint !== undefined) {
+      if (walkPoint.onError !== undefined) {
+        return walkPoint.onError;
+      }
+    }
+    if (MaterialWalkthrough._instance.onErrorCallback !== undefined) {
+      return MaterialWalkthrough._instance.onErrorCallback
+    }
+    return defaultErrorHandler;
   }
 }
