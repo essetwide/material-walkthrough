@@ -536,8 +536,10 @@ export default class MaterialWalkthrough {
   static walk(walkPoints, options) {
     MaterialWalkthrough._instance.points = walkPoints;
     MaterialWalkthrough._instance.currentIndex = 0;
-    MaterialWalkthrough._instance.onCloseCallback = options.onComplete;
-    MaterialWalkthrough._instance.onErrorCallback = options.onError;
+    if (options !== undefined) {
+      MaterialWalkthrough._instance.onCloseCallback = options.onComplete;
+      MaterialWalkthrough._instance.onErrorCallback = options.onError;
+    }
 
     if (document.querySelector('meta[name="theme-color"]'))
       MaterialWalkthrough.ORIGINAL_THEME_COLOR = document.querySelector('meta[name="theme-color"]').getAttribute('content');

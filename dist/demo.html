@@ -12,6 +12,12 @@
   <button id="btn_test_me" onclick="test()">
     Test me
   </button>
+  <button id="btn_test_custom_errors" onclick="customError()">
+    Test custom errors
+  </button>
+  <button id="btn_test_global_errors" onclick="globalError()">
+    Test global errors
+  </button>
 
   <span id="target_1" style="position: absolute; bottom: 0;">Target #1</span>
   <span id="target_2" style="position: fixed; right: 0;">Target #2</span>
@@ -20,6 +26,9 @@
   <div style="position: fixed; right: 0; bottom: 0">
     <span id="target_5">Target #5</span>
   </div>
+
+
+
 
   <script>
     function test() {
@@ -113,14 +122,33 @@
           target: '#target_5',
           content: 'Test 5',
           color: '#57d80d'
+        }]);
+    }
+
+    function globalError() {
+      MaterialWalkthrough.walk([
+        {
+          target: 'body',
+          content: 'error',
+          color: '#57d80d',
         },
-        // this one should throw an error
+      ], {
+          onError: (error) => {
+            console.log('My global error', error.message)
+            MaterialWalkthrough.closeWalker();
+          }
+        });
+    }
+
+    function customError() {
+      MaterialWalkthrough.walk([
         {
           target: 'body',
           content: 'error',
           color: '#57d80d',
           onError: (error) => {
             console.log('My custom error', error.message)
+            MaterialWalkthrough.closeWalker();
           }
         }
       ]);
