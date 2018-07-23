@@ -12,8 +12,8 @@
   <button id="btn_test_me" onclick="test()">
     Test me
   </button>
-  <button id="btn_test_custom_errors" onclick="customError()">
-    Test custom errors
+  <button id="btn_test_default_errors" onclick="defaultError()">
+    Test default errors
   </button>
   <button id="btn_test_global_errors" onclick="globalError()">
     Test global errors
@@ -133,23 +133,19 @@
           color: '#57d80d',
         },
       ], {
-          onError: (error) => {
-            console.log('My global error', error.message)
+          onError: (walkPoint, error) => {
+            console.error('My custom global error', error.message, walkPoint)
             MaterialWalkthrough.closeWalker();
           }
         });
     }
 
-    function customError() {
+    function defaultError() {
       MaterialWalkthrough.walk([
         {
           target: 'body',
           content: 'error',
           color: '#57d80d',
-          onError: (error) => {
-            console.log('My custom error', error.message)
-            MaterialWalkthrough.closeWalker();
-          }
         }
       ]);
     }

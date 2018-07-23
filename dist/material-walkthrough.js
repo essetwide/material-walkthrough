@@ -419,8 +419,6 @@ function _log(context, message) {
  * @property {string} [acceptText] The text of the accept button of the walk;
  * @property {function} [onSet] A function that will be called when the walk content is setted;
  * @property {function} [onClose] A function that will be called when the walk is accepted;
- * @property {function} [onError] A function that will be called when the walk encounters an error;
- *
  */
 
 /**
@@ -885,13 +883,13 @@ var MaterialWalkthrough = function () {
 
   }, {
     key: 'walk',
-    value: function walk(walkPoints, options) {
+    value: function walk(walkPoints) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { onComplete: null, onError: null };
+
       MaterialWalkthrough._instance.points = walkPoints;
       MaterialWalkthrough._instance.currentIndex = 0;
-      if (options !== undefined) {
-        MaterialWalkthrough._instance.onCloseCallback = options.onComplete;
-        MaterialWalkthrough._instance.onErrorCallback = options.onError;
-      }
+      MaterialWalkthrough._instance.onCloseCallback = options.onComplete;
+      MaterialWalkthrough._instance.onErrorCallback = options.onError;
 
       if (document.querySelector('meta[name="theme-color"]')) MaterialWalkthrough.ORIGINAL_THEME_COLOR = document.querySelector('meta[name="theme-color"]').getAttribute('content');else {
         MaterialWalkthrough.ORIGINAL_THEME_COLOR = null;
@@ -952,19 +950,12 @@ var MaterialWalkthrough = function () {
   }, {
     key: '_error',
     value: function _error(walkPoint) {
-      var defaultErrorHandler = function defaultErrorHandler(error) {
-        _log('ERROR', error.message);
+      var defaultErrorHandler = function defaultErrorHandler(walkPoint, error) {
+        console.warn(error.message, 'Target : ', walkPoint);
         MaterialWalkthrough.closeWalker();
       };
-      if (walkPoint !== undefined) {
-        if (walkPoint.onError !== undefined) {
-          return walkPoint.onError;
-        }
-      }
-      if (MaterialWalkthrough._instance.onErrorCallback !== undefined) {
-        return MaterialWalkthrough._instance.onErrorCallback;
-      }
-      return defaultErrorHandler;
+      var callback = MaterialWalkthrough._instance.onErrorCallback != null ? MaterialWalkthrough._instance.onErrorCallback : defaultErrorHandler;
+      return callback.bind(undefined, walkPoint);
     }
   }]);
   return MaterialWalkthrough;
