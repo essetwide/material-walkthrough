@@ -28,7 +28,6 @@ const _logenv = {
   WALK_CONTENT_TOP: true,
   WALK_LOCK: true,
   WALK_SCROLL: true,
-  ERROR: true,
   ALL: true
 };
 
