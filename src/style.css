@@ -166,7 +166,7 @@ body {
 /** animations-disabled rules **/
 #walk-wrapper.animations-disabled,
 #walk-wrapper.animations-disabled:before {
-    transition: 0s;
+    transition: height 0s, width 0s, top 0.25s, left 0.25s, opacity 0.25s;
 }
 
 #walk-wrapper.animations-disabled:before {
@@ -178,7 +178,6 @@ body {
 }
 
 #walk-wrapper.animations-disabled:before,
-#walk-wrapper.transiting.animations-disabled:before,
 #walk-wrapper.closed.animations-disabled:before,
 #walk-wrapper.closed.animations-disabled {
     opacity: 0;

@@ -375,17 +375,16 @@ export default class MaterialWalkthrough {
    * @param {function} locateCallback
    */
   static _locateTarget(target, locateCallback) {
-    const top = target.offsetTop;
-    const windowHeight = window.innerHeight;
+    const targetBounding = target.getBoundingClientRect();
+    const top = targetBounding.top;
     const maxScrollValue = MaterialWalkthrough.CURRENT_DOCUMENT_HEIGHT - window.innerHeight;
 
-    const { height } = target.getClientRects()[0];
-    const YCoordinate = top - (windowHeight / 2) + height / 2;
+    const YCoordinate = top - (window.innerHeight / 2) + targetBounding.height / 2;
     const secureYCoordinate = YCoordinate > maxScrollValue ? maxScrollValue : YCoordinate;
 
 
     _log('WALK_LOCK', 'Moving Scroll to:', secureYCoordinate);
-    _log('WALK_LOCK', 'windowHeight:', windowHeight);
+    _log('WALK_LOCK', 'windowHeight:', window.innerHeight);
     window.scrollTo(0, secureYCoordinate);
 
     // TODO: After the animation, timeout on callback
@@ -400,9 +399,9 @@ export default class MaterialWalkthrough {
    */
   static _renderFrame(target, renderCallback) {
     // HAVING ISSUES WITH THIS WAY TO GET POSITION IN SOME TESTS
-     const position = { top: target.offsetTop };
+    const targetBounding = target.getBoundingClientRect();
     // Using this line.
-    const { height, width, left } = target.getClientRects()[0];
+    const { height, width, left, top } = targetBounding;
 
     let holeSize = height > width ? height : width; // Catch the biggest measure
     // Adjust with default min measure if it not higher than it
@@ -417,7 +416,7 @@ export default class MaterialWalkthrough {
       marginTop: -((holeSize + MaterialWalkthrough.GUTTER) / 2) + 'px',
 
       left: (left + (width / 2)) + 'px',
-      top: (position.top + (height / 2)) + 'px',
+      top: (top + (height / 2)) + 'px',
     };
     dom.setStyle(MaterialWalkthrough._wrapper, positions);
     _log('WALK_LOCK', 'Positioning \n' + JSON.stringify(positions, 2));
